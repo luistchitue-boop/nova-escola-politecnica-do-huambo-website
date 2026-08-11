@@ -1,0 +1,11 @@
+{
+  "name": "Nova Escola Politécnica do Huambo",
+  "short_name": "NEPH",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#08263a",
+  "theme_color": "#08263a",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
