@@ -1,20 +1,20 @@
 export default function Footer() {
   const year = new Date().getFullYear()
   return (
-    <footer className="border-t bg-white dark:bg-gray-900 dark:border-gray-800 transition-colors duration-200">
-      <div className="mx-auto max-w-6xl px-6 py-8 text-sm text-gray-600 dark:text-gray-400">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+    <footer className="border-t border-slate-200 bg-white/80 transition-colors duration-200 dark:border-slate-800 dark:bg-slate-900/80">
+      <div className="mx-auto max-w-6xl px-6 py-10 text-sm text-slate-600 dark:text-slate-400 lg:px-8">
+        <div className="grid gap-8 md:grid-cols-3">
           <div>
-            <div className="font-semibold">Nova Escola Politécnica do Huambo</div>
-            <div className="text-xs mt-1">Rua Exemplo 123, Huambo — Angola</div>
+            <div className="text-base font-semibold text-slate-900 dark:text-white">Nova Escola Politécnica do Huambo</div>
+            <div className="mt-2 text-sm leading-7">Rua Exemplo 123, Huambo — Angola</div>
           </div>
-          <div className="text-center">
-            <div className="font-medium">Contactos</div>
-            <div className="text-xs mt-1">Telefone: +244 912 345 678 · Email: geral@escolahuambo.ao</div>
+          <div>
+            <div className="font-semibold text-slate-900 dark:text-white">Contactos</div>
+            <div className="mt-2 text-sm leading-7">Telefone: +244 912 345 678<br />Email: geral@escolahuambo.ao</div>
           </div>
-          <div className="text-right">
-            <div className="font-medium">© {year} Nova Escola Politécnica do Huambo</div>
-            <div className="text-xs mt-1">Entidade certificada — Ensino privado. Todos os direitos reservados.</div>
+          <div className="md:text-right">
+            <div className="font-semibold text-slate-900 dark:text-white">© {year} Nova Escola Politécnica do Huambo</div>
+            <div className="mt-2 text-sm leading-7">Entidade certificada — Ensino privado. Todos os direitos reservados.</div>
           </div>
         </div>
       </div>

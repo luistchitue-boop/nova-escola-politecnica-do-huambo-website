@@ -5,34 +5,52 @@ import Footer from '../components/Footer'
 
 const heroSlides = [
   {
-    title: 'Excelência académica. Formação integral.',
-    description: 'A Nova Escola Politécnica do Huambo prepara líderes com pensamento crítico, valores sólidos e competências para um mundo em mudança.',
-    bullets: [
-      { value: '98%', label: 'Taxa de sucesso académico' },
-      { value: '+50', label: 'Atividades extracurriculares' },
-      { value: '20', label: 'Anos de experiência' },
+    eyebrow: 'Nossa identidade',
+    title: 'Educação internacional com rigor, cuidado e propósito.',
+    description: 'A Nova Escola Politécnica do Huambo prepara alunos para prosperarem como cidadãos confiantes, pensadores críticos e líderes éticos.',
+    stats: [
+      { value: '98%', label: 'sucesso académico' },
+      { value: '+50', label: 'atividades extracurriculares' },
+      { value: '20+', label: 'anos de experiência' },
     ],
-    promo: 'Matrículas abertas para 2026/2027 — garanta a sua vaga.',
+    highlights: [
+      'Currículo sólido com foco em pensamento crítico e resolução de problemas.',
+      'Ambiente estimulante, seguro e acolhedor para cada etapa do percurso.',
+      'Parcerias e projetos que conectam aprendizagem, tecnologia e impacto.',
+    ],
+    cta: 'Descubra as oportunidades de aprendizagem que esperam por si.',
   },
   {
-    title: 'Formação STEM e artes criativas.',
-    description: 'Laboratórios modernos, projetos práticos e professores inspiradores para preparar alunos para o século XXI.',
-    bullets: [
-      { value: '100%', label: 'Apoio personalizado' },
-      { value: '12', label: 'Clubes e oficinas' },
-      { value: '5', label: 'Parcerias internacionais' },
+    eyebrow: 'Estudo e inovação',
+    title: 'Ciência, criatividade e tecnologia a crescerem lado a lado.',
+    description: 'Laboratórios modernos, projetos práticos e uma abordagem personalizada permitem que os alunos explorem talento e desenvolvam competências para o futuro.',
+    stats: [
+      { value: '12', label: 'clubes e oficinas' },
+      { value: '100%', label: 'apoio personalizado' },
+      { value: '5', label: 'parcerias internacionais' },
     ],
-    promo: 'Descubra o nosso currículo inovador e atividades diferenciadas.',
+    highlights: [
+      'Projetos interdisciplinares que incentivam criatividade, rigor e colaboração.',
+      'Aulas inspiradas em metodologias ativas e em experiências reais.',
+      'Uma comunidade que valoriza desafio, autonomia e crescimento contínuo.',
+    ],
+    cta: 'Conheça o nosso percurso de ensino e as experiências que transformam.',
   },
   {
-    title: 'Preparação para o futuro global.',
-    description: 'Línguas, tecnologia e liderança são cada vez mais valorizadas. Cresça num ambiente seguro e exigente.',
-    bullets: [
-      { value: '9', label: 'Línguas oferecidas' },
-      { value: '100%', label: 'Integração digital' },
-      { value: '40+', label: 'Eventos de orientação' },
+    eyebrow: 'Comunidade',
+    title: 'Uma escola que cresce com cada aluno, cada família e cada professor.',
+    description: 'Criamos laços fortes entre a comunidade escolar, promovendo pertença, respeito e um ambiente de excelência humana.',
+    stats: [
+      { value: '9', label: 'línguas oferecidas' },
+      { value: '40+', label: 'eventos de orientação' },
+      { value: '24/7', label: 'apoio e acompanhamento' },
     ],
-    promo: 'Reserve já a visita guiada e conheça a nossa comunidade académica.',
+    highlights: [
+      'Uma cultura escolar acolhedora, inclusiva e orientada para o bem-estar.',
+      'Atividades de liderança e serviço que fortalecem caráter e responsabilidade.',
+      'Uma rede de apoio que acompanha cada etapa do desenvolvimento.',
+    ],
+    cta: 'Agende uma visita guiada e conheça de perto a nossa comunidade.',
   },
 ]
 
@@ -44,11 +62,10 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [])
 
-  const prevSlide = () => setHeroIndex((current) => (current - 1 + heroSlides.length) % heroSlides.length)
-  const nextSlide = () => setHeroIndex((current) => (current + 1) % heroSlides.length)
+  const activeSlide = heroSlides[heroIndex]
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-200">
+    <div className="min-h-screen bg-[#f6f3eb] text-slate-800 transition-colors duration-200">
       <Head>
         <title>Nova Escola Politécnica do Huambo — Educação de Excelência</title>
         <meta name="description" content="Nova Escola Politécnica do Huambo — Formação integral, académica e humana." />
@@ -64,129 +81,166 @@ export default function Home() {
 
       <Header />
 
-      {/* Full-bleed hero */}
-      <section className="w-full relative overflow-hidden hero text-white">
-        <div className="absolute inset-0 bg-gradient-to-r from-navy/95 to-black/0 opacity-80 dark:opacity-70" />
-        <div className="relative overflow-hidden bg-cover bg-center w-full" style={{ backgroundImage: "url('/hero.webp')" }}>
-          <div className="bg-[linear-gradient(180deg,rgba(6,22,42,0.92),rgba(6,22,42,0.78))] dark:bg-[linear-gradient(180deg,rgba(0,0,0,0.94),rgba(0,0,0,0.76))]">
-            <div className="mx-auto max-w-6xl px-6 py-28">
-              <div className="relative overflow-hidden">
-                <div className="slide-wrapper flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${heroIndex * 100}%)` }}>
-                  {heroSlides.map((slide, index) => (
-                    <div key={index} className="min-w-full px-0 md:px-6">
-                      <div className="md:flex md:items-center md:gap-10">
-                        <div className="md:w-7/12 text-white">
-                          <h1 className="text-3xl md:text-5xl font-extrabold leading-tight font-heading text-white">{slide.title}</h1>
-                          <p className="mt-4 text-lg max-w-2xl">{slide.description}</p>
+      <section className="relative isolate overflow-hidden bg-[#08263a] text-white">
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/hero.webp')" }} />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,38,58,0.96)_0%,rgba(8,38,58,0.86)_48%,rgba(8,38,58,0.42)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(185,139,45,0.20),transparent_32%)]" />
 
-                          <div className="mt-8 rounded-3xl border border-white/10 bg-white/10 p-4 shadow-xl shadow-black/10 transition duration-300 ease-out hover:-translate-y-1 hover:bg-white/20 hover:shadow-2xl backdrop-blur-sm dark:bg-black/30 dark:border-white/10 dark:hover:bg-white/10">
-                            <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-white">
-                              <div className="min-w-[220px] font-medium">{slide.promo}</div>
-                              <div className="flex items-center gap-2">
-                                {heroSlides.map((_, dotIndex) => (
-                                  <button
-                                    key={dotIndex}
-                                    type="button"
-                                    onClick={() => setHeroIndex(dotIndex)}
-                                    className={`h-2 w-2 rounded-full transition-transform duration-200 ease-out ${heroIndex === dotIndex ? 'bg-gold scale-125' : 'bg-white/40 hover:scale-125'} focus:outline-none focus:ring-2 focus:ring-gold`}
-                                    aria-label={`Ir para slide ${dotIndex + 1}`}
-                                  />
-                                ))}
-                              </div>
-                            </div>
-                          </div>
+        <div className="relative mx-auto max-w-6xl px-6 py-24 lg:px-8 lg:py-32">
+          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-white">{activeSlide.eyebrow}</p>
+              <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
+                {activeSlide.title}
+              </h1>
+              <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-100">{activeSlide.description}</p>
 
-                          <div className="mt-6 flex flex-wrap gap-3">
-                            <button onClick={prevSlide} className="rounded-md border border-white/20 bg-white/10 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/20">Anterior</button>
-                            <button onClick={nextSlide} className="rounded-md btn-gold px-5 py-3 text-sm font-medium shadow">Próximo</button>
-                          </div>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a href="#admissions" className="rounded-full bg-[#c49b40] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#0f172a]/20 transition hover:-translate-y-0.5 hover:bg-[#b98b2d]">
+                  Solicitar informação
+                </a>
+                <a href="#about" className="rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/20">
+                  Descobrir a nossa visão
+                </a>
+              </div>
 
-                          <div className="mt-8 grid gap-6 sm:grid-cols-3 text-sm opacity-90">
-                            {slide.bullets.map((bullet) => (
-                              <div key={bullet.label} className="rounded-3xl border border-white/10 bg-white/10 p-4 transition duration-300 ease-out hover:-translate-y-1 hover:bg-white/20 hover:shadow-2xl">
-                                <div className="text-2xl font-semibold">{bullet.value}</div>
-                                <div className="text-xs">{bullet.label}</div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+              <div className="mt-10 grid gap-4 sm:grid-cols-3">
+                {activeSlide.stats.map((stat) => (
+                  <div key={stat.label} className="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur">
+                    <div className="text-2xl font-semibold text-white">{stat.value}</div>
+                    <div className="mt-1 text-sm uppercase tracking-[0.2em] text-slate-300">{stat.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-[2rem] border border-white/15 bg-white/10 p-8 shadow-2xl shadow-black/20 backdrop-blur-xl">
+              <div className="text-sm font-semibold uppercase tracking-[0.3em] text-[#f2d79d]">Por que escolher a Nova Escola</div>
+              <ul className="mt-6 space-y-4 text-sm leading-7 text-slate-200">
+                {activeSlide.highlights.map((highlight) => (
+                  <li key={highlight} className="flex gap-3">
+                    <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-[#f2d79d]" />
+                    <span>{highlight}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-8 rounded-[1.5rem] bg-[#f8f4ea] p-6 text-slate-800">
+                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">Próximo passo</p>
+                <p className="mt-2 text-lg font-semibold">{activeSlide.cta}</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <main id="main-content" className="mx-auto max-w-6xl px-6 py-16" role="main">
-        <section id="about" className="mt-16 grid gap-8 md:grid-cols-2">
+      <main id="main-content" className="mx-auto max-w-6xl px-6 py-20 lg:px-8" role="main">
+        <section id="about" className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
           <div>
-            <h2 className="text-2xl font-semibold">Sobre a escola</h2>
-            <p className="mt-4 text-gray-600 dark:text-gray-300">A Nova Escola Politécnica do Huambo combina tradição pedagógica com metodologias modernas. Temos um corpo docente qualificado, instalações seguras e um programa educativo orientado para o sucesso académico e o desenvolvimento pessoal.</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">A nossa essência</p>
+            <h2 className="mt-3 text-3xl font-semibold leading-tight sm:text-4xl">
+              Uma escola que une excelência académica, cuidado humano e visão internacional.
+            </h2>
+            <p className="mt-5 text-lg leading-8 text-slate-600">
+              A Nova Escola Politécnica do Huambo oferece um ambiente de aprendizagem exigente, acolhedor e atual, preparado para formar alunos com espírito crítico, autonomia e responsabilidade social.
+            </p>
           </div>
-          <div>
-            <h3 className="text-xl font-medium">Valores</h3>
-            <ul className="mt-4 list-disc list-inside text-gray-600 dark:text-gray-300">
-              <li>Respeito e responsabilidade</li>
-              <li>Excelência académica</li>
-              <li>Formação integral</li>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            {[
+              { title: 'Excellence', text: 'Currículo forte, rigor académico e acompanhamento contínuo.' },
+              { title: 'Inovação', text: 'Metodologias ativas, tecnologia e projetos com impacto real.' },
+              { title: 'Cuidado', text: 'Bem-estar, orientação e atenção individual em cada etapa.' },
+              { title: 'Comunidade', text: 'Uma cultura escolar inclusiva e orientada para a pertença.' },
+            ].map((value) => (
+              <div key={value.title} className="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm">
+                <h3 className="text-xl font-semibold text-slate-900">{value.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-slate-600">{value.text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section id="courses" className="mt-20 rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">Programas e percursos</p>
+              <h2 className="mt-2 text-3xl font-semibold sm:text-4xl">Aprendizagem com visão de futuro.</h2>
+            </div>
+            <a href="#admissions" className="text-sm font-semibold text-[#08263a] underline decoration-[#f2d79d] decoration-2 underline-offset-4">
+              Explore as opções disponíveis
+            </a>
+          </div>
+
+          <div className="mt-8 grid gap-6 lg:grid-cols-3">
+            {[
+              {
+                title: 'Ensino Básico',
+                text: 'Bases sólidas para a curiosidade, a autonomia e o desenvolvimento emocional.',
+              },
+              {
+                title: 'Ensino Secundário',
+                text: 'Preparação para estudos superiores, vida profissional e responsabilidade cívica.',
+              },
+              {
+                title: 'Atividades extracurriculares',
+                text: 'Desporto, artes, clubes STEM e projetos que enriquecem a experiência escolar.',
+              },
+            ].map((program) => (
+              <div key={program.title} className="rounded-[1.5rem] border border-slate-200 bg-[#f8f4ea] p-6">
+                <h3 className="text-xl font-semibold text-slate-900">{program.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-slate-600">{program.text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section id="admissions" className="mt-20 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="rounded-[2rem] bg-[#08263a] p-8 text-white sm:p-10">
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#f2d79d]">Admissões</p>
+            <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">Matrículas abertas para o próximo ano letivo.</h2>
+            <p className="mt-5 text-lg leading-8 text-slate-200">
+              O processo de candidatura é simples e acompanhado pela nossa equipa, com informação clara sobre prazos, requisitos e visitas guiadas.
+            </p>
+            <a href="#contact" className="mt-8 inline-flex rounded-full bg-[#c49b40] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#b98b2d]">
+              Contacte a nossa equipa
+            </a>
+          </div>
+
+          <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
+            <ul className="space-y-4 text-sm leading-7 text-slate-600">
+              <li className="flex gap-3"><span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#b98b2d]" /><span>Visitas guiadas presenciais e orientadas ao calendário escolar.</span></li>
+              <li className="flex gap-3"><span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#b98b2d]" /><span>Acompanhamento personalizado para famílias e candidatos.</span></li>
+              <li className="flex gap-3"><span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#b98b2d]" /><span>Informação clara sobre documentos, requisitos e próximos passos.</span></li>
             </ul>
           </div>
         </section>
 
-        <section id="courses" className="mt-16">
-          <h2 className="text-2xl font-semibold">Cursos e Programas</h2>
-          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            <div className="rounded-lg border bg-white p-6 shadow-sm dark:bg-gray-800 dark:border-gray-700">
-              <h4 className="font-medium">Ensino Básico</h4>
-              <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">Programa equilibrado com foco no pensamento crítico.</p>
-            </div>
-            <div className="rounded-lg border bg-white p-6 shadow-sm dark:bg-gray-800 dark:border-gray-700">
-              <h4 className="font-medium">Ensino Secundário</h4>
-              <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">Preparação para o ensino superior e para a vida profissional.</p>
-            </div>
-            <div className="rounded-lg border bg-white p-6 shadow-sm dark:bg-gray-800 dark:border-gray-700">
-              <h4 className="font-medium">Atividades Extracurriculares</h4>
-              <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">Desporto, artes e clubes de ciências e tecnologia.</p>
-            </div>
+        <section id="mission" className="mt-20 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+          <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">A nossa missão</p>
+            <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">Formar jovens preparados para o futuro sem perder a essência humana.</h2>
+            <p className="mt-5 text-lg leading-8 text-slate-600">
+              Promovemos o desenvolvimento integral dos alunos através de ensino exigente, inclusivo e orientado para a excelência, com foco em valores, responsabilidade e bem-estar.
+            </p>
           </div>
-        </section>
 
-        <section id="admissions" className="mt-16">
-          <h2 className="text-2xl font-semibold">Admissões</h2>
-          <p className="mt-4 text-gray-600 dark:text-gray-300">As candidaturas estão abertas. Contacte-nos para informações sobre prazos, requisitos e visitas guiadas.</p>
-        </section>
-        <section id="mission" className="mt-16 grid gap-8 md:grid-cols-2 items-center">
-          <div>
-            <h2 className="text-2xl font-semibold">A nossa missão</h2>
-              <p className="mt-4 text-gray-600 dark:text-gray-300">Promover o desenvolvimento integral dos alunos através de um ensino exigente, inclusivo e orientado para o futuro.</p>
-              <p className="mt-4 text-gray-600 dark:text-gray-300">Valorizamos o pensamento crítico, o trabalho em equipa e o respeito mútuo.</p>
-          </div>
-          <div className="rounded-lg bg-white p-6 shadow-sm card-tilt dark:bg-gray-800 dark:border-gray-700">
-              <h4 className="font-medium">Ambiente Seguro e Estimulante</h4>
-            <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">Instalações modernas, apoio psicológico e recursos tecnológicos ao serviço do ensino.</p>
-          </div>
-        </section>
-
-        <section id="testimonials" className="mt-16">
-          <h2 className="text-2xl font-semibold">Depoimentos</h2>
-          <div className="mt-6 grid gap-6 sm:grid-cols-2">
-            <blockquote className="rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800 dark:border-gray-700">
-              <p className="text-gray-700 dark:text-gray-100">“A Nova Escola Politécnica do Huambo ajudou o meu filho a crescer academicamente e pessoalmente.”</p>
-              <footer className="mt-4 text-sm text-gray-500 dark:text-gray-400">— Maria Silva, Encarregada de Educação</footer>
+          <div className="grid gap-6">
+            <blockquote className="rounded-[2rem] border border-slate-200 bg-[#f8f4ea] p-8">
+              <p className="text-lg leading-8 text-slate-700">“A Nova Escola Politécnica do Huambo ajudou o meu filho a crescer academicamente e pessoalmente, com confiança e sentido de pertença.”</p>
+              <footer className="mt-5 text-sm font-semibold text-slate-500">— Maria Silva, Encarregada de Educação</footer>
             </blockquote>
-            <blockquote className="rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800 dark:border-gray-700">
-              <p className="text-gray-700 dark:text-gray-100">“Ótima preparação para o ensino superior e para os desafios do século XXI.”</p>
-              <footer className="mt-4 text-sm text-gray-500 dark:text-gray-400">— João Pereira, Ex-aluno</footer>
-            </blockquote>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm">
+                <div className="text-3xl font-semibold text-[#08263a]">+1,000</div>
+                <div className="mt-2 text-sm text-slate-600">alunos formados ao longo das nossas gerações</div>
+              </div>
+              <div className="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm">
+                <div className="text-3xl font-semibold text-[#08263a]">100%</div>
+                <div className="mt-2 text-sm text-slate-600">dedicação a um ambiente seguro e acolhedor</div>
+              </div>
+            </div>
           </div>
-        </section>
-
-        <section id="contact" className="mt-16">
-          <h2 className="text-2xl font-semibold">Contacto</h2>
-          <p className="mt-4 text-gray-600">Telefone: +351 912 345 678 • Email: geral@escolaexemplo.pt</p>
         </section>
       </main>
 

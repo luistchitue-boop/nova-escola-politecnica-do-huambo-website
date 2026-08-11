@@ -27,27 +27,26 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b bg-white dark:bg-gray-900 dark:border-gray-800 transition-colors duration-200">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-6 py-3 md:flex-row md:items-center md:justify-between">
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-6">
+    <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur-xl transition-colors duration-200 dark:border-slate-800 dark:bg-slate-900/90">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-6 py-3 md:flex-row md:items-center md:justify-between lg:px-8">
+        <div className="flex items-center gap-3">
           <a href="/" className="flex items-center gap-3">
             <Image src={Logo} alt="Nova Escola Politécnica do Huambo" width={56} height={56} className="h-12 w-12 object-contain" />
-            <span className="text-base font-semibold leading-tight dark:text-white">
-              <span className="block">Nova Escola Politécnica</span>
-              <span className="block text-xs font-normal">do Huambo</span>
+            <span className="leading-tight text-slate-900 dark:text-white">
+              <span className="block text-base font-semibold">Nova Escola Politécnica</span>
+              <span className="block text-xs font-medium uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400">do Huambo</span>
             </span>
           </a>
-
         </div>
 
-        <nav aria-label="Main Navigation" className="hidden md:flex items-center space-x-6 text-sm text-gray-700 dark:text-gray-200">
-          <a href="#about" className="hover:underline">Sobre</a>
-          <a href="#courses" className="hover:underline">Programas</a>
-          <a href="#admissions" className="hover:underline">Admissões</a>
-          <a href="#mission" className="hover:underline">Missão</a>
+        <nav aria-label="Main Navigation" className="hidden items-center gap-6 text-sm font-medium text-slate-700 md:flex dark:text-slate-200">
+          <a href="#about" className="transition hover:text-[#b98b2d]">Sobre</a>
+          <a href="#courses" className="transition hover:text-[#b98b2d]">Programas</a>
+          <a href="#admissions" className="transition hover:text-[#b98b2d]">Admissões</a>
+          <a href="#mission" className="transition hover:text-[#b98b2d]">Missão</a>
           <div className="ml-2 flex items-center gap-3">
-            <a href="#apply" className="rounded-md btn-gold px-4 py-2 text-sm font-medium shadow">Admissões</a>
-            <button onClick={toggleTheme} aria-label="Alternar tema" className="inline-flex items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-1 text-sm text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200">
+            <a href="#admissions" className="rounded-full bg-[#08263a] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#0d3550]">Informação</a>
+            <button onClick={toggleTheme} aria-label="Alternar tema" className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
               {theme === 'dark' ? (
                 <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m8-9h1M3 12H2m15.364-6.364l.707.707M6.343 17.657l-.707.707m12.02 0l.707-.707M6.343 6.343l-.707-.707"/></svg>
               ) : (
@@ -57,12 +56,12 @@ export default function Header() {
           </div>
         </nav>
 
-        <div className="flex gap-2 md:hidden items-center">
+        <div className="flex items-center gap-2 md:hidden">
           <button
             onClick={() => setOpen(!open)}
             aria-expanded={open}
             aria-label="Menu"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-200"
           >
             <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               {open ? (
@@ -72,25 +71,24 @@ export default function Header() {
               )}
             </svg>
           </button>
-          <button onClick={toggleTheme} aria-label="Alternar tema" className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-200">
+          <button onClick={toggleTheme} aria-label="Alternar tema" className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-200">
             {theme === 'dark' ? (
               <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m8-9h1M3 12H2m15.364-6.364l.707.707M6.343 17.657l-.707.707m12.02 0l.707-.707M6.343 6.343l-.707-.707"/></svg>
             ) : (
               <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 118.646 3.646 7 7 0 0020.354 15.354z"/></svg>
             )}
           </button>
-          <a href="#apply" className="ml-2 inline-flex items-center justify-center rounded-md btn-gold px-3 py-2 text-sm font-medium shadow md:hidden">Admissões</a>
+          <a href="#admissions" className="rounded-full bg-[#08263a] px-3 py-2 text-sm font-semibold text-white">Informação</a>
         </div>
       </div>
 
-      {/* Mobile menu */}
       <div className={`md:hidden ${open ? 'block' : 'hidden'}`} role="navigation" aria-label="Mobile Navigation">
-        <div className="mx-auto max-w-6xl px-6 pb-4">
-          <div className="rounded-md border bg-white p-4 shadow-sm dark:bg-gray-800 dark:border-gray-700">
-            <a onClick={() => setOpen(false)} href="#about" className="block px-2 py-2 text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-700">Sobre</a>
-            <a onClick={() => setOpen(false)} href="#courses" className="mt-1 block px-2 py-2 text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-700">Cursos</a>
-            <a onClick={() => setOpen(false)} href="#admissions" className="mt-1 block px-2 py-2 text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-700">Admissões</a>
-            <a onClick={() => setOpen(false)} href="#contact" className="mt-1 block px-2 py-2 text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-700">Contacto</a>
+        <div className="mx-auto max-w-6xl px-6 pb-4 lg:px-8">
+          <div className="rounded-[1.25rem] border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+            <a onClick={() => setOpen(false)} href="#about" className="block px-2 py-2 text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-700">Sobre</a>
+            <a onClick={() => setOpen(false)} href="#courses" className="mt-1 block px-2 py-2 text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-700">Programas</a>
+            <a onClick={() => setOpen(false)} href="#admissions" className="mt-1 block px-2 py-2 text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-700">Admissões</a>
+            <a onClick={() => setOpen(false)} href="#mission" className="mt-1 block px-2 py-2 text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-700">Missão</a>
           </div>
         </div>
       </div>
