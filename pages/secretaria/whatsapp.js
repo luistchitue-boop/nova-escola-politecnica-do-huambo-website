@@ -18,8 +18,10 @@ export default function WhatsAppPage() {
   const [form, setForm] = useState({ inscricao: '' })
   const [error, setError] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [whatsappLink, setWhatsappLink] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
 
     const value = form.inscricao.trim()
@@ -32,7 +34,33 @@ export default function WhatsAppPage() {
     }
 
     setError('')
-    setIsModalOpen(true)
+    setIsSubmitting(true)
+
+    try {
+      const response = await fetch('/api/whatsapp-access', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ enrollmentNumber: value }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok || !data.success) {
+        setError(data.message || 'Não foi possível encontrar o grupo de WhatsApp.')
+        setIsModalOpen(false)
+        return
+      }
+
+      setWhatsappLink(data.whatsappLink)
+      setIsModalOpen(true)
+    } catch (requestError) {
+      setError('Não foi possível contactar o servidor. Tente novamente.')
+      setIsModalOpen(false)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -65,7 +93,7 @@ export default function WhatsAppPage() {
               </p>
 
               <a
-                href="https://chat.whatsapp.com/3jKQX7rZk5S1w9uQh4mB2F"
+                href={whatsappLink || 'https://chat.whatsapp.com/3jKQX7rZk5S1w9uQh4mB2F'}
                 target="_blank"
                 rel="noreferrer"
                 className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#25D366] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1ebe5d]"
@@ -126,8 +154,8 @@ export default function WhatsAppPage() {
               ) : null}
             </div>
 
-            <button type="submit" className="rounded-full bg-[#08263a] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d3550]">
-              Continuar para o WhatsApp
+            <button type="submit" disabled={isSubmitting} className="rounded-full bg-[#08263a] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d3550] disabled:cursor-not-allowed disabled:opacity-70">
+              {isSubmitting ? 'A verificar...' : 'Continuar para o WhatsApp'}
             </button>
           </form>
 
