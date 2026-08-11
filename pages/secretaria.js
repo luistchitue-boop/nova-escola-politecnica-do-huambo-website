@@ -48,7 +48,7 @@ export default function SecretariaPage() {
           {services.map((service) => (
             <div key={service.title} className="flex h-full flex-col rounded-[1.5rem] border border-slate-200 bg-white p-8 shadow-sm">
               {service.icon ? (
-                <div className={`mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#f8f4ea] ${service.title === 'Aceder grupos informativos no WhatsApp' ? 'text-[#25D366]' : 'text-[#08263a]'}`}>
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#f8f4ea] text-[#08263a]">
                   {service.icon}
                 </div>
               ) : null}
