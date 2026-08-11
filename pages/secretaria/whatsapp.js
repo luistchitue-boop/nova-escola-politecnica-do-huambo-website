@@ -9,9 +9,9 @@ const registrationSchema = z.object({
   inscricao: z
     .string()
     .trim()
-    .regex(/^\d+$/, { message: 'O número de inscrição deve conter apenas números.' })
-    .min(4, { message: 'O número de inscrição deve ter pelo menos 4 dígitos.' })
-    .max(12, { message: 'O número de inscrição não pode exceder 12 dígitos.' }),
+    .regex(/^\d{6}$/, { message: 'O número de inscrição deve conter exatamente 6 inteiros.' })
+    .min(6, { message: 'O número de inscrição deve conter exatamente 6 inteiros.' })
+    .max(6, { message: 'O número de inscrição deve conter exatamente 6 inteiros.' }),
 })
 
 export default function WhatsAppPage() {
@@ -21,7 +21,8 @@ export default function WhatsAppPage() {
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    const result = registrationSchema.safeParse(form)
+    const value = form.inscricao.trim()
+    const result = registrationSchema.safeParse({ inscricao: value })
 
     if (!result.success) {
       setError(result.error.issues[0].message)
@@ -59,14 +60,17 @@ export default function WhatsAppPage() {
                 id="inscricao"
                 name="inscricao"
                 type="text"
+                inputMode="numeric"
+                maxLength={6}
                 value={form.inscricao}
                 onChange={(event) => {
-                  setForm({ inscricao: event.target.value })
+                  const nextValue = event.target.value.replace(/\D/g, '').slice(0, 6)
+                  setForm({ inscricao: nextValue })
                   if (error) {
                     setError('')
                   }
                 }}
-                placeholder="Ex: 2026001"
+                placeholder="Ex: 202601"
                 aria-invalid={Boolean(error)}
                 aria-describedby={error ? 'inscricao-error' : undefined}
                 className={`mt-3 w-full rounded-2xl border px-4 py-3 text-slate-800 outline-none ring-0 focus:border-[#b98b2d] ${
