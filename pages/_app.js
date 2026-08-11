@@ -36,7 +36,6 @@ export default function App({ Component, pageProps }) {
           "telephone": "+244912345678"
         }) }} />
       </Head>
-      <a href="#main-content" className="skip-link">Saltar para o conteúdo</a>
       <Component {...pageProps} />
     </>
   )

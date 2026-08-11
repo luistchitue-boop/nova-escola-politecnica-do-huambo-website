@@ -58,9 +58,14 @@ export async function getServerSideProps({ query }) {
   const gradeOptions = [...new Set(allRows.map((row) => row.intendedGrade).filter(Boolean))].sort()
   const anoLectivoOptions = [...new Set(allRows.map((row) => row.admissionYear).filter(Boolean))].sort((a, b) => b.localeCompare(a))
 
+  const serializedReservations = rows.map((reservation) => ({
+    ...reservation,
+    createdAt: reservation.createdAt ? new Date(reservation.createdAt).toISOString() : null,
+  }))
+
   return {
     props: {
-      reservations: rows,
+      reservations: serializedReservations,
       page: safePage,
       totalPages,
       totalCount,
@@ -107,15 +112,7 @@ export default function DireccaoPage({
 
       <main className="min-h-screen bg-[#f6f3eb] text-slate-800">
         <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
-          <div className="rounded-[2rem] bg-[#08263a] p-8 text-white shadow-xl sm:p-10">
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#f2d79d]">Direção</p>
-            <h1 className="mt-4 text-3xl font-semibold sm:text-4xl">Reservas</h1>
-            <p className="mt-3 max-w-2xl text-base leading-7 text-slate-200">
-              Acompanhamento das reservas efetuadas, com filtros por classe e ano letivo.
-            </p>
-          </div>
-
-          <section className="mt-8 rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm">
+          <section className="mt-2 rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm">
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
               <label className="block text-sm font-medium text-slate-700">
                 <span className="mb-2 block">Classe</span>
@@ -174,6 +171,7 @@ export default function DireccaoPage({
                   <tr>
                     <th className="px-4 py-3 font-semibold">Responsável</th>
                     <th className="px-4 py-3 font-semibold">Estudante</th>
+                    <th className="px-4 py-3 font-semibold">Data de nascimento</th>
                     <th className="px-4 py-3 font-semibold">Classe</th>
                     <th className="px-4 py-3 font-semibold">Ano letivo</th>
                     <th className="px-4 py-3 font-semibold">Telefone</th>
@@ -185,7 +183,7 @@ export default function DireccaoPage({
                 <tbody className="divide-y divide-slate-200 bg-white">
                   {reservations.length === 0 ? (
                     <tr>
-                      <td colSpan="8" className="px-4 py-10 text-center text-slate-500">
+                      <td colSpan="9" className="px-4 py-10 text-center text-slate-500">
                         Nenhuma reserva encontrada para os filtros selecionados.
                       </td>
                     </tr>
@@ -194,6 +192,7 @@ export default function DireccaoPage({
                       <tr key={reservation.id} className="align-top hover:bg-slate-50">
                         <td className="px-4 py-3 font-medium text-slate-900">{reservation.parentName}</td>
                         <td className="px-4 py-3">{reservation.studentName}</td>
+                        <td className="px-4 py-3">{reservation.dateOfBirth || '—'}</td>
                         <td className="px-4 py-3">{reservation.intendedGrade}</td>
                         <td className="px-4 py-3">{reservation.admissionYear}</td>
                         <td className="px-4 py-3">{reservation.phone}</td>
