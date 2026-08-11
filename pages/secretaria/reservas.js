@@ -290,6 +290,10 @@ export default function ReservasPage() {
               </div>
 
               <div className="mt-6 space-y-4 text-sm text-slate-700">
+                <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-red-700">
+                  <p className="font-semibold text-red-800">Atenção</p>
+                  <p className="mt-1">Depois de guardar a reserva, não será possível alterar qualquer informação. Verifique todos os dados antes de continuar.</p>
+                </div>
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                   <p className="font-semibold text-slate-900">Responsável</p>
                   <p className="mt-1">{form.parentName}</p>
@@ -616,8 +620,10 @@ export default function ReservasPage() {
             ) : null}
 
             {reservationCode ? (
-              <div className="rounded-2xl border border-[#f2d79d] bg-[#fffaf0] px-4 py-3 text-sm font-medium text-[#7a5a15]">
-                Código de acesso: <span className="font-bold tracking-[0.2em]">{reservationCode}</span>
+              <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+                <p className="font-bold uppercase tracking-[0.12em]">Código de acesso obrigatório</p>
+                <p className="mt-2">Guarde este código em local seguro. Sem ele, não será possível consultar ou cancelar a sua reserva.</p>
+                <p className="mt-3 text-lg font-bold tracking-[0.25em]">{reservationCode}</p>
               </div>
             ) : null}
 
