@@ -5,6 +5,34 @@ import { z } from 'zod'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 
+const formatPhoneValue = (value = '') => {
+  const digits = value.replace(/\D/g, '').slice(0, 9)
+
+  if (digits.length <= 3) {
+    return digits
+  }
+
+  if (digits.length <= 6) {
+    return `${digits.slice(0, 3)} ${digits.slice(3)}`
+  }
+
+  return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6)}`
+}
+
+const formatDateValue = (value = '') => {
+  const digits = value.replace(/\D/g, '').slice(0, 8)
+
+  if (digits.length <= 2) {
+    return digits
+  }
+
+  if (digits.length <= 4) {
+    return `${digits.slice(0, 2)}/${digits.slice(2)}`
+  }
+
+  return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`
+}
+
 const reservationSchema = z.object({
   parentName: z.string().trim().min(2, { message: 'O nome do responsável é obrigatório.' }),
   phone: z
@@ -12,7 +40,10 @@ const reservationSchema = z.object({
     .trim()
     .regex(/^\d{9}$/, { message: 'O telefone deve conter exatamente 9 dígitos.' }),
   studentName: z.string().trim().min(2, { message: 'O nome do estudante é obrigatório.' }),
-  dateOfBirth: z.string().trim().min(1, { message: 'A data de nascimento é obrigatória.' }),
+  dateOfBirth: z
+    .string()
+    .trim()
+    .regex(/^\d{2}\/\d{2}\/\d{4}$/, { message: 'A data de nascimento deve estar no formato dd/mm/yyyy.' }),
   admissionYear: z.string().trim().min(1, { message: 'O ano de ingresso é obrigatório.' }),
   intendedGrade: z.string().trim().min(1, { message: 'A classe pretendida é obrigatória.' }),
   hasSpecialNeeds: z.enum(['sim', 'nao'], {
@@ -70,6 +101,7 @@ export default function ReservasPage() {
   const [fieldErrors, setFieldErrors] = useState({})
   const [success, setSuccess] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false)
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -87,9 +119,8 @@ export default function ReservasPage() {
     if (success) setSuccess('')
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
-    setIsSubmitting(true)
     setError('')
     setSuccess('')
 
@@ -105,11 +136,17 @@ export default function ReservasPage() {
       }, {})
 
       setFieldErrors(nextFieldErrors)
-      setIsSubmitting(false)
       return
     }
 
     setFieldErrors({})
+    setIsConfirmOpen(true)
+  }
+
+  const handleConfirmSave = async () => {
+    setIsSubmitting(true)
+    setError('')
+    setSuccess('')
 
     try {
       const response = await fetch('/api/reserva', {
@@ -125,10 +162,12 @@ export default function ReservasPage() {
       if (!response.ok || !data.success) {
         if (response.status === 409) {
           setError('Já existe um pedido de reserva para este estudante.')
+          setIsConfirmOpen(false)
           return
         }
 
         setError(data.message || 'Não foi possível enviar a reserva.')
+        setIsConfirmOpen(false)
         return
       }
 
@@ -143,8 +182,10 @@ export default function ReservasPage() {
         hasSpecialNeeds: '',
         observations: '',
       })
+      setIsConfirmOpen(false)
     } catch (submitError) {
       setError('Ocorreu um erro ao enviar o pedido. Tente novamente.')
+      setIsConfirmOpen(false)
     } finally {
       setIsSubmitting(false)
     }
@@ -160,6 +201,73 @@ export default function ReservasPage() {
       <Header />
 
       <main className="mx-auto max-w-4xl px-6 py-20 lg:px-8">
+        {isConfirmOpen ? (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 px-4">
+            <div className="w-full max-w-2xl rounded-[2rem] bg-white p-8 shadow-2xl">
+              <div className="flex items-center justify-between gap-4">
+                <h2 className="text-2xl font-semibold text-slate-900">Confirmar pedido de reserva</h2>
+                <button
+                  type="button"
+                  onClick={() => setIsConfirmOpen(false)}
+                  className="text-2xl font-medium text-slate-500 transition hover:text-slate-700"
+                  aria-label="Fechar confirmação"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div className="mt-6 space-y-4 text-sm text-slate-700">
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="font-semibold text-slate-900">Responsável</p>
+                  <p className="mt-1">{form.parentName}</p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="font-semibold text-slate-900">Telefone</p>
+                  <p className="mt-1">{formatPhoneValue(form.phone)}</p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="font-semibold text-slate-900">Estudante</p>
+                  <p className="mt-1">{form.studentName}</p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="font-semibold text-slate-900">Data de nascimento</p>
+                  <p className="mt-1">{form.dateOfBirth || '-'}</p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="font-semibold text-slate-900">Ano e classe</p>
+                  <p className="mt-1">{form.admissionYear} · {form.intendedGrade || '-'}</p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="font-semibold text-slate-900">Necessidade especial</p>
+                  <p className="mt-1">{form.hasSpecialNeeds === 'sim' ? 'Sim' : form.hasSpecialNeeds === 'nao' ? 'Não' : '-'}</p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="font-semibold text-slate-900">Observações</p>
+                  <p className="mt-1 whitespace-pre-wrap">{form.observations || 'Sem observações.'}</p>
+                </div>
+              </div>
+
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-end">
+                <button
+                  type="button"
+                  onClick={() => setIsConfirmOpen(false)}
+                  className="rounded-full border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                >
+                  Voltar para corrigir
+                </button>
+                <button
+                  type="button"
+                  onClick={handleConfirmSave}
+                  disabled={isSubmitting}
+                  className="rounded-full bg-[#08263a] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d3550] disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  {isSubmitting ? 'A guardar...' : 'Guardar pedido'}
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : null}
+
         <div className="rounded-[2rem] bg-[#08263a] p-10 text-white shadow-xl">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#f2d79d]">Reservas</p>
           <h1 className="mt-4 text-4xl font-semibold sm:text-5xl">Reserve a vaga do seu filho para futuros anos letivos.</h1>
@@ -201,8 +309,8 @@ export default function ReservasPage() {
                   name="phone"
                   type="tel"
                   inputMode="numeric"
-                  maxLength={9}
-                  value={form.phone}
+                  value={formatPhoneValue(form.phone)}
+                  placeholder="9xx xxx xxx"
                   onChange={(event) => {
                     const nextValue = event.target.value.replace(/\D/g, '').slice(0, 9)
                     setForm((current) => ({ ...current, phone: nextValue }))
@@ -258,9 +366,26 @@ export default function ReservasPage() {
                 <input
                   id="dateOfBirth"
                   name="dateOfBirth"
-                  type="date"
-                  value={form.dateOfBirth}
-                  onChange={handleChange}
+                  type="text"
+                  inputMode="numeric"
+                  value={formatDateValue(form.dateOfBirth)}
+                  placeholder="dd/mm/yyyy"
+                  onChange={(event) => {
+                    const nextValue = event.target.value.replace(/\D/g, '').slice(0, 8)
+                    const formatted = formatDateValue(nextValue)
+                    setForm((current) => ({ ...current, dateOfBirth: formatted }))
+
+                    if (fieldErrors.dateOfBirth) {
+                      setFieldErrors((current) => {
+                        const next = { ...current }
+                        delete next.dateOfBirth
+                        return next
+                      })
+                    }
+
+                    if (error) setError('')
+                    if (success) setSuccess('')
+                  }}
                   aria-invalid={Boolean(fieldErrors.dateOfBirth)}
                   aria-describedby={fieldErrors.dateOfBirth ? 'dateOfBirth-error' : undefined}
                   className={`mt-3 w-full rounded-2xl border px-4 py-3 outline-none focus:border-[#b98b2d] ${

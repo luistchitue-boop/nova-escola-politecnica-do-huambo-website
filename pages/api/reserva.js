@@ -5,13 +5,16 @@ import { reservationRequests } from '../../db/schema'
 
 const reservationSchema = z.object({
   parentName: z.string().trim().min(2, 'O nome do responsável é obrigatório.'),
-  phone: z.string().trim().min(6, 'O telefone deve ser válido.'),
+  phone: z.string().trim().regex(/^\d{9}$/, 'O telefone deve conter exatamente 9 dígitos.'),
   studentName: z.string().trim().min(2, 'O nome do estudante é obrigatório.'),
-  dateOfBirth: z.string().trim().min(1, 'A data de nascimento é obrigatória.'),
+  dateOfBirth: z
+    .string()
+    .trim()
+    .regex(/^\d{2}\/\d{2}\/\d{4}$/, 'A data de nascimento deve estar no formato dd/mm/yyyy.'),
   admissionYear: z.string().trim().min(1, 'O ano de ingresso é obrigatório.'),
   intendedGrade: z.string().trim().min(1, 'A classe pretendida é obrigatória.'),
   hasSpecialNeeds: z.enum(['sim', 'nao'], {
-    error: 'Indique se o estudante tem necessidades especiais.',
+    error: 'Selecione uma opção válida: sim ou não.',
   }),
   observations: z.string().trim().optional().default(''),
 })
