@@ -33,8 +33,12 @@ export default function Header() {
           <a href="/" className="flex items-center gap-3">
             <Image src={Logo} alt="Nova Escola Politécnica do Huambo" width={56} height={56} className="h-12 w-12 object-contain" />
             <span className="leading-tight text-slate-900 dark:text-white">
-              <span className="block text-base font-semibold">Nova Escola Politécnica</span>
-              <span className="block text-xs font-medium uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400">do Huambo</span>
+              <span className="block text-base font-black uppercase tracking-[0.16em] text-[#08263a] dark:text-white">
+                Nova Escola
+              </span>
+              <span className="mt-1 block bg-gradient-to-r from-[#b98b2d] via-[#d4a94f] to-[#08263a] bg-clip-text text-xs font-semibold uppercase tracking-[0.3em] text-transparent dark:from-[#f2d79d] dark:via-[#c49b40] dark:to-[#ffffff]">
+                Politécnica do Huambo
+              </span>
             </span>
           </a>
         </div>
