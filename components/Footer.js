@@ -1,3 +1,23 @@
+import { FaInstagram, FaFacebookF, FaYoutube } from 'react-icons/fa'
+
+const socialLinks = [
+  {
+    label: 'Instagram',
+    href: 'https://instagram.com',
+    icon: <FaInstagram className="h-5 w-5" />,
+  },
+  {
+    label: 'Facebook',
+    href: 'https://facebook.com',
+    icon: <FaFacebookF className="h-5 w-5" />,
+  },
+  {
+    label: 'YouTube',
+    href: 'https://youtube.com',
+    icon: <FaYoutube className="h-5 w-5" />,
+  },
+]
+
 export default function Footer() {
   const year = new Date().getFullYear()
   return (
@@ -11,6 +31,20 @@ export default function Footer() {
           <div>
             <div className="font-semibold text-slate-900 dark:text-white">Contactos</div>
             <div className="mt-2 text-sm leading-7">Telefone: +244 912 345 678<br />Email: geral@escolahuambo.ao</div>
+            <div className="mt-4 flex flex-wrap gap-3">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={social.label}
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:-translate-y-0.5 hover:bg-[#f8f4ea] hover:text-[#b98b2d] dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                >
+                  {social.icon}
+                </a>
+              ))}
+            </div>
           </div>
           <div className="md:text-right">
             <div className="font-semibold text-slate-900 dark:text-white">© {year} Nova Escola Politécnica do Huambo</div>
