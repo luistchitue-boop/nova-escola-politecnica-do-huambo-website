@@ -1,68 +1,26 @@
-import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
-const heroSlides = [
-  {
-    eyebrow: 'Nossa identidade',
-    title: 'Educação internacional com rigor, cuidado e propósito.',
-    description: 'A Nova Escola Politécnica do Huambo prepara alunos para prosperarem como cidadãos confiantes, pensadores críticos e líderes éticos.',
-    stats: [
-      { value: '98%', label: 'sucesso académico' },
-      { value: '+50', label: 'atividades extracurriculares' },
-      { value: '20+', label: 'anos de experiência' },
-    ],
-    highlights: [
-      'Currículo sólido com foco em pensamento crítico e resolução de problemas.',
-      'Ambiente estimulante, seguro e acolhedor para cada etapa do percurso.',
-      'Parcerias e projetos que conectam aprendizagem, tecnologia e impacto.',
-    ],
-    cta: 'Descubra as oportunidades de aprendizagem que esperam por si.',
-  },
-  {
-    eyebrow: 'Estudo e inovação',
-    title: 'Ciência, criatividade e tecnologia a crescerem lado a lado.',
-    description: 'Laboratórios modernos, projetos práticos e uma abordagem personalizada permitem que os alunos explorem talento e desenvolvam competências para o futuro.',
-    stats: [
-      { value: '12', label: 'clubes e oficinas' },
-      { value: '100%', label: 'apoio personalizado' },
-      { value: '5', label: 'parcerias internacionais' },
-    ],
-    highlights: [
-      'Projetos interdisciplinares que incentivam criatividade, rigor e colaboração.',
-      'Aulas inspiradas em metodologias ativas e em experiências reais.',
-      'Uma comunidade que valoriza desafio, autonomia e crescimento contínuo.',
-    ],
-    cta: 'Conheça o nosso percurso de ensino e as experiências que transformam.',
-  },
-  {
-    eyebrow: 'Comunidade',
-    title: 'Uma escola que cresce com cada aluno, cada família e cada professor.',
-    description: 'Criamos laços fortes entre a comunidade escolar, promovendo pertença, respeito e um ambiente de excelência humana.',
-    stats: [
-      { value: '9', label: 'línguas oferecidas' },
-      { value: '40+', label: 'eventos de orientação' },
-      { value: '24/7', label: 'apoio e acompanhamento' },
-    ],
-    highlights: [
-      'Uma cultura escolar acolhedora, inclusiva e orientada para o bem-estar.',
-      'Atividades de liderança e serviço que fortalecem caráter e responsabilidade.',
-      'Uma rede de apoio que acompanha cada etapa do desenvolvimento.',
-    ],
-    cta: 'Agende uma visita guiada e conheça de perto a nossa comunidade.',
-  },
-]
+const heroContent = {
+  eyebrow: 'Nossa identidade',
+  title: 'Educação internacional com rigor, cuidado e propósito.',
+  description: 'A Nova Escola Politécnica do Huambo prepara alunos para prosperarem como cidadãos confiantes, pensadores críticos e líderes éticos.',
+  stats: [
+    { value: '98%', label: 'sucesso académico' },
+    { value: '+50', label: 'atividades extracurriculares' },
+    { value: '20+', label: 'anos de experiência' },
+  ],
+  highlights: [
+    'Currículo sólido com foco em pensamento crítico e resolução de problemas.',
+    'Ambiente estimulante, seguro e acolhedor para cada etapa do percurso.',
+    'Parcerias e projetos que conectam aprendizagem, tecnologia e impacto.',
+  ],
+  cta: 'Descubra as oportunidades de aprendizagem que esperam por si.',
+}
 
 export default function Home() {
-  const [heroIndex, setHeroIndex] = useState(0)
-
-  useEffect(() => {
-    const interval = setInterval(() => setHeroIndex((current) => (current + 1) % heroSlides.length), 7000)
-    return () => clearInterval(interval)
-  }, [])
-
-  const activeSlide = heroSlides[heroIndex]
+  const hero = heroContent
 
   return (
     <div className="min-h-screen bg-[#f6f3eb] text-slate-800 transition-colors duration-200">
@@ -89,11 +47,11 @@ export default function Home() {
         <div className="relative mx-auto max-w-6xl px-6 py-24 lg:px-8 lg:py-32">
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-white">{activeSlide.eyebrow}</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-white">{hero.eyebrow}</p>
               <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
-                {activeSlide.title}
+                {hero.title}
               </h1>
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-100">{activeSlide.description}</p>
+              <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-100">{hero.description}</p>
 
               <div className="mt-8 flex flex-wrap gap-3">
                 <a href="#admissions" className="rounded-full bg-[#c49b40] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#0f172a]/20 transition hover:-translate-y-0.5 hover:bg-[#b98b2d]">
@@ -105,7 +63,7 @@ export default function Home() {
               </div>
 
               <div className="mt-10 grid gap-4 sm:grid-cols-3">
-                {activeSlide.stats.map((stat) => (
+                {hero.stats.map((stat) => (
                   <div key={stat.label} className="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur">
                     <div className="text-2xl font-semibold text-white">{stat.value}</div>
                     <div className="mt-1 text-sm uppercase tracking-[0.2em] text-slate-300">{stat.label}</div>
@@ -117,7 +75,7 @@ export default function Home() {
             <div className="rounded-[2rem] border border-white/15 bg-white/10 p-8 shadow-2xl shadow-black/20 backdrop-blur-xl">
               <div className="text-sm font-semibold uppercase tracking-[0.3em] text-[#f2d79d]">Por que escolher a Nova Escola</div>
               <ul className="mt-6 space-y-4 text-sm leading-7 text-slate-200">
-                {activeSlide.highlights.map((highlight) => (
+                {hero.highlights.map((highlight) => (
                   <li key={highlight} className="flex gap-3">
                     <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-[#f2d79d]" />
                     <span>{highlight}</span>
@@ -127,7 +85,7 @@ export default function Home() {
 
               <div className="mt-8 rounded-[1.5rem] bg-[#f8f4ea] p-6 text-slate-800">
                 <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">Próximo passo</p>
-                <p className="mt-2 text-lg font-semibold">{activeSlide.cta}</p>
+                <p className="mt-2 text-lg font-semibold">{hero.cta}</p>
               </div>
             </div>
           </div>
