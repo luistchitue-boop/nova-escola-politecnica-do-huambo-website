@@ -33,6 +33,40 @@ const formatDateValue = (value = '') => {
   return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`
 }
 
+const isValidBirthDate = (value = '') => {
+  if (!/^\d{2}\/\d{2}\/\d{4}$/.test(value)) {
+    return false
+  }
+
+  const [dayString, monthString, yearString] = value.split('/')
+  const day = Number(dayString)
+  const month = Number(monthString)
+  const year = Number(yearString)
+
+  if (!Number.isInteger(day) || !Number.isInteger(month) || !Number.isInteger(year)) {
+    return false
+  }
+
+  if (month < 1 || month > 12) {
+    return false
+  }
+
+  const parsedDate = new Date(year, month - 1, day)
+
+  if (
+    parsedDate.getFullYear() !== year ||
+    parsedDate.getMonth() !== month - 1 ||
+    parsedDate.getDate() !== day
+  ) {
+    return false
+  }
+
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  return parsedDate <= today
+}
+
 const reservationSchema = z.object({
   parentName: z.string().trim().min(2, { message: 'O nome do responsável é obrigatório.' }),
   phone: z
@@ -43,7 +77,9 @@ const reservationSchema = z.object({
   dateOfBirth: z
     .string()
     .trim()
-    .regex(/^\d{2}\/\d{2}\/\d{4}$/, { message: 'A data de nascimento deve estar no formato dd/mm/yyyy.' }),
+    .refine(isValidBirthDate, {
+      message: 'A data de nascimento deve ser uma data válida no formato dd/mm/yyyy.',
+    }),
   admissionYear: z.string().trim().min(1, { message: 'O ano de ingresso é obrigatório.' }),
   intendedGrade: z.string().trim().min(1, { message: 'A classe pretendida é obrigatória.' }),
   hasSpecialNeeds: z.enum(['sim', 'nao'], {
