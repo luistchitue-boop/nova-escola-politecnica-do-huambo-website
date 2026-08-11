@@ -44,10 +44,10 @@ async function seed() {
     const classMap = Object.fromEntries(insertedClasses.map((klass) => [klass.name, klass.id]))
 
     const students = [
-      { enrollment_number: '202601', student_name: 'Maria Silva', class_name: '7A' },
-      { enrollment_number: '202602', student_name: 'João Pereira', class_name: '8B' },
-      { enrollment_number: '202603', student_name: 'Ana Costa', class_name: '10C' },
-      { enrollment_number: '202604', student_name: 'Miguel Santos', class_name: '7A' },
+      { enrollment_number: '202601', student_name: 'Maria Silva', class_id: classMap['7A'] },
+      { enrollment_number: '202602', student_name: 'João Pereira', class_id: classMap['8B'] },
+      { enrollment_number: '202603', student_name: 'Ana Costa', class_id: classMap['10C'] },
+      { enrollment_number: '202604', student_name: 'Miguel Santos', class_id: classMap['7A'] },
     ]
 
     for (const student of students) {
@@ -60,7 +60,7 @@ async function seed() {
         await client.query(
           `INSERT INTO students (enrollment_number, student_name, class_id)
            VALUES ($1, $2, $3)`,
-          [student.enrollment_number, student.student_name, classMap[student.class_name]]
+          [student.enrollment_number, student.student_name, student.class_id]
         )
       }
     }

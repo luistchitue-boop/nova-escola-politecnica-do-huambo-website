@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { db } from '../../lib/db'
-import { eq } from 'drizzle-orm'
+import { eq, sql } from 'drizzle-orm'
 import { students, classes, classAccessLogs } from '../../db/schema'
 
 const schema = z.object({
@@ -24,38 +24,36 @@ export default async function handler(req, res) {
 
     const enrollmentNumber = parsed.data.enrollmentNumber
 
-    const student = await db.query.students.findFirst({
-      where: eq(students.enrollmentNumber, enrollmentNumber),
-    })
+    const result = await db
+      .select({
+        studentName: students.studentName,
+        className: classes.name,
+        whatsappLink: classes.whatsappLink,
+      })
+      .from(students)
+      .innerJoin(classes, eq(classes.id, students.classId))
+      .where(eq(students.enrollmentNumber, enrollmentNumber))
+      .limit(1)
 
-    if (!student) {
+    const match = result[0]
+
+    if (!match) {
       return res.status(404).json({
         success: false,
         message: 'Número de inscrição não encontrado.',
       })
     }
 
-    const classInfo = await db.query.classes.findFirst({
-      where: eq(classes.id, student.classId),
-    })
-
-    if (!classInfo) {
-      return res.status(404).json({
-        success: false,
-        message: 'Turma não encontrada para este aluno.',
-      })
-    }
-
     await db.insert(classAccessLogs).values({
       enrollmentNumber,
-      className: classInfo.name,
-      whatsappLink: classInfo.whatsappLink,
+      className: match.className,
+      whatsappLink: match.whatsappLink,
     })
 
     return res.status(200).json({
       success: true,
-      className: classInfo.name,
-      whatsappLink: classInfo.whatsappLink,
+      className: match.className,
+      whatsappLink: match.whatsappLink,
       message: 'Acesso ao grupo confirmado.',
     })
   } catch (error) {
