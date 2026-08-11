@@ -1,12 +1,15 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import { FaWhatsapp } from 'react-icons/fa'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
 const services = [
   {
-    title: 'Atendimento ao aluno',
-    description: 'Consultas de horário, faltas, declarações e acompanhamento escolar.',
+    title: 'Aceder grupos informativos no WhatsApp',
+    description: 'Entre em contacto com a secretaria e receba atualizações importantes sobre o aluno.',
+    href: '/secretaria/whatsapp',
+    icon: <FaWhatsapp className="h-6 w-6" />,
   },
   {
     title: 'Suporte aos pais',
@@ -40,8 +43,18 @@ export default function SecretariaPage() {
         <div className="mt-10 grid gap-6 lg:grid-cols-3">
           {services.map((service) => (
             <div key={service.title} className="rounded-[1.5rem] border border-slate-200 bg-white p-8 shadow-sm">
+              {service.icon ? (
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#f8f4ea] text-[#25D366]">
+                  {service.icon}
+                </div>
+              ) : null}
               <h2 className="text-2xl font-semibold text-slate-900">{service.title}</h2>
               <p className="mt-3 text-sm leading-7 text-slate-600">{service.description}</p>
+              {service.href ? (
+                <Link href={service.href} className="mt-5 inline-flex rounded-full bg-[#08263a] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0d3550]">
+                  Aceder
+                </Link>
+              ) : null}
             </div>
           ))}
         </div>
