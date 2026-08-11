@@ -6,8 +6,8 @@ import Footer from '../components/Footer'
 
 const services = [
   {
-    title: 'Aceder grupos informativos no WhatsApp',
-    description: 'Entre em contacto com a secretaria e receba atualizações importantes sobre o aluno.',
+    title: 'Grupos informativos',
+    description: 'Os encarregados de educação podem solicitar acesso aos links dos grupos de WhatsApp das turmas dos seus filhos.',
     href: '/secretaria/whatsapp',
     icon: <FaWhatsapp className="h-6 w-6" />,
   },
