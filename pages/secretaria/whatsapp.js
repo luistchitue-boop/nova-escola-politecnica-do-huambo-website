@@ -1,9 +1,36 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import { useState } from 'react'
+import { z } from 'zod'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 
+const registrationSchema = z.object({
+  inscricao: z
+    .string()
+    .trim()
+    .regex(/^\d+$/, { message: 'O número de inscrição deve conter apenas números.' })
+    .min(4, { message: 'O número de inscrição deve ter pelo menos 4 dígitos.' })
+    .max(12, { message: 'O número de inscrição não pode exceder 12 dígitos.' }),
+})
+
 export default function WhatsAppPage() {
+  const [form, setForm] = useState({ inscricao: '' })
+  const [error, setError] = useState('')
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+
+    const result = registrationSchema.safeParse(form)
+
+    if (!result.success) {
+      setError(result.error.issues[0].message)
+      return
+    }
+
+    setError('')
+  }
+
   return (
     <div className="min-h-screen bg-[#f6f3eb] text-slate-800">
       <Head>
@@ -23,7 +50,7 @@ export default function WhatsAppPage() {
         </div>
 
         <div className="mt-10 rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit} noValidate>
             <div>
               <label htmlFor="inscricao" className="block text-sm font-semibold text-slate-700">
                 Número de inscrição do aluno
@@ -32,9 +59,25 @@ export default function WhatsAppPage() {
                 id="inscricao"
                 name="inscricao"
                 type="text"
+                value={form.inscricao}
+                onChange={(event) => {
+                  setForm({ inscricao: event.target.value })
+                  if (error) {
+                    setError('')
+                  }
+                }}
                 placeholder="Ex: 2026001"
-                className="mt-3 w-full rounded-2xl border border-slate-300 px-4 py-3 text-slate-800 outline-none ring-0 focus:border-[#b98b2d]"
+                aria-invalid={Boolean(error)}
+                aria-describedby={error ? 'inscricao-error' : undefined}
+                className={`mt-3 w-full rounded-2xl border px-4 py-3 text-slate-800 outline-none ring-0 focus:border-[#b98b2d] ${
+                  error ? 'border-red-400 bg-red-50' : 'border-slate-300'
+                }`}
               />
+              {error ? (
+                <p id="inscricao-error" className="mt-2 text-sm font-medium text-red-600">
+                  {error}
+                </p>
+              ) : null}
             </div>
 
             <button type="submit" className="rounded-full bg-[#08263a] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d3550]">
