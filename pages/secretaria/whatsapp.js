@@ -17,6 +17,7 @@ const registrationSchema = z.object({
 export default function WhatsAppPage() {
   const [form, setForm] = useState({ inscricao: '' })
   const [error, setError] = useState('')
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -26,10 +27,12 @@ export default function WhatsAppPage() {
 
     if (!result.success) {
       setError(result.error.issues[0].message)
+      setIsModalOpen(false)
       return
     }
 
     setError('')
+    setIsModalOpen(true)
   }
 
   return (
@@ -42,6 +45,45 @@ export default function WhatsAppPage() {
       <Header />
 
       <main className="mx-auto max-w-4xl px-6 py-20 lg:px-8">
+        {isModalOpen ? (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 px-4">
+            <div className="w-full max-w-md rounded-[2rem] bg-white p-8 shadow-2xl">
+              <div className="flex items-center justify-between gap-4">
+                <h2 className="text-2xl font-semibold text-slate-900">Acesso confirmado</h2>
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="text-lg font-medium text-slate-500 transition hover:text-slate-700"
+                  aria-label="Fechar modal"
+                >
+                  ×
+                </button>
+              </div>
+
+              <p className="mt-4 text-sm leading-7 text-slate-600">
+                O seu acesso foi validado. Pode entrar no grupo de WhatsApp da turma do aluno clicando no link abaixo.
+              </p>
+
+              <a
+                href="https://chat.whatsapp.com/3jKQX7rZk5S1w9uQh4mB2F"
+                target="_blank"
+                rel="noreferrer"
+                className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#25D366] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1ebe5d]"
+              >
+                Entrar no grupo do WhatsApp
+              </a>
+
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(false)}
+                className="mt-4 w-full rounded-full border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        ) : null}
+
         <div className="rounded-[2rem] bg-[#08263a] p-10 text-white shadow-xl">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#f2d79d]">WhatsApp</p>
           <h1 className="mt-4 text-4xl font-semibold sm:text-5xl">Aceda aos grupos informativos da secretaria.</h1>
