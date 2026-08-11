@@ -55,7 +55,7 @@ export default function SecretariaPage() {
               <h2 className="text-2xl font-semibold text-slate-900">{service.title}</h2>
               <p className="mt-3 text-sm leading-7 text-slate-600">{service.description}</p>
               {service.href ? (
-                <Link href={service.href} className="mt-auto inline-flex w-fit rounded-full bg-[#08263a] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0d3550]">
+                <Link href={service.href} className="mt-6 inline-flex w-fit rounded-full bg-[#08263a] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0d3550]">
                   Aceder
                 </Link>
               ) : null}
