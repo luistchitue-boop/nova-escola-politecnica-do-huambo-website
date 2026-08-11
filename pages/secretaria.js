@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { FaWhatsapp, FaUserGraduate } from 'react-icons/fa'
+import { FaWhatsapp, FaUserGraduate, FaBriefcase } from 'react-icons/fa'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
@@ -18,8 +18,10 @@ const services = [
     icon: <FaUserGraduate className="h-6 w-6" />,
   },
   {
-    title: 'Serviços administrativos',
-    description: 'Pedido de documentos, certificados e respostas rápidas a questões do dia a dia.',
+    title: 'Emprego & Carreira',
+    description: 'Candidatos interessados em vagas abertas podem partilhar o seu perfil e área de interesse.',
+    href: '/secretaria/empregos',
+    icon: <FaBriefcase className="h-6 w-6" />,
   },
 ]
 
