@@ -102,6 +102,12 @@ export default function ReservasPage() {
   const [success, setSuccess] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
+  const [reservationCode, setReservationCode] = useState('')
+  const [lookupCode, setLookupCode] = useState('')
+  const [lookupError, setLookupError] = useState('')
+  const [lookupReservation, setLookupReservation] = useState(null)
+  const [isLookupSubmitting, setIsLookupSubmitting] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -171,7 +177,9 @@ export default function ReservasPage() {
         return
       }
 
-      setSuccess('Pedido de reserva enviado com sucesso. A secretaria entrará em contacto brevemente.')
+      const generatedCode = data.accessCode || '000000'
+      setReservationCode(generatedCode)
+      setSuccess(`Pedido de reserva enviado com sucesso. Guarde o seu código de acesso: ${generatedCode}. A secretaria entrará em contacto brevemente.`)
       setForm({
         parentName: '',
         phone: '',
@@ -188,6 +196,71 @@ export default function ReservasPage() {
       setIsConfirmOpen(false)
     } finally {
       setIsSubmitting(false)
+    }
+  }
+
+  const handleLookup = async (event) => {
+    event.preventDefault()
+    setLookupError('')
+    setLookupReservation(null)
+
+    const parsed = z.string().trim().regex(/^\d{6}$/, 'O código deve conter exatamente 6 dígitos.').safeParse(lookupCode)
+
+    if (!parsed.success) {
+      setLookupError(parsed.error.issues[0].message)
+      return
+    }
+
+    setIsLookupSubmitting(true)
+
+    try {
+      const response = await fetch(`/api/reserva?accessCode=${encodeURIComponent(parsed.data)}`)
+      const data = await response.json()
+
+      if (!response.ok || !data.success) {
+        setLookupError(data.message || 'Não foi possível consultar a reserva.')
+        return
+      }
+
+      setLookupReservation(data.reservation)
+    } catch (lookupErrorResponse) {
+      setLookupError('Não foi possível consultar a reserva. Tente novamente.')
+    } finally {
+      setIsLookupSubmitting(false)
+    }
+  }
+
+  const handleCancelReservation = async () => {
+    if (!lookupCode) {
+      setLookupError('Introduza o código de acesso para cancelar a reserva.')
+      return
+    }
+
+    setIsDeleting(true)
+    setLookupError('')
+
+    try {
+      const response = await fetch('/api/reserva', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ accessCode: lookupCode }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok || !data.success) {
+        setLookupError(data.message || 'Não foi possível cancelar a reserva.')
+        return
+      }
+
+      setLookupReservation((current) => ({ ...current, status: 'cancelada' }))
+      setLookupError('')
+    } catch (cancelError) {
+      setLookupError('Não foi possível cancelar a reserva. Tente novamente.')
+    } finally {
+      setIsDeleting(false)
     }
   }
 
@@ -274,6 +347,62 @@ export default function ReservasPage() {
           <p className="mt-6 text-lg leading-8 text-slate-200">
             Preencha os detalhes abaixo para que a secretaria possa entrar em contacto e informar sobre as próximas disponibilidades.
           </p>
+        </div>
+
+        <div className="mt-10 rounded-[2rem] border border-slate-200 bg-slate-50 p-6 shadow-sm">
+          <h2 className="text-xl font-semibold text-slate-900">Consultar ou cancelar a minha reserva</h2>
+          <p className="mt-2 text-sm text-slate-600">
+            Introduza o código de acesso de 6 dígitos que recebeu após guardar a reserva.
+          </p>
+
+          <form className="mt-5 space-y-4" onSubmit={handleLookup} noValidate>
+            <div>
+              <label htmlFor="lookupCode" className="block text-sm font-semibold text-slate-700">Código de acesso</label>
+              <input
+                id="lookupCode"
+                name="lookupCode"
+                type="text"
+                inputMode="numeric"
+                maxLength={6}
+                value={lookupCode}
+                onChange={(event) => {
+                  const nextValue = event.target.value.replace(/\D/g, '').slice(0, 6)
+                  setLookupCode(nextValue)
+                  if (lookupError) setLookupError('')
+                }}
+                placeholder="123456"
+                className="mt-3 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-[#b98b2d]"
+              />
+              {lookupError ? (
+                <p className="mt-2 text-sm font-medium text-red-600">{lookupError}</p>
+              ) : null}
+            </div>
+
+            <button type="submit" disabled={isLookupSubmitting} className="rounded-full bg-[#08263a] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d3550] disabled:cursor-not-allowed disabled:opacity-70">
+              {isLookupSubmitting ? 'A consultar...' : 'Consultar reserva'}
+            </button>
+          </form>
+
+          {lookupReservation ? (
+            <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Estado da reserva</p>
+              <div className="mt-4 space-y-3 text-sm text-slate-700">
+                <p><span className="font-semibold text-slate-900">Código:</span> {lookupReservation.accessCode}</p>
+                <p><span className="font-semibold text-slate-900">Estado:</span> {lookupReservation.status === 'cancelada' ? 'Cancelada' : 'Pendente'}</p>
+                <p><span className="font-semibold text-slate-900">Estudante:</span> {lookupReservation.studentName}</p>
+                <p><span className="font-semibold text-slate-900">Classe:</span> {lookupReservation.intendedGrade}</p>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleCancelReservation}
+                disabled={isDeleting || lookupReservation.status === 'cancelada'}
+                className="mt-5 rounded-full border border-red-200 bg-red-50 px-5 py-3 text-sm font-semibold text-red-700 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isDeleting ? 'A cancelar...' : lookupReservation.status === 'cancelada' ? 'Reserva cancelada' : 'Cancelar reserva'}
+              </button>
+            </div>
+          ) : null}
         </div>
 
         <div className="mt-10 rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
@@ -483,6 +612,12 @@ export default function ReservasPage() {
             {success ? (
               <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
                 {success}
+              </div>
+            ) : null}
+
+            {reservationCode ? (
+              <div className="rounded-2xl border border-[#f2d79d] bg-[#fffaf0] px-4 py-3 text-sm font-medium text-[#7a5a15]">
+                Código de acesso: <span className="font-bold tracking-[0.2em]">{reservationCode}</span>
               </div>
             ) : null}
 

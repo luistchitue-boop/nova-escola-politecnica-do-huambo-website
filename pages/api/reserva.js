@@ -19,7 +19,76 @@ const reservationSchema = z.object({
   observations: z.string().trim().optional().default(''),
 })
 
+const lookupCodeSchema = z.string().trim().regex(/^\d{6}$/, 'O código deve conter exatamente 6 dígitos.')
+
+async function generateUniqueAccessCode() {
+  for (let attempt = 0; attempt < 12; attempt += 1) {
+    const candidate = String(Math.floor(100000 + Math.random() * 900000))
+    const existing = await db
+      .select({ id: reservationRequests.id })
+      .from(reservationRequests)
+      .where(eq(reservationRequests.accessCode, candidate))
+      .limit(1)
+
+    if (existing.length === 0) {
+      return candidate
+    }
+  }
+
+  throw new Error('Failed to generate unique access code.')
+}
+
 export default async function handler(req, res) {
+  if (req.method === 'GET') {
+    const accessCode = String(req.query.accessCode || '')
+    const parsed = lookupCodeSchema.safeParse(accessCode)
+
+    if (!parsed.success) {
+      return res.status(400).json({ success: false, message: 'O código deve conter exatamente 6 dígitos.' })
+    }
+
+    try {
+      const reservation = await db
+        .select()
+        .from(reservationRequests)
+        .where(eq(reservationRequests.accessCode, parsed.data))
+        .limit(1)
+
+      if (!reservation[0]) {
+        return res.status(404).json({ success: false, message: 'Pedido de reserva não encontrado.' })
+      }
+
+      return res.status(200).json({ success: true, reservation: reservation[0] })
+    } catch (error) {
+      console.error('Reservation lookup failed:', error)
+      return res.status(500).json({ success: false, message: 'Não foi possível consultar a reserva.' })
+    }
+  }
+
+  if (req.method === 'DELETE') {
+    const accessCode = req.body?.accessCode || ''
+    const parsed = lookupCodeSchema.safeParse(accessCode)
+
+    if (!parsed.success) {
+      return res.status(400).json({ success: false, message: 'O código deve conter exatamente 6 dígitos.' })
+    }
+
+    try {
+      const deleted = await db
+        .delete(reservationRequests)
+        .where(eq(reservationRequests.accessCode, parsed.data))
+
+      if (!deleted.rowCount || deleted.rowCount === 0) {
+        return res.status(404).json({ success: false, message: 'Pedido de reserva não encontrado.' })
+      }
+
+      return res.status(200).json({ success: true, message: 'Pedido de reserva cancelado com sucesso.' })
+    } catch (error) {
+      console.error('Reservation cancel failed:', error)
+      return res.status(500).json({ success: false, message: 'Não foi possível cancelar a reserva.' })
+    }
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ success: false, message: 'Método não permitido.' })
   }
@@ -55,7 +124,11 @@ export default async function handler(req, res) {
       })
     }
 
+    const accessCode = await generateUniqueAccessCode()
+
     await db.insert(reservationRequests).values({
+      accessCode,
+      status: 'pendente',
       parentName: payload.parentName,
       phone: payload.phone,
       studentName: payload.studentName,
@@ -69,6 +142,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       success: true,
       message: 'Pedido de reserva enviado com sucesso.',
+      accessCode,
     })
   } catch (error) {
     console.error('Reservation creation failed:', error)

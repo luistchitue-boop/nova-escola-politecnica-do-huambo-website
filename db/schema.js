@@ -27,6 +27,8 @@ exports.reservationRequests = pgTable(
   'reservation_requests',
   {
     id: serial('id').primaryKey(),
+    accessCode: varchar('access_code', { length: 6 }).notNull().unique(),
+    status: varchar('status', { length: 20 }).notNull().default('pendente'),
     parentName: varchar('parent_name', { length: 255 }).notNull(),
     phone: varchar('phone', { length: 50 }).notNull(),
     studentName: varchar('student_name', { length: 255 }).notNull(),
@@ -43,5 +45,6 @@ exports.reservationRequests = pgTable(
       table.studentName,
       table.dateOfBirth
     ),
+    accessCodeUnique: uniqueIndex('reservation_requests_access_code_unique_idx').on(table.accessCode),
   })
 )
