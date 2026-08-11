@@ -49,7 +49,7 @@ export default function Header() {
           <a href="#admissions" className="transition hover:text-[#b98b2d]">Admissões</a>
           <a href="#mission" className="transition hover:text-[#b98b2d]">Missão</a>
           <div className="ml-2 flex items-center gap-3">
-            <a href="#admissions" className="rounded-full bg-[#08263a] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#0d3550]">Informação</a>
+            <a href="/secretaria" className="rounded-full bg-[#08263a] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#0d3550]">Secretaria</a>
             <button onClick={toggleTheme} aria-label="Alternar tema" className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
               {theme === 'dark' ? (
                 <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m8-9h1M3 12H2m15.364-6.364l.707.707M6.343 17.657l-.707.707m12.02 0l.707-.707M6.343 6.343l-.707-.707"/></svg>
@@ -82,7 +82,7 @@ export default function Header() {
               <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 118.646 3.646 7 7 0 0020.354 15.354z"/></svg>
             )}
           </button>
-          <a href="#admissions" className="rounded-full bg-[#08263a] px-3 py-2 text-sm font-semibold text-white">Informação</a>
+          <a href="/secretaria" className="rounded-full bg-[#08263a] px-3 py-2 text-sm font-semibold text-white">Secretaria</a>
         </div>
       </div>
 
