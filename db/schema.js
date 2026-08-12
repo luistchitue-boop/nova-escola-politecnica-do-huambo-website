@@ -48,3 +48,17 @@ exports.reservationRequests = pgTable(
     accessCodeUnique: uniqueIndex('reservation_requests_access_code_unique_idx').on(table.accessCode),
   })
 )
+
+exports.employmentApplications = pgTable('employment_applications', {
+  id: serial('id').primaryKey(),
+  fullName: varchar('full_name', { length: 255 }).notNull(),
+  email: varchar('email', { length: 255 }).notNull(),
+  phone: varchar('phone', { length: 50 }).notNull(),
+  areaOfInterest: varchar('area_of_interest', { length: 255 }).notNull(),
+  educationArea: varchar('education_area', { length: 255 }).notNull(),
+  academicDegree: varchar('academic_degree', { length: 255 }).notNull(),
+  availability: varchar('availability', { length: 20 }).notNull(),
+  experience: text('experience').notNull(),
+  usefulInfo: text('useful_info').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+})

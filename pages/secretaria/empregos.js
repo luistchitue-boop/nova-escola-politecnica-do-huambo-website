@@ -1,9 +1,73 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import { useState } from 'react'
+import { z } from 'zod'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 
+const employmentSchema = z.object({
+  fullName: z.string().trim().min(2, 'O nome completo é obrigatório.'),
+  email: z.string().trim().email('Introduza um email válido.'),
+  phone: z.string().trim().min(9, 'O telefone deve conter pelo menos 9 dígitos.'),
+  areaOfInterest: z.string().trim().min(2, 'A área ou função pretendida é obrigatória.'),
+  educationArea: z.string().trim().min(2, 'A área de educação é obrigatória.'),
+  academicDegree: z.string().trim().min(2, 'O grau académico é obrigatório.'),
+  availability: z.enum(['imediata', 'ocasional'], {
+    message: 'Selecione uma disponibilidade válida.',
+  }),
+  experience: z.string().trim().min(10, 'Descreva pelo menos 10 caracteres sobre a sua experiência.'),
+  usefulInfo: z.string().trim().min(10, 'Adicione informação útil para o departamento de RH.'),
+})
+
 export default function EmpregosPage() {
+  const [form, setForm] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    areaOfInterest: '',
+    educationArea: '',
+    academicDegree: '',
+    availability: '',
+    experience: '',
+    usefulInfo: '',
+  })
+
+  const [errors, setErrors] = useState({})
+  const [submitted, setSubmitted] = useState('')
+
+  const handleChange = (event) => {
+    const { name, value } = event.target
+    setForm((current) => ({ ...current, [name]: value }))
+
+    if (errors[name]) {
+      setErrors((current) => {
+        const next = { ...current }
+        delete next[name]
+        return next
+      })
+    }
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    setSubmitted('')
+
+    const result = employmentSchema.safeParse(form)
+
+    if (!result.success) {
+      const nextErrors = result.error.issues.reduce((accumulator, issue) => {
+        const fieldName = issue.path[0]
+        if (fieldName) accumulator[fieldName] = issue.message
+        return accumulator
+      }, {})
+      setErrors(nextErrors)
+      return
+    }
+
+    setErrors({})
+    setSubmitted('Candidatura preparada com sucesso. A equipa de RH irá analisar os seus dados.')
+  }
+
   return (
     <div className="min-h-screen bg-[#f6f3eb] text-slate-800">
       <Head>
@@ -23,33 +87,155 @@ export default function EmpregosPage() {
         </div>
 
         <div className="mt-10 rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit} noValidate>
             <div className="grid gap-6 md:grid-cols-2">
               <div>
-                <label htmlFor="nome" className="block text-sm font-semibold text-slate-700">Nome completo</label>
-                <input id="nome" name="nome" type="text" className="mt-3 w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-[#b98b2d]" />
+                <label htmlFor="fullName" className="block text-sm font-semibold text-slate-700">Nome completo</label>
+                <input
+                  id="fullName"
+                  name="fullName"
+                  type="text"
+                  value={form.fullName}
+                  onChange={handleChange}
+                  className={`mt-3 w-full rounded-2xl border px-4 py-3 outline-none focus:border-[#b98b2d] ${errors.fullName ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
+                />
+                {errors.fullName ? <p className="mt-2 text-sm font-medium text-red-600">{errors.fullName}</p> : null}
               </div>
+
               <div>
                 <label htmlFor="email" className="block text-sm font-semibold text-slate-700">Email</label>
-                <input id="email" name="email" type="email" className="mt-3 w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-[#b98b2d]" />
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  className={`mt-3 w-full rounded-2xl border px-4 py-3 outline-none focus:border-[#b98b2d] ${errors.email ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
+                />
+                {errors.email ? <p className="mt-2 text-sm font-medium text-red-600">{errors.email}</p> : null}
               </div>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
               <div>
-                <label htmlFor="telefone" className="block text-sm font-semibold text-slate-700">Telefone</label>
-                <input id="telefone" name="telefone" type="tel" className="mt-3 w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-[#b98b2d]" />
+                <label htmlFor="phone" className="block text-sm font-semibold text-slate-700">Telefone</label>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  value={form.phone}
+                  onChange={handleChange}
+                  className={`mt-3 w-full rounded-2xl border px-4 py-3 outline-none focus:border-[#b98b2d] ${errors.phone ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
+                />
+                {errors.phone ? <p className="mt-2 text-sm font-medium text-red-600">{errors.phone}</p> : null}
               </div>
+
               <div>
-                <label htmlFor="cargo" className="block text-sm font-semibold text-slate-700">Área ou função pretendida</label>
-                <input id="cargo" name="cargo" type="text" placeholder="Ex: Docente, Administrativo, Técnico" className="mt-3 w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-[#b98b2d]" />
+                <label htmlFor="areaOfInterest" className="block text-sm font-semibold text-slate-700">Área ou função pretendida</label>
+                <input
+                  id="areaOfInterest"
+                  name="areaOfInterest"
+                  type="text"
+                  placeholder="Ex: Docente, Administrativo, Técnico"
+                  value={form.areaOfInterest}
+                  onChange={handleChange}
+                  className={`mt-3 w-full rounded-2xl border px-4 py-3 outline-none focus:border-[#b98b2d] ${errors.areaOfInterest ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
+                />
+                {errors.areaOfInterest ? <p className="mt-2 text-sm font-medium text-red-600">{errors.areaOfInterest}</p> : null}
+              </div>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              <div>
+                <label htmlFor="educationArea" className="block text-sm font-semibold text-slate-700">Área de educação</label>
+                <input
+                  id="educationArea"
+                  name="educationArea"
+                  type="text"
+                  placeholder="Ex: Educação básica, Informática, Ciências"
+                  value={form.educationArea}
+                  onChange={handleChange}
+                  className={`mt-3 w-full rounded-2xl border px-4 py-3 outline-none focus:border-[#b98b2d] ${errors.educationArea ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
+                />
+                {errors.educationArea ? <p className="mt-2 text-sm font-medium text-red-600">{errors.educationArea}</p> : null}
+              </div>
+
+              <div>
+                <label htmlFor="academicDegree" className="block text-sm font-semibold text-slate-700">Grau académico</label>
+                <input
+                  id="academicDegree"
+                  name="academicDegree"
+                  type="text"
+                  placeholder="Ex: Licenciatura, Mestrado, Bacharelato"
+                  value={form.academicDegree}
+                  onChange={handleChange}
+                  className={`mt-3 w-full rounded-2xl border px-4 py-3 outline-none focus:border-[#b98b2d] ${errors.academicDegree ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
+                />
+                {errors.academicDegree ? <p className="mt-2 text-sm font-medium text-red-600">{errors.academicDegree}</p> : null}
               </div>
             </div>
 
             <div>
-              <label htmlFor="experiencia" className="block text-sm font-semibold text-slate-700">Experiência e competências</label>
-              <textarea id="experiencia" name="experiencia" rows="4" className="mt-3 w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-[#b98b2d]" />
+              <label className="block text-sm font-semibold text-slate-700">Disponibilidade</label>
+              <div className="mt-3 flex items-center gap-6">
+                <label className="flex items-center gap-2 text-sm text-slate-700">
+                  <input
+                    type="radio"
+                    name="availability"
+                    value="imediata"
+                    checked={form.availability === 'imediata'}
+                    onChange={handleChange}
+                    className="h-4 w-4 accent-[#08263a]"
+                  />
+                  Imediata
+                </label>
+                <label className="flex items-center gap-2 text-sm text-slate-700">
+                  <input
+                    type="radio"
+                    name="availability"
+                    value="ocasional"
+                    checked={form.availability === 'ocasional'}
+                    onChange={handleChange}
+                    className="h-4 w-4 accent-[#08263a]"
+                  />
+                  Ocasional
+                </label>
+              </div>
+              {errors.availability ? <p className="mt-2 text-sm font-medium text-red-600">{errors.availability}</p> : null}
             </div>
+
+            <div>
+              <label htmlFor="experience" className="block text-sm font-semibold text-slate-700">Experiência e competências</label>
+              <textarea
+                id="experience"
+                name="experience"
+                rows="4"
+                value={form.experience}
+                onChange={handleChange}
+                className={`mt-3 w-full rounded-2xl border px-4 py-3 outline-none focus:border-[#b98b2d] ${errors.experience ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
+              />
+              {errors.experience ? <p className="mt-2 text-sm font-medium text-red-600">{errors.experience}</p> : null}
+            </div>
+
+            <div>
+              <label htmlFor="usefulInfo" className="block text-sm font-semibold text-slate-700">Informação útil para o departamento de RH</label>
+              <textarea
+                id="usefulInfo"
+                name="usefulInfo"
+                rows="4"
+                placeholder="Ex: disponibilidade, disponibilidade para deslocações, idiomas, disponibilidade horária, certificações, interesses relevantes."
+                value={form.usefulInfo}
+                onChange={handleChange}
+                className={`mt-3 w-full rounded-2xl border px-4 py-3 outline-none focus:border-[#b98b2d] ${errors.usefulInfo ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
+              />
+              {errors.usefulInfo ? <p className="mt-2 text-sm font-medium text-red-600">{errors.usefulInfo}</p> : null}
+            </div>
+
+            {submitted ? (
+              <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
+                {submitted}
+              </div>
+            ) : null}
 
             <button type="submit" className="rounded-full bg-[#08263a] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d3550]">
               Enviar candidatura
