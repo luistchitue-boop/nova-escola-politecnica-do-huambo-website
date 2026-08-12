@@ -325,8 +325,8 @@ export default function ReservasPage() {
                 </button>
               </div>
 
-              <div className="mt-6 space-y-4 text-sm text-slate-700">
-                <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-red-700">
+              <div className="mt-6 grid gap-4 text-sm text-slate-700 md:grid-cols-2">
+                <div className="md:col-span-2 rounded-2xl border border-red-200 bg-red-50 p-4 text-red-700">
                   <p className="font-semibold text-red-800">Atenção</p>
                   <p className="mt-1">Depois de guardar a reserva, não será possível alterar qualquer informação. Verifique todos os dados antes de continuar.</p>
                 </div>
@@ -354,7 +354,7 @@ export default function ReservasPage() {
                   <p className="font-semibold text-slate-900">Necessidade especial</p>
                   <p className="mt-1">{form.hasSpecialNeeds === 'sim' ? 'Sim' : form.hasSpecialNeeds === 'nao' ? 'Não' : '-'}</p>
                 </div>
-                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                <div className="md:col-span-2 rounded-2xl border border-slate-200 bg-slate-50 p-4">
                   <p className="font-semibold text-slate-900">Observações</p>
                   <p className="mt-1 whitespace-pre-wrap">{form.observations || 'Sem observações.'}</p>
                 </div>
