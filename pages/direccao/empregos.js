@@ -36,6 +36,7 @@ export async function getServerSideProps({ query }) {
   const selectedStatus = query.status ? String(query.status) : ''
   const selectedDegree = query.grau ? String(query.grau) : ''
   const selectedArea = query.area ? String(query.area) : ''
+  const selectedRole = query.role ? String(query.role) : ''
   const search = query.q ? String(query.q).trim() : ''
 
   const applicationFilters = []
@@ -50,6 +51,10 @@ export async function getServerSideProps({ query }) {
 
   if (selectedArea) {
     applicationFilters.push(eq(employmentApplications.educationArea, selectedArea))
+  }
+
+  if (selectedRole) {
+    applicationFilters.push(eq(employmentApplications.areaOfInterest, selectedRole))
   }
 
   if (search) {
@@ -88,6 +93,7 @@ export async function getServerSideProps({ query }) {
   const statusOptions = [...new Set(allRows.map((row) => row.status).filter(Boolean))].sort()
   const degreeOptions = [...new Set(allRows.map((row) => row.academicDegree).filter(Boolean))].sort()
   const areaOptions = [...new Set(allRows.map((row) => row.educationArea).filter(Boolean))].sort()
+  const roleOptions = [...new Set(openingsRows.map((row) => row.title).filter(Boolean))].sort()
 
   const serializedApplications = rows.map((row) => ({
     ...row,
@@ -109,10 +115,12 @@ export async function getServerSideProps({ query }) {
       selectedStatus,
       selectedDegree,
       selectedArea,
+      selectedRole,
       search,
       statusOptions,
       degreeOptions,
       areaOptions,
+      roleOptions,
     },
   }
 }
@@ -126,10 +134,12 @@ export default function DireccaoEmpregosPage({
   selectedStatus,
   selectedDegree,
   selectedArea,
+  selectedRole,
   search,
   statusOptions,
   degreeOptions,
   areaOptions,
+  roleOptions,
 }) {
   const router = useRouter()
   const [form, setForm] = useState(defaultFormState)
@@ -339,7 +349,7 @@ export default function DireccaoEmpregosPage({
               </span>
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
               <label className="block text-sm font-medium text-slate-700">
                 <span className="mb-2 block">Estado</span>
                 <select
@@ -378,6 +388,20 @@ export default function DireccaoEmpregosPage({
                   <option value="">Todas</option>
                   {areaOptions.map((area) => (
                     <option key={area} value={area}>{area}</option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="block text-sm font-medium text-slate-700">
+                <span className="mb-2 block">Vaga aberta</span>
+                <select
+                  value={selectedRole}
+                  onChange={(event) => handleFilterChange('role', event.target.value)}
+                  className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 shadow-sm outline-none transition focus:border-[#08263a]"
+                >
+                  <option value="">Todas</option>
+                  {roleOptions.map((role) => (
+                    <option key={role} value={role}>{role}</option>
                   ))}
                 </select>
               </label>

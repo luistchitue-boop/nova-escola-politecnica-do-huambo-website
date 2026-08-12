@@ -49,6 +49,9 @@ export default function Footer() {
           <div className="md:text-right">
             <div className="font-semibold text-slate-900 dark:text-white">© {year} Nova Escola Politécnica do Huambo</div>
             <div className="mt-2 text-sm leading-7">Entidade certificada — Ensino privado. Todos os direitos reservados.</div>
+            <a href="/direccao" className="mt-4 inline-flex items-center text-sm font-medium text-[#b98b2d] transition hover:text-[#8c6a1d] dark:text-[#f2d79d] dark:hover:text-[#f7dfab]">
+              Aceder ao painel da direção
+            </a>
           </div>
         </div>
       </div>
