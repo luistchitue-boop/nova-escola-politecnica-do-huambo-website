@@ -69,6 +69,8 @@ export default function EmpregosPage() {
 
   const [errors, setErrors] = useState({})
   const [submitted, setSubmitted] = useState('')
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -105,11 +107,58 @@ export default function EmpregosPage() {
         return accumulator
       }, {})
       setErrors(nextErrors)
+      setIsConfirmOpen(false)
       return
     }
 
     setErrors({})
-    setSubmitted('Candidatura preparada com sucesso. A equipa de RH irá analisar os seus dados.')
+    setIsConfirmOpen(true)
+  }
+
+  const handleConfirmSave = async () => {
+    setIsSubmitting(true)
+    setSubmitted('')
+
+    try {
+      const response = await fetch('/api/emprego', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok || !data.success) {
+        setErrors({
+          submit: data.message || 'Não foi possível enviar a candidatura.',
+        })
+        setIsConfirmOpen(false)
+        return
+      }
+
+      setForm({
+        fullName: '',
+        email: '',
+        phone: '',
+        areaOfInterest: '',
+        educationArea: '',
+        academicDegree: '',
+        higherEducationInstitution: '',
+        availability: '',
+        experience: '',
+        usefulInfo: '',
+      })
+      setErrors({})
+      setSubmitted('Candidatura enviada com sucesso. A equipa de RH irá analisar os seus dados.')
+      setIsConfirmOpen(false)
+    } catch (error) {
+      setErrors({ submit: 'Ocorreu um erro ao enviar a candidatura. Tente novamente.' })
+      setIsConfirmOpen(false)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -122,6 +171,84 @@ export default function EmpregosPage() {
       <Header />
 
       <main className="mx-auto max-w-4xl px-6 py-20 lg:px-8">
+        {isConfirmOpen ? (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 px-4">
+            <div className="w-full max-w-4xl rounded-[2rem] bg-white p-8 shadow-2xl">
+              <div className="flex items-center justify-between gap-4">
+                <h2 className="text-2xl font-semibold text-slate-900">Confirmar candidatura</h2>
+                <button
+                  type="button"
+                  onClick={() => setIsConfirmOpen(false)}
+                  className="text-2xl font-medium text-slate-500 transition hover:text-slate-700"
+                  aria-label="Fechar confirmação"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div className="mt-6 space-y-4 text-sm text-slate-700">
+                <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-red-700">
+                  <p className="font-semibold text-red-800">Atenção</p>
+                  <p className="mt-1">Depois de guardar a candidatura, não será possível alterar qualquer informação. Verifique todos os dados antes de continuar.</p>
+                </div>
+
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="font-semibold text-slate-900">Nome completo</p>
+                  <p className="mt-1">{form.fullName}</p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="font-semibold text-slate-900">Email</p>
+                  <p className="mt-1">{form.email}</p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="font-semibold text-slate-900">Telefone</p>
+                  <p className="mt-1">{form.phone}</p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="font-semibold text-slate-900">Área / função</p>
+                  <p className="mt-1">{form.areaOfInterest}</p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="font-semibold text-slate-900">Área de educação</p>
+                  <p className="mt-1">{form.educationArea}</p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="font-semibold text-slate-900">Grau académico</p>
+                  <p className="mt-1">{form.academicDegree}</p>
+                </div>
+                {form.higherEducationInstitution ? (
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                    <p className="font-semibold text-slate-900">Instituição de ensino superior</p>
+                    <p className="mt-1">{form.higherEducationInstitution}</p>
+                  </div>
+                ) : null}
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="font-semibold text-slate-900">Disponibilidade</p>
+                  <p className="mt-1">{form.availability === 'imediata' ? 'Imediata' : form.availability === 'ocasional' ? 'Ocasional' : '-'}</p>
+                </div>
+              </div>
+
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-end">
+                <button
+                  type="button"
+                  onClick={() => setIsConfirmOpen(false)}
+                  className="rounded-full border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                >
+                  Voltar para corrigir
+                </button>
+                <button
+                  type="button"
+                  onClick={handleConfirmSave}
+                  disabled={isSubmitting}
+                  className="rounded-full bg-[#08263a] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d3550] disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  {isSubmitting ? 'A guardar...' : 'Guardar candidatura'}
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : null}
+
         <div className="rounded-[2rem] bg-[#08263a] p-10 text-white shadow-xl">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#f2d79d]">Emprego & Carreira</p>
           <h1 className="mt-4 text-4xl font-semibold sm:text-5xl">Partilhe a sua candidatura para as vagas abertas.</h1>
@@ -304,6 +431,12 @@ export default function EmpregosPage() {
             {submitted ? (
               <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
                 {submitted}
+              </div>
+            ) : null}
+
+            {errors.submit ? (
+              <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+                {errors.submit}
               </div>
             ) : null}
 
