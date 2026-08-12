@@ -67,5 +67,5 @@ export default NextAuth({
       return session
     },
   },
-  secret: process.env.NEXTAUTH_SECRET || 'change-me-in-production',
+  secret: process.env.NEXTAUTH_SECRET,
 })
