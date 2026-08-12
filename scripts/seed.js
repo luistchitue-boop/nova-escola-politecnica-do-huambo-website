@@ -1,4 +1,5 @@
 require('dotenv').config()
+const bcrypt = require('bcryptjs')
 const { Pool } = require('pg')
 
 const pool = new Pool({
@@ -11,6 +12,20 @@ async function seed() {
 
   try {
     await client.query('BEGIN')
+
+    const adminEmail = (process.env.ADMIN_EMAIL || 'direccao@escola.ao').trim().toLowerCase()
+    const adminPassword = process.env.ADMIN_PASSWORD || 'admin123'
+    const adminPasswordHash = await bcrypt.hash(adminPassword, 10)
+
+    await client.query(
+      `INSERT INTO admin_users (name, email, password_hash, role)
+       VALUES ($1, $2, $3, $4)
+       ON CONFLICT (email) DO UPDATE SET
+         name = EXCLUDED.name,
+         password_hash = EXCLUDED.password_hash,
+         role = EXCLUDED.role`,
+      ['Direção', adminEmail, adminPasswordHash, 'admin']
+    )
 
     const classes = [
       { name: '7A', whatsapp_link: 'https://chat.whatsapp.com/7AClassDemoGroup' },
@@ -67,6 +82,7 @@ async function seed() {
 
     await client.query('COMMIT')
     console.log('Seed data inserted successfully.')
+    console.log('Admin account ready:', adminEmail)
     console.log('Sample enrollment numbers: 202601, 202602, 202603, 202604')
   } catch (error) {
     await client.query('ROLLBACK')

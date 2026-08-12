@@ -23,7 +23,7 @@ function buildQueryObject(routerQuery, overrides = {}) {
 export async function getServerSideProps(context) {
   const session = await getSession(context)
 
-  if (!session || !session.user) {
+  if (!session || !session.user || session.user.role !== 'admin') {
     return {
       redirect: {
         destination: '/login',

@@ -1,8 +1,12 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import bcrypt from 'bcryptjs'
+import { eq } from 'drizzle-orm'
+import { db } from '../../../lib/db'
+import { adminUsers } from '../../../db/schema'
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'direccao@escola.ao'
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123'
+const DEFAULT_ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'direccao@escola.ao'
+const DEFAULT_ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123'
 
 export default NextAuth({
   session: {
@@ -26,16 +30,29 @@ export default NextAuth({
           return null
         }
 
-        if (email === ADMIN_EMAIL.toLowerCase() && password === ADMIN_PASSWORD) {
-          return {
-            id: 'admin',
-            name: 'Direção',
-            email,
-            role: 'admin',
-          }
-        }
+        try {
+          const [user] = await db.select().from(adminUsers).where(eq(adminUsers.email, email)).limit(1)
 
-        return null
+          if (!user) {
+            return null
+          }
+
+          const passwordMatches = await bcrypt.compare(password, user.passwordHash)
+
+          if (!passwordMatches) {
+            return null
+          }
+
+          return {
+            id: String(user.id),
+            name: user.name,
+            email: user.email,
+            role: user.role || 'admin',
+          }
+        } catch (error) {
+          console.error('Admin auth lookup failed:', error)
+          return null
+        }
       },
     }),
   ],

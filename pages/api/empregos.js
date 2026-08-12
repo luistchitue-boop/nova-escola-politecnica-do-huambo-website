@@ -11,7 +11,7 @@ const jobOpeningSchema = z.object({
 export default async function handler(req, res) {
   const session = await getSession({ req, res })
 
-  if (!session || !session.user) {
+  if (!session || !session.user || session.user.role !== 'admin') {
     return res.status(401).json({ success: false, message: 'Não autenticado.' })
   }
 

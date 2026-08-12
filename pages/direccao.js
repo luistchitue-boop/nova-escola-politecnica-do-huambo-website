@@ -5,7 +5,7 @@ import { getSession, signOut, useSession } from 'next-auth/react'
 export async function getServerSideProps(context) {
   const session = await getSession(context)
 
-  if (!session || !session.user) {
+  if (!session || !session.user || session.user.role !== 'admin') {
     return {
       redirect: {
         destination: '/login',
@@ -51,7 +51,7 @@ export default function DireccaoDashboard() {
             </p>
           </div>
 
-          <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
+          <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link href="/" className="inline-flex items-center rounded-full bg-[#f2d79d] px-5 py-2.5 text-sm font-semibold text-[#08263a] shadow-sm transition hover:bg-[#f5dfae] focus:outline-none focus:ring-2 focus:ring-[#f2d79d] focus:ring-offset-2 focus:ring-offset-[#08263a]">
               Voltar para a página inicial
             </Link>
@@ -60,7 +60,7 @@ export default function DireccaoDashboard() {
               <button
                 type="button"
                 onClick={() => signOut({ callbackUrl: '/login' })}
-                className="inline-flex items-center rounded-full border border-white/30 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/20"
+                className="inline-flex items-center rounded-full bg-[#f2d79d] px-5 py-2.5 text-sm font-semibold text-[#08263a] shadow-sm transition hover:bg-[#f5dfae] focus:outline-none focus:ring-2 focus:ring-[#f2d79d] focus:ring-offset-2 focus:ring-offset-[#08263a]"
               >
                 Sair
               </button>
