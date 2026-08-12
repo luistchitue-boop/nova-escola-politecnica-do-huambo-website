@@ -51,6 +51,8 @@ exports.reservationRequests = pgTable(
 
 exports.employmentApplications = pgTable('employment_applications', {
   id: serial('id').primaryKey(),
+  accessCode: varchar('access_code', { length: 6 }).notNull().unique(),
+  status: varchar('status', { length: 20 }).notNull().default('pendente'),
   fullName: varchar('full_name', { length: 255 }).notNull(),
   email: varchar('email', { length: 255 }).notNull(),
   phone: varchar('phone', { length: 50 }).notNull(),
@@ -61,5 +63,12 @@ exports.employmentApplications = pgTable('employment_applications', {
   availability: varchar('availability', { length: 20 }).notNull(),
   experience: text('experience').notNull(),
   usefulInfo: text('useful_info').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+})
+
+exports.jobOpenings = pgTable('job_openings', {
+  id: serial('id').primaryKey(),
+  title: varchar('title', { length: 150 }).notNull(),
+  description: text('description').notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 })

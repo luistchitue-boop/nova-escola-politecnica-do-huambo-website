@@ -69,6 +69,7 @@ export default function EmpregosPage() {
 
   const [errors, setErrors] = useState({})
   const [submitted, setSubmitted] = useState('')
+  const [accessCode, setAccessCode] = useState('')
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -138,6 +139,8 @@ export default function EmpregosPage() {
         return
       }
 
+      const generatedCode = data.accessCode || ''
+      setAccessCode(generatedCode)
       setForm({
         fullName: '',
         email: '',
@@ -151,7 +154,11 @@ export default function EmpregosPage() {
         usefulInfo: '',
       })
       setErrors({})
-      setSubmitted('Candidatura enviada com sucesso. A equipa de RH irá analisar os seus dados.')
+      setSubmitted(
+        generatedCode
+          ? `Candidatura enviada com sucesso. Guarde este código de acesso: ${generatedCode}. Ele será útil para acompanhar o estado da sua candidatura.`
+          : 'Candidatura enviada com sucesso. A equipa de RH irá analisar os seus dados.'
+      )
       setIsConfirmOpen(false)
     } catch (error) {
       setErrors({ submit: 'Ocorreu um erro ao enviar a candidatura. Tente novamente.' })
@@ -430,7 +437,12 @@ export default function EmpregosPage() {
 
             {submitted ? (
               <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
-                {submitted}
+                <p>{submitted}</p>
+                {accessCode ? (
+                  <p className="mt-3 inline-block rounded-xl bg-red-100 px-3 py-2 font-bold tracking-[0.25em] text-red-700">
+                    {accessCode}
+                  </p>
+                ) : null}
               </div>
             ) : null}
 
@@ -445,7 +457,10 @@ export default function EmpregosPage() {
             </button>
           </form>
 
-          <div className="mt-6">
+          <div className="mt-6 flex flex-wrap gap-4">
+            <Link href="/secretaria/empregos/consultar" className="text-sm font-semibold text-[#08263a] underline decoration-[#f2d79d] decoration-2 underline-offset-4">
+              Consultar candidatura
+            </Link>
             <Link href="/secretaria" className="text-sm font-semibold text-[#08263a] underline decoration-[#f2d79d] decoration-2 underline-offset-4">
               Voltar à secretaria
             </Link>
