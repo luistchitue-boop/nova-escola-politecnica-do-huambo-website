@@ -5,6 +5,8 @@ import { z } from 'zod'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 
+const higherEducationDegrees = ['Licenciado', 'Mestre', 'Doutor']
+
 const employmentSchema = z.object({
   fullName: z.string().trim().min(2, 'O nome completo é obrigatório.'),
   email: z.string().trim().email('Introduza um email válido.'),
@@ -12,11 +14,24 @@ const employmentSchema = z.object({
   areaOfInterest: z.string().trim().min(2, 'A área ou função pretendida é obrigatória.'),
   educationArea: z.string().trim().min(2, 'A área de educação é obrigatória.'),
   academicDegree: z.string().trim().min(2, 'O grau académico é obrigatório.'),
+  higherEducationInstitution: z.string().trim().optional(),
   availability: z.enum(['imediata', 'ocasional'], {
     message: 'Selecione uma disponibilidade válida.',
   }),
   experience: z.string().trim().min(10, 'Descreva pelo menos 10 caracteres sobre a sua experiência.'),
   usefulInfo: z.string().trim().min(10, 'Adicione informação útil para o departamento de RH.'),
+}).superRefine((data, ctx) => {
+  if (higherEducationDegrees.includes(data.academicDegree)) {
+    const institution = data.higherEducationInstitution?.trim() || ''
+
+    if (!institution) {
+      ctx.addIssue({
+        path: ['higherEducationInstitution'],
+        code: 'custom',
+        message: 'A instituição de ensino superior é obrigatória para este grau académico.',
+      })
+    }
+  }
 })
 
 export default function EmpregosPage() {
@@ -27,6 +42,7 @@ export default function EmpregosPage() {
     areaOfInterest: '',
     educationArea: '',
     academicDegree: '',
+    higherEducationInstitution: '',
     availability: '',
     experience: '',
     usefulInfo: '',
@@ -37,7 +53,16 @@ export default function EmpregosPage() {
 
   const handleChange = (event) => {
     const { name, value } = event.target
-    setForm((current) => ({ ...current, [name]: value }))
+    const nextForm = { ...form, [name]: value }
+    setForm(nextForm)
+
+    if (name === 'academicDegree') {
+      setErrors((current) => {
+        const next = { ...current }
+        delete next.higherEducationInstitution
+        return next
+      })
+    }
 
     if (errors[name]) {
       setErrors((current) => {
@@ -162,18 +187,41 @@ export default function EmpregosPage() {
 
               <div>
                 <label htmlFor="academicDegree" className="block text-sm font-semibold text-slate-700">Grau académico</label>
-                <input
+                <select
                   id="academicDegree"
                   name="academicDegree"
-                  type="text"
-                  placeholder="Ex: Licenciatura, Mestrado, Bacharelato"
                   value={form.academicDegree}
                   onChange={handleChange}
-                  className={`mt-3 w-full rounded-2xl border px-4 py-3 outline-none focus:border-[#b98b2d] ${errors.academicDegree ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
-                />
+                  className={`mt-3 w-full rounded-2xl border bg-white px-4 py-3 outline-none focus:border-[#b98b2d] ${errors.academicDegree ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
+                >
+                  <option value="">Selecione uma opção</option>
+                  <option value="Técnico médio">Técnico médio</option>
+                  <option value="Licenciado">Licenciado</option>
+                  <option value="Mestre">Mestre</option>
+                  <option value="Doutor">Doutor</option>
+                  <option value="outros">outros</option>
+                </select>
                 {errors.academicDegree ? <p className="mt-2 text-sm font-medium text-red-600">{errors.academicDegree}</p> : null}
               </div>
             </div>
+
+            {higherEducationDegrees.includes(form.academicDegree) ? (
+              <div>
+                <label htmlFor="higherEducationInstitution" className="block text-sm font-semibold text-slate-700">Instituição de Ensino Superior</label>
+                <input
+                  id="higherEducationInstitution"
+                  name="higherEducationInstitution"
+                  type="text"
+                  placeholder="Ex: Universidade Agostinho Neto"
+                  value={form.higherEducationInstitution}
+                  onChange={handleChange}
+                  className={`mt-3 w-full rounded-2xl border px-4 py-3 outline-none focus:border-[#b98b2d] ${errors.higherEducationInstitution ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
+                />
+                {errors.higherEducationInstitution ? (
+                  <p className="mt-2 text-sm font-medium text-red-600">{errors.higherEducationInstitution}</p>
+                ) : null}
+              </div>
+            ) : null}
 
             <div>
               <label className="block text-sm font-semibold text-slate-700">Disponibilidade</label>
