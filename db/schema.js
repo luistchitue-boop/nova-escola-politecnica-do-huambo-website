@@ -57,6 +57,7 @@ exports.employmentApplications = pgTable('employment_applications', {
   areaOfInterest: varchar('area_of_interest', { length: 255 }).notNull(),
   educationArea: varchar('education_area', { length: 255 }).notNull(),
   academicDegree: varchar('academic_degree', { length: 255 }).notNull(),
+  higherEducationInstitution: varchar('higher_education_institution', { length: 255 }),
   availability: varchar('availability', { length: 20 }).notNull(),
   experience: text('experience').notNull(),
   usefulInfo: text('useful_info').notNull(),

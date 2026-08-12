@@ -7,6 +7,25 @@ import Footer from '../../components/Footer'
 
 const higherEducationDegrees = ['Licenciado', 'Mestre', 'Doutor']
 
+const educationAreas = [
+  'Educação básica',
+  'Informática',
+  'Ciências',
+  'Matemática',
+  'Gestão',
+  'Letras',
+  'Artes',
+  'Saúde',
+  'Tecnologias educativas',
+  'Direito',
+  'Economia',
+  'Psicologia',
+  'Educação Física',
+  'História',
+  'Geografia',
+  'Outra área',
+]
+
 const employmentSchema = z.object({
   fullName: z.string().trim().min(2, 'O nome completo é obrigatório.'),
   email: z.string().trim().email('Introduza um email válido.'),
@@ -173,15 +192,18 @@ export default function EmpregosPage() {
             <div className="grid gap-6 md:grid-cols-2">
               <div>
                 <label htmlFor="educationArea" className="block text-sm font-semibold text-slate-700">Área de educação</label>
-                <input
+                <select
                   id="educationArea"
                   name="educationArea"
-                  type="text"
-                  placeholder="Ex: Educação básica, Informática, Ciências"
                   value={form.educationArea}
                   onChange={handleChange}
-                  className={`mt-3 w-full rounded-2xl border px-4 py-3 outline-none focus:border-[#b98b2d] ${errors.educationArea ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
-                />
+                  className={`mt-3 w-full rounded-2xl border bg-white px-4 py-3 outline-none focus:border-[#b98b2d] ${errors.educationArea ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
+                >
+                  <option value="">Selecione a área de educação</option>
+                  {educationAreas.map((area) => (
+                    <option key={area} value={area}>{area}</option>
+                  ))}
+                </select>
                 {errors.educationArea ? <p className="mt-2 text-sm font-medium text-red-600">{errors.educationArea}</p> : null}
               </div>
 
