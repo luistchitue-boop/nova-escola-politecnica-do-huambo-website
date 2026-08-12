@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { z } from 'zod'
@@ -31,7 +32,19 @@ function buildQueryObject(routerQuery, overrides = {}) {
   return current
 }
 
-export async function getServerSideProps({ query }) {
+export async function getServerSideProps(context) {
+  const session = await getSession(context)
+
+  if (!session || !session.user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
+  const { query } = context
   const page = Math.max(Number(query.page || 1), 1)
   const selectedStatus = query.status ? String(query.status) : ''
   const selectedDegree = query.grau ? String(query.grau) : ''

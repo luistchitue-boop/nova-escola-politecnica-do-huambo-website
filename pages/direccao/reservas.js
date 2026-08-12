@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { and, count, desc, eq } from 'drizzle-orm'
 import { db } from '../../lib/db'
@@ -19,7 +20,19 @@ function buildQueryObject(routerQuery, overrides = {}) {
   return current
 }
 
-export async function getServerSideProps({ query }) {
+export async function getServerSideProps(context) {
+  const session = await getSession(context)
+
+  if (!session || !session.user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
+  const { query } = context
   const page = Math.max(Number(query.page || 1), 1)
   const selectedGrade = query.grade ? String(query.grade) : ''
   const selectedYear = query.anoLectivo ? String(query.anoLectivo) : ''

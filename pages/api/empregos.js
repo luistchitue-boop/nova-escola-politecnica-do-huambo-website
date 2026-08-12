@@ -1,3 +1,4 @@
+import { getSession } from 'next-auth/react'
 import { z } from 'zod'
 import { db } from '../../lib/db'
 import { jobOpenings } from '../../db/schema'
@@ -8,6 +9,12 @@ const jobOpeningSchema = z.object({
 })
 
 export default async function handler(req, res) {
+  const session = await getSession({ req, res })
+
+  if (!session || !session.user) {
+    return res.status(401).json({ success: false, message: 'Não autenticado.' })
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ success: false, message: 'Método não permitido.' })
   }

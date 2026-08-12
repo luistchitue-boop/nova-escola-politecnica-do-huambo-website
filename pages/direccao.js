@@ -1,7 +1,26 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import { getSession, signOut, useSession } from 'next-auth/react'
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context)
+
+  if (!session || !session.user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: { session },
+  }
+}
 
 export default function DireccaoDashboard() {
+  const { data: session } = useSession()
   const adminLinks = [
     {
       title: 'Reservas',
@@ -32,10 +51,20 @@ export default function DireccaoDashboard() {
             </p>
           </div>
 
-          <div className="mt-8 flex justify-start">
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
             <Link href="/" className="inline-flex items-center rounded-full bg-[#f2d79d] px-5 py-2.5 text-sm font-semibold text-[#08263a] shadow-sm transition hover:bg-[#f5dfae] focus:outline-none focus:ring-2 focus:ring-[#f2d79d] focus:ring-offset-2 focus:ring-offset-[#08263a]">
               Voltar para a página inicial
             </Link>
+
+            {session ? (
+              <button
+                type="button"
+                onClick={() => signOut({ callbackUrl: '/login' })}
+                className="inline-flex items-center rounded-full border border-white/30 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/20"
+              >
+                Sair
+              </button>
+            ) : null}
           </div>
 
           <div className="mt-10 grid gap-6 lg:grid-cols-2">
