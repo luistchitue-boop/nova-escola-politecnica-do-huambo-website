@@ -5,9 +5,6 @@ import { eq } from 'drizzle-orm'
 import { db } from '../../../lib/db'
 import { adminUsers } from '../../../db/schema'
 
-const DEFAULT_ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'direccao@escola.ao'
-const DEFAULT_ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123'
-
 export default NextAuth({
   session: {
     strategy: 'jwt',

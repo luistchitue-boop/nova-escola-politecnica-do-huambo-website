@@ -5,8 +5,8 @@ import { useState } from 'react'
 
 export default function LoginPage() {
   const router = useRouter()
-  const [email, setEmail] = useState('direccao@escola.ao')
-  const [password, setPassword] = useState('admin123')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 

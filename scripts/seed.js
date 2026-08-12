@@ -13,19 +13,39 @@ async function seed() {
   try {
     await client.query('BEGIN')
 
-    const adminEmail = (process.env.ADMIN_EMAIL || 'direccao@escola.ao').trim().toLowerCase()
-    const adminPassword = process.env.ADMIN_PASSWORD || 'admin123'
-    const adminPasswordHash = await bcrypt.hash(adminPassword, 10)
+    const existingAdmin = await client.query('SELECT id FROM admin_users LIMIT 1')
+    const configuredAdminEmail = (process.env.ADMIN_EMAIL || '').trim().toLowerCase()
+    const configuredAdminPassword = process.env.ADMIN_PASSWORD || ''
 
-    await client.query(
-      `INSERT INTO admin_users (name, email, password_hash, role)
-       VALUES ($1, $2, $3, $4)
-       ON CONFLICT (email) DO UPDATE SET
-         name = EXCLUDED.name,
-         password_hash = EXCLUDED.password_hash,
-         role = EXCLUDED.role`,
-      ['Direção', adminEmail, adminPasswordHash, 'admin']
-    )
+    if (configuredAdminEmail && configuredAdminPassword) {
+      const adminPasswordHash = await bcrypt.hash(configuredAdminPassword, 10)
+
+      await client.query(
+        `INSERT INTO admin_users (name, email, password_hash, role)
+         VALUES ($1, $2, $3, $4)
+         ON CONFLICT (email) DO UPDATE SET
+           name = EXCLUDED.name,
+           password_hash = EXCLUDED.password_hash,
+           role = EXCLUDED.role`,
+        ['Direção', configuredAdminEmail, adminPasswordHash, 'admin']
+      )
+
+      console.log('Admin account ready:', configuredAdminEmail)
+    } else if (existingAdmin.rows.length === 0) {
+      const defaultAdminEmail = 'direccao@escola.ao'
+      const defaultAdminPassword = 'admin123'
+      const defaultAdminPasswordHash = await bcrypt.hash(defaultAdminPassword, 10)
+
+      await client.query(
+        `INSERT INTO admin_users (name, email, password_hash, role)
+         VALUES ($1, $2, $3, $4)`,
+        ['Direção', defaultAdminEmail, defaultAdminPasswordHash, 'admin']
+      )
+
+      console.log('Default admin seed created:', defaultAdminEmail)
+    } else {
+      console.log('Existing admin user found in database. Skipping automatic admin seeding.')
+    }
 
     const classes = [
       { name: '7A', whatsapp_link: 'https://chat.whatsapp.com/7AClassDemoGroup' },
