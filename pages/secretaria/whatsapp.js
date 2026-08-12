@@ -17,6 +17,7 @@ const registrationSchema = z.object({
 export default function WhatsAppPage() {
   const [form, setForm] = useState({ inscricao: '' })
   const [error, setError] = useState('')
+  const [fieldErrors, setFieldErrors] = useState({})
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [whatsappLink, setWhatsappLink] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -28,11 +29,19 @@ export default function WhatsAppPage() {
     const result = registrationSchema.safeParse({ inscricao: value })
 
     if (!result.success) {
-      setError(result.error.issues[0].message)
+      const nextFieldErrors = result.error.issues.reduce((accumulator, issue) => {
+        const fieldName = issue.path[0]
+        if (fieldName) accumulator[fieldName] = issue.message
+        return accumulator
+      }, {})
+
+      setFieldErrors(nextFieldErrors)
+      setError('')
       setIsModalOpen(false)
       return
     }
 
+    setFieldErrors({})
     setError('')
     setIsSubmitting(true)
 
@@ -136,20 +145,27 @@ export default function WhatsAppPage() {
                 onChange={(event) => {
                   const nextValue = event.target.value.replace(/\D/g, '').slice(0, 6)
                   setForm({ inscricao: nextValue })
+                  if (fieldErrors.inscricao) {
+                    setFieldErrors((current) => {
+                      const next = { ...current }
+                      delete next.inscricao
+                      return next
+                    })
+                  }
                   if (error) {
                     setError('')
                   }
                 }}
                 placeholder="Ex: 202601"
-                aria-invalid={Boolean(error)}
-                aria-describedby={error ? 'inscricao-error' : undefined}
+                aria-invalid={Boolean(fieldErrors.inscricao || error)}
+                aria-describedby={fieldErrors.inscricao || error ? 'inscricao-error' : undefined}
                 className={`mt-3 w-full rounded-2xl border px-4 py-3 text-slate-800 outline-none ring-0 focus:border-[#b98b2d] ${
-                  error ? 'border-red-400 bg-red-50' : 'border-slate-300'
+                  fieldErrors.inscricao || error ? 'border-red-400 bg-red-50' : 'border-slate-300'
                 }`}
               />
-              {error ? (
+              {fieldErrors.inscricao || error ? (
                 <p id="inscricao-error" className="mt-2 text-sm font-medium text-red-600">
-                  {error}
+                  {fieldErrors.inscricao || error}
                 </p>
               ) : null}
             </div>

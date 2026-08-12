@@ -10,6 +10,7 @@ const accessCodeSchema = z.string().trim().regex(/^\d{6}$/, 'O código deve cont
 export default function ConsultarCandidaturaPage() {
   const [accessCode, setAccessCode] = useState('')
   const [error, setError] = useState('')
+  const [fieldErrors, setFieldErrors] = useState({})
   const [application, setApplication] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -21,10 +22,17 @@ export default function ConsultarCandidaturaPage() {
     const parsed = accessCodeSchema.safeParse(accessCode)
 
     if (!parsed.success) {
-      setError(parsed.error.issues[0].message)
+      const nextFieldErrors = parsed.error.issues.reduce((accumulator, issue) => {
+        const fieldName = issue.path[0] || 'accessCode'
+        accumulator[fieldName] = issue.message
+        return accumulator
+      }, {})
+
+      setFieldErrors(nextFieldErrors)
       return
     }
 
+    setFieldErrors({})
     setIsSubmitting(true)
 
     try {
@@ -76,12 +84,27 @@ export default function ConsultarCandidaturaPage() {
                 onChange={(event) => {
                   const nextValue = event.target.value.replace(/\D/g, '').slice(0, 6)
                   setAccessCode(nextValue)
+                  if (fieldErrors.accessCode) {
+                    setFieldErrors((current) => {
+                      const next = { ...current }
+                      delete next.accessCode
+                      return next
+                    })
+                  }
                   if (error) setError('')
                 }}
                 placeholder="123456"
-                className="mt-3 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-[#b98b2d]"
+                aria-invalid={Boolean(fieldErrors.accessCode || error)}
+                aria-describedby={fieldErrors.accessCode || error ? 'accessCode-error' : undefined}
+                className={`mt-3 w-full rounded-2xl border bg-white px-4 py-3 outline-none focus:border-[#b98b2d] ${
+                  fieldErrors.accessCode || error ? 'border-red-400 bg-red-50' : 'border-slate-300'
+                }`}
               />
-              {error ? <p className="mt-2 text-sm font-medium text-red-600">{error}</p> : null}
+              {fieldErrors.accessCode || error ? (
+                <p id="accessCode-error" className="mt-2 text-sm font-medium text-red-600">
+                  {fieldErrors.accessCode || error}
+                </p>
+              ) : null}
             </div>
 
             <button type="submit" disabled={isSubmitting} className="rounded-full bg-[#08263a] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d3550] disabled:cursor-not-allowed disabled:opacity-70">

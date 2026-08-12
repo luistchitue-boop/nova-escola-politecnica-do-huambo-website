@@ -258,7 +258,9 @@ export default function DireccaoEmpregosPage({
                   name="title"
                   value={form.title}
                   onChange={handleInputChange}
-                  className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 shadow-sm outline-none transition focus:border-[#08263a]"
+                  className={`w-full rounded-xl border bg-white px-3 py-2.5 text-sm text-slate-800 shadow-sm outline-none transition focus:border-red-500 ${
+                    errors.title ? 'border-red-400 bg-red-50' : 'border-slate-300 focus:border-[#08263a]'
+                  }`}
                   placeholder="Ex.: Professor de Matemática"
                 />
                 {errors.title ? <p className="mt-2 text-sm text-red-600">{errors.title}</p> : null}
@@ -274,7 +276,9 @@ export default function DireccaoEmpregosPage({
                   rows="5"
                   value={form.description}
                   onChange={handleInputChange}
-                  className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 shadow-sm outline-none transition focus:border-[#08263a]"
+                  className={`w-full rounded-xl border bg-white px-3 py-2.5 text-sm text-slate-800 shadow-sm outline-none transition focus:border-red-500 ${
+                    errors.description ? 'border-red-400 bg-red-50' : 'border-slate-300 focus:border-[#08263a]'
+                  }`}
                   placeholder="Descreva a função, requisitos e principais responsabilidades."
                 />
                 {errors.description ? <p className="mt-2 text-sm text-red-600">{errors.description}</p> : null}
