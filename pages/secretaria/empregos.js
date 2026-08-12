@@ -2,8 +2,11 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useState } from 'react'
 import { z } from 'zod'
+import { desc } from 'drizzle-orm'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
+import { db } from '../../lib/db'
+import { jobOpenings } from '../../db/schema'
 
 const higherEducationDegrees = ['Licenciado', 'Mestre', 'Doutor']
 
@@ -53,7 +56,20 @@ const employmentSchema = z.object({
   }
 })
 
-export default function EmpregosPage() {
+export async function getServerSideProps() {
+  const rows = await db.select().from(jobOpenings).orderBy(desc(jobOpenings.createdAt))
+
+  return {
+    props: {
+      openRoles: rows.map((row) => ({
+        id: row.id,
+        title: row.title,
+      })),
+    },
+  }
+}
+
+export default function EmpregosPage({ openRoles = [] }) {
   const [form, setForm] = useState({
     fullName: '',
     email: '',
@@ -310,15 +326,22 @@ export default function EmpregosPage() {
 
               <div>
                 <label htmlFor="areaOfInterest" className="block text-sm font-semibold text-slate-700">Área ou função pretendida</label>
-                <input
+                <select
                   id="areaOfInterest"
                   name="areaOfInterest"
-                  type="text"
-                  placeholder="Ex: Docente, Administrativo, Técnico"
                   value={form.areaOfInterest}
                   onChange={handleChange}
-                  className={`mt-3 w-full rounded-2xl border px-4 py-3 outline-none focus:border-[#b98b2d] ${errors.areaOfInterest ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
-                />
+                  className={`mt-3 w-full rounded-2xl border bg-white px-4 py-3 outline-none focus:border-[#b98b2d] ${errors.areaOfInterest ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
+                >
+                  <option value="">Selecione uma vaga aberta</option>
+                  {openRoles.length > 0 ? (
+                    openRoles.map((role) => (
+                      <option key={role.id} value={role.title}>{role.title}</option>
+                    ))
+                  ) : (
+                    <option value="" disabled>De momento não existem vagas abertas</option>
+                  )}
+                </select>
                 {errors.areaOfInterest ? <p className="mt-2 text-sm font-medium text-red-600">{errors.areaOfInterest}</p> : null}
               </div>
             </div>
