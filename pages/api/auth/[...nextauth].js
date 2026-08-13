@@ -5,7 +5,7 @@ import { eq } from 'drizzle-orm'
 import { db } from '../../../lib/db'
 import { adminUsers } from '../../../db/schema'
 
-export default NextAuth({
+export const authOptions = {
   session: {
     strategy: 'jwt',
   },
@@ -68,4 +68,6 @@ export default NextAuth({
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-})
+}
+
+export default NextAuth(authOptions)

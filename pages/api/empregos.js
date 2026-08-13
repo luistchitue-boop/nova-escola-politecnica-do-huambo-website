@@ -1,7 +1,8 @@
-import { getSession } from 'next-auth/react'
+import { getServerSession } from 'next-auth/next'
 import { z } from 'zod'
 import { db } from '../../lib/db'
 import { jobOpenings } from '../../db/schema'
+import { authOptions } from './auth/[...nextauth]'
 
 const jobOpeningSchema = z.object({
   title: z.string().trim().min(2, 'O nome do cargo é obrigatório.').max(150, 'O nome do cargo deve ter no máximo 150 caracteres.'),
@@ -9,7 +10,7 @@ const jobOpeningSchema = z.object({
 })
 
 export default async function handler(req, res) {
-  const session = await getSession({ req, res })
+  const session = await getServerSession(req, res, authOptions)
 
   if (!session || !session.user || session.user.role !== 'admin') {
     return res.status(401).json({ success: false, message: 'Não autenticado.' })
