@@ -1,15 +1,15 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { FaWhatsapp, FaUserGraduate, FaBriefcase } from 'react-icons/fa'
+import { FaBullhorn, FaUserGraduate, FaBriefcase } from 'react-icons/fa'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
 const services = [
   {
-    title: 'Grupos informativos',
-    description: 'Os encarregados de educação podem solicitar acesso aos links dos grupos de WhatsApp das turmas dos seus filhos.',
-    href: '/secretaria/whatsapp',
-    icon: <FaWhatsapp className="h-6 w-6" />,
+    title: 'Comunicação escolar',
+    description: 'Acesso rápido aos canais da escola.\n\nGrupos de WhatsApp, Google Classroom e portal do encarregado de educação.',
+    href: '/secretaria/canais-informativos',
+    icon: <FaBullhorn className="h-6 w-6" />,
   },
   {
     title: 'Reservas',
@@ -40,7 +40,11 @@ export default function SecretariaPage() {
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#f2d79d]">Secretaria</p>
           <h1 className="mt-4 text-4xl font-semibold sm:text-5xl">A sua porta de entrada aos serviços da escola.</h1>
           <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-200">
-            Aqui, alunos e famílias encontram um espaço simples para pedir informações, marcar contactos e resolver questões administrativas com rapidez e confiança.
+            Acesso rápido aos canais da escola.
+            <br />
+            Informações, comunicação e serviços administrativos.
+            <br />
+            Para alunos, famílias e comunidade escolar.
           </p>
         </div>
 
@@ -66,7 +70,7 @@ export default function SecretariaPage() {
         <div className="mt-10 rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
           <h2 className="text-2xl font-semibold text-slate-900">Como podemos ajudar?</h2>
           <p className="mt-4 text-lg leading-8 text-slate-600">
-            A secretaria disponibiliza apoio para matrículas, documentos, comunicações escolares, dúvidas sobre calendário e acompanhamento de processos administrativos.
+            A secretaria apoia matrículas, documentos, comunicação escolar e dúvidas administrativas.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <a href="mailto:geral@escolahuambo.ao" className="rounded-full bg-[#08263a] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d3550]">

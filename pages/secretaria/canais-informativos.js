@@ -75,8 +75,8 @@ export default function WhatsAppPage() {
   return (
     <div className="min-h-screen bg-[#f6f3eb] text-slate-800">
       <Head>
-        <title>WhatsApp — Secretaria</title>
-        <meta name="description" content="Aceda aos grupos informativos da secretaria por WhatsApp." />
+        <title>Comunicação escolar — Secretaria</title>
+        <meta name="description" content="Aceda aos canais de comunicação da secretaria, incluindo grupos de WhatsApp, Google Classroom e o portal do encarregado de educação." />
       </Head>
 
       <Header />
@@ -98,7 +98,7 @@ export default function WhatsAppPage() {
               </div>
 
               <p className="mt-4 text-sm leading-7 text-slate-600">
-                O seu acesso foi validado. Pode entrar no grupo de WhatsApp da turma do aluno clicando no link abaixo.
+                O seu acesso foi validado. Pode entrar no canal de comunicação da turma do aluno, incluindo o grupo de WhatsApp, Google Classroom e outros recursos da comunidade escolar.
               </p>
 
               <a
@@ -122,10 +122,10 @@ export default function WhatsAppPage() {
         ) : null}
 
         <div className="rounded-[2rem] bg-[#08263a] p-10 text-white shadow-xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#f2d79d]">WhatsApp</p>
-          <h1 className="mt-4 text-4xl font-semibold sm:text-5xl">Aceda aos grupos informativos da secretaria.</h1>
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#f2d79d]">Comunicação</p>
+          <h1 className="mt-4 text-4xl font-semibold sm:text-5xl">Aceda aos canais de comunicação da escola.</h1>
           <p className="mt-6 text-lg leading-8 text-slate-200">
-            Introduza o número de inscrição do aluno para receber as informações mais relevantes no WhatsApp.
+            Introduza o número de inscrição do aluno para confirmar o acesso aos canais úteis da turma, incluindo grupos de WhatsApp, Google Classroom e o portal do encarregado de educação.
           </p>
         </div>
 

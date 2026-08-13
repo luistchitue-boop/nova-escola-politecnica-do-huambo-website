@@ -10,6 +10,54 @@ import { jobOpenings } from '../../db/schema'
 
 const higherEducationDegrees = ['Licenciado', 'Mestre', 'Doutor']
 
+const formatDateValue = (value = '') => {
+  const digits = value.replace(/\D/g, '').slice(0, 8)
+
+  if (digits.length <= 2) {
+    return digits
+  }
+
+  if (digits.length <= 4) {
+    return `${digits.slice(0, 2)}/${digits.slice(2)}`
+  }
+
+  return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`
+}
+
+const isValidBirthDate = (value = '') => {
+  if (!/^\d{2}\/\d{2}\/\d{4}$/.test(value)) {
+    return false
+  }
+
+  const [dayString, monthString, yearString] = value.split('/')
+  const day = Number(dayString)
+  const month = Number(monthString)
+  const year = Number(yearString)
+
+  if (!Number.isInteger(day) || !Number.isInteger(month) || !Number.isInteger(year)) {
+    return false
+  }
+
+  if (month < 1 || month > 12) {
+    return false
+  }
+
+  const parsedDate = new Date(year, month - 1, day)
+
+  if (
+    parsedDate.getFullYear() !== year ||
+    parsedDate.getMonth() !== month - 1 ||
+    parsedDate.getDate() !== day
+  ) {
+    return false
+  }
+
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  return parsedDate <= today
+}
+
 const educationAreas = [
   'Educação básica',
   'Informática',
@@ -33,6 +81,9 @@ const employmentSchema = z.object({
   fullName: z.string().trim().min(2, 'O nome completo é obrigatório.'),
   email: z.string().trim().email('Introduza um email válido.'),
   phone: z.string().trim().min(9, 'O telefone deve conter pelo menos 9 dígitos.'),
+  dateOfBirth: z.string().trim().refine(isValidBirthDate, {
+    message: 'A data de nascimento deve ser uma data válida no formato dd/mm/yyyy.',
+  }),
   areaOfInterest: z.string().trim().min(2, 'A área ou função pretendida é obrigatória.'),
   educationArea: z.string().trim().min(2, 'A área de educação é obrigatória.'),
   academicDegree: z.string().trim().min(2, 'O grau académico é obrigatório.'),
@@ -74,6 +125,7 @@ export default function EmpregosPage({ openRoles = [] }) {
     fullName: '',
     email: '',
     phone: '',
+    dateOfBirth: '',
     areaOfInterest: '',
     educationArea: '',
     academicDegree: '',
@@ -161,6 +213,7 @@ export default function EmpregosPage({ openRoles = [] }) {
         fullName: '',
         email: '',
         phone: '',
+        dateOfBirth: '',
         areaOfInterest: '',
         educationArea: '',
         academicDegree: '',
@@ -226,6 +279,10 @@ export default function EmpregosPage({ openRoles = [] }) {
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                   <p className="font-semibold text-slate-900">Telefone</p>
                   <p className="mt-1">{form.phone}</p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="font-semibold text-slate-900">Data de nascimento</p>
+                  <p className="mt-1">{form.dateOfBirth || '-'}</p>
                 </div>
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                   <p className="font-semibold text-slate-900">Área / função</p>
@@ -324,6 +381,34 @@ export default function EmpregosPage({ openRoles = [] }) {
                 {errors.phone ? <p className="mt-2 text-sm font-medium text-red-600">{errors.phone}</p> : null}
               </div>
 
+              <div>
+                <label htmlFor="dateOfBirth" className="block text-sm font-semibold text-slate-700">Data de nascimento</label>
+                <input
+                  id="dateOfBirth"
+                  name="dateOfBirth"
+                  type="text"
+                  inputMode="numeric"
+                  value={formatDateValue(form.dateOfBirth)}
+                  placeholder="dd/mm/yyyy"
+                  onChange={(event) => {
+                    const nextValue = event.target.value.replace(/\D/g, '').slice(0, 8)
+                    setForm((current) => ({ ...current, dateOfBirth: formatDateValue(nextValue) }))
+
+                    if (errors.dateOfBirth) {
+                      setErrors((current) => {
+                        const next = { ...current }
+                        delete next.dateOfBirth
+                        return next
+                      })
+                    }
+                  }}
+                  className={`mt-3 w-full rounded-2xl border px-4 py-3 outline-none focus:border-[#b98b2d] ${errors.dateOfBirth ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
+                />
+                {errors.dateOfBirth ? <p className="mt-2 text-sm font-medium text-red-600">{errors.dateOfBirth}</p> : null}
+              </div>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
               <div>
                 <label htmlFor="areaOfInterest" className="block text-sm font-semibold text-slate-700">Área ou função pretendida</label>
                 <select

@@ -7,10 +7,47 @@ const lookupCodeSchema = z.string().trim().regex(/^\d{6}$/, 'O código deve cont
 
 const higherEducationDegrees = ['Licenciado', 'Mestre', 'Doutor']
 
+const isValidBirthDate = (value = '') => {
+  if (!/^\d{2}\/\d{2}\/\d{4}$/.test(value)) {
+    return false
+  }
+
+  const [dayString, monthString, yearString] = value.split('/')
+  const day = Number(dayString)
+  const month = Number(monthString)
+  const year = Number(yearString)
+
+  if (!Number.isInteger(day) || !Number.isInteger(month) || !Number.isInteger(year)) {
+    return false
+  }
+
+  if (month < 1 || month > 12) {
+    return false
+  }
+
+  const parsedDate = new Date(year, month - 1, day)
+
+  if (
+    parsedDate.getFullYear() !== year ||
+    parsedDate.getMonth() !== month - 1 ||
+    parsedDate.getDate() !== day
+  ) {
+    return false
+  }
+
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  return parsedDate <= today
+}
+
 const employmentSchema = z.object({
   fullName: z.string().trim().min(2, 'O nome completo é obrigatório.'),
   email: z.string().trim().email('Introduza um email válido.'),
   phone: z.string().trim().min(9, 'O telefone deve conter pelo menos 9 dígitos.'),
+  dateOfBirth: z.string().trim().refine(isValidBirthDate, {
+    message: 'A data de nascimento deve ser uma data válida no formato dd/mm/yyyy.',
+  }),
   areaOfInterest: z.string().trim().min(2, 'A área ou função pretendida é obrigatória.'),
   educationArea: z.string().trim().min(2, 'A área de educação é obrigatória.'),
   academicDegree: z.string().trim().min(2, 'O grau académico é obrigatório.'),
@@ -101,6 +138,7 @@ export default async function handler(req, res) {
       fullName: payload.fullName,
       email: payload.email,
       phone: payload.phone,
+      dateOfBirth: payload.dateOfBirth,
       areaOfInterest: payload.areaOfInterest,
       educationArea: payload.educationArea,
       academicDegree: payload.academicDegree,
