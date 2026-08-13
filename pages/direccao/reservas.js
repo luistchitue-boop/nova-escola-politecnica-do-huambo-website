@@ -187,11 +187,13 @@ export default function DireccaoReservasPage({
                 <thead className="bg-slate-50 text-slate-700">
                   <tr>
                     <th className="px-4 py-3 font-semibold">Responsável</th>
+                    <th className="px-4 py-3 font-semibold">Telefone</th>
+                    <th className="px-4 py-3 font-semibold">Responsável 2</th>
+                    <th className="px-4 py-3 font-semibold">Telefone 2</th>
                     <th className="px-4 py-3 font-semibold">Estudante</th>
                     <th className="px-4 py-3 font-semibold">Data de nascimento</th>
                     <th className="px-4 py-3 font-semibold">Classe</th>
                     <th className="px-4 py-3 font-semibold">Ano letivo</th>
-                    <th className="px-4 py-3 font-semibold">Telefone</th>
                     <th className="px-4 py-3 font-semibold">Código</th>
                     <th className="px-4 py-3 font-semibold">Estado</th>
                     <th className="px-4 py-3 font-semibold">Data</th>
@@ -208,11 +210,13 @@ export default function DireccaoReservasPage({
                     reservations.map((reservation) => (
                       <tr key={reservation.id} className="align-top hover:bg-slate-50">
                         <td className="px-4 py-3 font-medium text-slate-900">{reservation.parentName}</td>
+                        <td className="px-4 py-3">{reservation.phone}</td>
+                        <td className="px-4 py-3">{reservation.parentName2 || '—'}</td>
+                        <td className="px-4 py-3">{reservation.phone2 || '—'}</td>
                         <td className="px-4 py-3">{reservation.studentName}</td>
                         <td className="px-4 py-3">{reservation.dateOfBirth || '—'}</td>
                         <td className="px-4 py-3">{reservation.intendedGrade}</td>
                         <td className="px-4 py-3">{reservation.admissionYear}</td>
-                        <td className="px-4 py-3">{reservation.phone}</td>
                         <td className="px-4 py-3 font-semibold tracking-[0.2em] text-[#08263a]">{reservation.accessCode}</td>
                         <td className="px-4 py-3">
                           <span className="inline-flex rounded-full bg-[#f8f4ea] px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#7a5a15]">

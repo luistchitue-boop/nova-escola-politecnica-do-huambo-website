@@ -73,6 +73,11 @@ const reservationSchema = z.object({
     .string()
     .trim()
     .regex(/^\d{9}$/, { message: 'O telefone deve conter exatamente 9 dígitos.' }),
+  parentName2: z.string().trim().min(2, { message: 'O nome do responsável 2 é obrigatório.' }),
+  phone2: z
+    .string()
+    .trim()
+    .regex(/^\d{9}$/, { message: 'O telefone 2 deve conter exatamente 9 dígitos.' }),
   studentName: z.string().trim().min(2, { message: 'O nome do estudante é obrigatório.' }),
   dateOfBirth: z
     .string()
@@ -126,6 +131,8 @@ export default function ReservasPage() {
   const [form, setForm] = useState({
     parentName: '',
     phone: '',
+    parentName2: '',
+    phone2: '',
     studentName: '',
     dateOfBirth: '',
     admissionYear: '',
@@ -219,6 +226,8 @@ export default function ReservasPage() {
       setForm({
         parentName: '',
         phone: '',
+        parentName2: '',
+        phone2: '',
         studentName: '',
         dateOfBirth: '',
         admissionYear: '',
@@ -337,6 +346,14 @@ export default function ReservasPage() {
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                   <p className="font-semibold text-slate-900">Telefone</p>
                   <p className="mt-1">{formatPhoneValue(form.phone)}</p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="font-semibold text-slate-900">Responsável 2</p>
+                  <p className="mt-1">{form.parentName2 || '-'}</p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="font-semibold text-slate-900">Telefone 2</p>
+                  <p className="mt-1">{formatPhoneValue(form.phone2) || '-'}</p>
                 </div>
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                   <p className="font-semibold text-slate-900">Estudante</p>
@@ -504,6 +521,65 @@ export default function ReservasPage() {
                 {fieldErrors.phone ? (
                   <p id="phone-error" className="mt-2 text-sm font-medium text-red-600">
                     {fieldErrors.phone}
+                  </p>
+                ) : null}
+              </div>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              <div>
+                <label htmlFor="parentName2" className="block text-sm font-semibold text-slate-700">Nome do responsável 2</label>
+                <input
+                  id="parentName2"
+                  name="parentName2"
+                  type="text"
+                  value={form.parentName2}
+                  onChange={handleChange}
+                  aria-invalid={Boolean(fieldErrors.parentName2)}
+                  aria-describedby={fieldErrors.parentName2 ? 'parentName2-error' : undefined}
+                  className={`mt-3 w-full rounded-2xl border px-4 py-3 outline-none focus:border-[#b98b2d] ${
+                    fieldErrors.parentName2 ? 'border-red-400 bg-red-50' : 'border-slate-300'
+                  }`}
+                />
+                {fieldErrors.parentName2 ? (
+                  <p id="parentName2-error" className="mt-2 text-sm font-medium text-red-600">
+                    {fieldErrors.parentName2}
+                  </p>
+                ) : null}
+              </div>
+              <div>
+                <label htmlFor="phone2" className="block text-sm font-semibold text-slate-700">Telefone 2</label>
+                <input
+                  id="phone2"
+                  name="phone2"
+                  type="tel"
+                  inputMode="numeric"
+                  value={formatPhoneValue(form.phone2)}
+                  placeholder="9xx xxx xxx"
+                  onChange={(event) => {
+                    const nextValue = event.target.value.replace(/\D/g, '').slice(0, 9)
+                    setForm((current) => ({ ...current, phone2: nextValue }))
+
+                    if (fieldErrors.phone2) {
+                      setFieldErrors((current) => {
+                        const next = { ...current }
+                        delete next.phone2
+                        return next
+                      })
+                    }
+
+                    if (error) setError('')
+                    if (success) setSuccess('')
+                  }}
+                  aria-invalid={Boolean(fieldErrors.phone2)}
+                  aria-describedby={fieldErrors.phone2 ? 'phone2-error' : undefined}
+                  className={`mt-3 w-full rounded-2xl border px-4 py-3 outline-none focus:border-[#b98b2d] ${
+                    fieldErrors.phone2 ? 'border-red-400 bg-red-50' : 'border-slate-300'
+                  }`}
+                />
+                {fieldErrors.phone2 ? (
+                  <p id="phone2-error" className="mt-2 text-sm font-medium text-red-600">
+                    {fieldErrors.phone2}
                   </p>
                 ) : null}
               </div>

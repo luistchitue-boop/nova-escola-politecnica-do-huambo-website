@@ -40,6 +40,8 @@ const isValidBirthDate = (value = '') => {
 const reservationSchema = z.object({
   parentName: z.string().trim().min(2, 'O nome do responsável é obrigatório.'),
   phone: z.string().trim().regex(/^\d{9}$/, 'O telefone deve conter exatamente 9 dígitos.'),
+  parentName2: z.string().trim().min(2, 'O nome do responsável 2 é obrigatório.'),
+  phone2: z.string().trim().regex(/^\d{9}$/, 'O telefone 2 deve conter exatamente 9 dígitos.'),
   studentName: z.string().trim().min(2, 'O nome do estudante é obrigatório.'),
   dateOfBirth: z
     .string()
@@ -165,6 +167,8 @@ export default async function handler(req, res) {
       status: 'pendente',
       parentName: payload.parentName,
       phone: payload.phone,
+      parentName2: payload.parentName2,
+      phone2: payload.phone2,
       studentName: payload.studentName,
       dateOfBirth: payload.dateOfBirth,
       admissionYear: payload.admissionYear,

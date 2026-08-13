@@ -31,6 +31,8 @@ exports.reservationRequests = pgTable(
     status: varchar('status', { length: 20 }).notNull().default('pendente'),
     parentName: varchar('parent_name', { length: 255 }).notNull(),
     phone: varchar('phone', { length: 50 }).notNull(),
+    parentName2: varchar('parent_name_2', { length: 255 }).notNull(),
+    phone2: varchar('phone_2', { length: 50 }).notNull(),
     studentName: varchar('student_name', { length: 255 }).notNull(),
     dateOfBirth: varchar('date_of_birth', { length: 20 }).notNull(),
     intendedGrade: varchar('intended_grade', { length: 120 }).notNull(),
