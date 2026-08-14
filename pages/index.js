@@ -4,7 +4,7 @@ import Footer from '../components/Footer'
 
 const heroContent = {
   eyebrow: 'Nossa identidade',
-  title: 'Educação internacional com rigor, cuidado e propósito.',
+  title: 'Somos 18 anos de educação',
   description: 'A Nova Escola Politécnica do Huambo prepara alunos para prosperarem como cidadãos confiantes, pensadores críticos e líderes éticos.',
   stats: [
     { value: '98%', label: 'sucesso académico' },
@@ -119,10 +119,10 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="courses" className="mt-20 rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
+        <section id="ceph" className="mt-20 rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">Programas e percursos</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">Ceph</p>
               <h2 className="mt-2 text-3xl font-semibold sm:text-4xl">Aprendizagem com visão de futuro.</h2>
             </div>
             <a href="#admissions" className="text-sm font-semibold text-[#08263a] underline decoration-[#f2d79d] decoration-2 underline-offset-4">
@@ -130,7 +130,7 @@ export default function Home() {
             </a>
           </div>
 
-          <div className="mt-8 grid gap-6 lg:grid-cols-3">
+          <div id="curriculo" className="mt-8 grid gap-6 lg:grid-cols-3">
             {[
               {
                 title: 'Ensino Básico',
@@ -151,6 +151,14 @@ export default function Home() {
               </div>
             ))}
           </div>
+        </section>
+
+        <section id="impph" className="mt-20 rounded-[2rem] border border-slate-200 bg-[#f8f4ea] p-8 shadow-sm sm:p-10">
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">Impph</p>
+          <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">Programa orientado para a formação profissional, científica e cidadã.</h2>
+          <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600">
+            O IMPPH reforça a ligação entre aprendizagem rigorosa, investigação aplicada e desenvolvimento de competências práticas, preparando os estudantes para os desafios do presente e do futuro.
+          </p>
         </section>
 
         <section id="admissions" className="mt-20 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
@@ -198,6 +206,16 @@ export default function Home() {
                 <div className="mt-2 text-sm text-slate-600">dedicação a um ambiente seguro e acolhedor</div>
               </div>
             </div>
+          </div>
+        </section>
+
+        <section id="portais" className="mt-20 rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">Portais</p>
+          <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">Acesso rápido aos serviços da escola.</h2>
+          <div className="mt-6 flex flex-wrap gap-4">
+            <a href="/secretaria" className="rounded-full bg-[#08263a] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d3550]">Secretaria</a>
+            <a href="/direccao" className="rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-800 transition hover:border-[#b98b2d] hover:text-[#b98b2d]">Direção</a>
+            <a href="/login" className="rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-800 transition hover:border-[#b98b2d] hover:text-[#b98b2d]">Login</a>
           </div>
         </section>
       </main>

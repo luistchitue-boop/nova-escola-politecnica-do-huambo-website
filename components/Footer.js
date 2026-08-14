@@ -21,7 +21,7 @@ const socialLinks = [
 export default function Footer() {
   const year = new Date().getFullYear()
   return (
-    <footer className="border-t border-slate-200 bg-white/80 transition-colors duration-200 dark:border-slate-800 dark:bg-slate-900/80">
+    <footer id="contactos" className="border-t border-slate-200 bg-white/80 transition-colors duration-200 dark:border-slate-800 dark:bg-slate-900/80">
       <div className="mx-auto max-w-6xl px-6 py-10 text-sm text-slate-600 dark:text-slate-400 lg:px-8">
         <div className="grid gap-8 md:grid-cols-3">
           <div>
