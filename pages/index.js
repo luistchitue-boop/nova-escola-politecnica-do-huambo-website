@@ -5,7 +5,7 @@ import Footer from '../components/Footer'
 const heroContent = {
   eyebrow: 'Nossa identidade',
   title: 'Somos 18 anos de educação',
-  description: 'A Nova Escola Politécnica do Huambo prepara alunos para prosperarem como cidadãos confiantes, pensadores críticos e líderes éticos.',
+  description: 'A Nova Escola Politécnica do Huambo é uma escola no Huambo dedicada a formar alunos confiantes, críticos e preparados para o futuro.',
   stats: [
     { value: '98%', label: 'sucesso académico' },
     { value: '+50', label: 'atividades extracurriculares' },
@@ -25,15 +25,16 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#f6f3eb] text-slate-800 transition-colors duration-200">
       <Head>
-        <title>Nova Escola Politécnica do Huambo — Educação de Excelência</title>
-        <meta name="description" content="Nova Escola Politécnica do Huambo — Formação integral, académica e humana." />
+        <title>Nova Escola Politécnica do Huambo | Escolas no Huambo</title>
+        <meta name="description" content="Nova Escola Politécnica do Huambo é uma escola no Huambo com ensino de qualidade, formação integral e ambiente acolhedor para alunos e famílias." />
+        <meta name="keywords" content="escolas no Huambo, Nova Escola Politécnica do Huambo, colégio politécnico do Huambo, melhor escola do Huambo, educação no Huambo, escola em Huambo" />
         <link rel="canonical" href="https://example.org/" />
-        <meta property="og:title" content="Nova Escola Politécnica do Huambo — Educação de Excelência" />
-        <meta property="og:description" content="Formação integral, académica e humana." />
+        <meta property="og:title" content="Nova Escola Politécnica do Huambo | Escolas no Huambo" />
+        <meta property="og:description" content="Escola no Huambo com formação integral, excelência académica e ambiente acolhedor para cada aluno." />
         <meta property="og:image" content="/og-image.svg" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Nova Escola Politécnica do Huambo" />
-        <meta name="twitter:description" content="Formação integral, académica e humana." />
+        <meta name="twitter:description" content="Escola no Huambo com formação integral, excelência académica e ambiente acolhedor para cada aluno." />
         <meta name="twitter:image" content="/og-image.svg" />
       </Head>
 
@@ -100,7 +101,7 @@ export default function Home() {
               Uma escola que une excelência académica, cuidado humano e visão internacional.
             </h2>
             <p className="mt-5 text-lg leading-8 text-slate-600">
-              A Nova Escola Politécnica do Huambo oferece um ambiente de aprendizagem exigente, acolhedor e atual, preparado para formar alunos com espírito crítico, autonomia e responsabilidade social.
+              Como uma das escolas no Huambo, a Nova Escola Politécnica do Huambo oferece um ambiente de aprendizagem exigente, acolhedor e atual, preparado para formar alunos com espírito crítico, autonomia e responsabilidade social.
             </p>
           </div>
 
@@ -157,7 +158,7 @@ export default function Home() {
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">Impph</p>
           <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">Programa orientado para a formação profissional, científica e cidadã.</h2>
           <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600">
-            O IMPPH reforça a ligação entre aprendizagem rigorosa, investigação aplicada e desenvolvimento de competências práticas, preparando os estudantes para os desafios do presente e do futuro.
+            O IMPPH reforça a ligação entre aprendizagem rigorosa, investigação aplicada e desenvolvimento de competências práticas, preparando os estudantes para os desafios do presente e do futuro em uma escola no Huambo com visão de excelência.
           </p>
         </section>
 

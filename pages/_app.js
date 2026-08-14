@@ -26,6 +26,8 @@ export default function App({ Component, pageProps }) {
           "@context": "https://schema.org",
           "@type": "School",
           "name": "Nova Escola Politécnica do Huambo",
+          "alternateName": ["Colégio Politécnico do Huambo", "Escola no Huambo"],
+          "keywords": "escolas no Huambo, Nova Escola Politécnica do Huambo, colégio politécnico do Huambo, melhor escola do Huambo",
           "url": "https://example.org",
           "logo": "https://example.org/logo.png",
           "address": {
