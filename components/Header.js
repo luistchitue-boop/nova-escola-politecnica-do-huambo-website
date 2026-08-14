@@ -44,12 +44,12 @@ export default function Header() {
         </div>
 
         <nav aria-label="Main Navigation" className="hidden items-center gap-6 text-sm font-medium text-slate-700 md:flex dark:text-slate-200">
-          <a href="#about" className="transition hover:text-[#b98b2d]">Sobre</a>
-          <a href="#ceph" className="transition hover:text-[#b98b2d]">ceph</a>
-          <a href="#impph" className="transition hover:text-[#b98b2d]">impph</a>
-          <a href="#contactos" className="transition hover:text-[#b98b2d]">contactos</a>
-          <a href="#curriculo" className="transition hover:text-[#b98b2d]">currículo</a>
-          <a href="#portais" className="transition hover:text-[#b98b2d]">portais</a>
+          <a href="/sobre" className="transition hover:text-[#b98b2d]">Sobre</a>
+          <a href="/ceph" className="transition hover:text-[#b98b2d]">ceph</a>
+          <a href="/impph" className="transition hover:text-[#b98b2d]">impph</a>
+          <a href="/contactos" className="transition hover:text-[#b98b2d]">contactos</a>
+          <a href="/curriculo" className="transition hover:text-[#b98b2d]">currículo</a>
+          <a href="/portais" className="transition hover:text-[#b98b2d]">portais</a>
           <div className="ml-2 flex items-center gap-3">
             <a href="/secretaria" className="rounded-full bg-[#08263a] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#0d3550]">Secretaria</a>
             <button onClick={toggleTheme} aria-label="Alternar tema" className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
@@ -91,12 +91,12 @@ export default function Header() {
       <div className={`md:hidden ${open ? 'block' : 'hidden'}`} role="navigation" aria-label="Mobile Navigation">
         <div className="mx-auto max-w-6xl px-6 pb-4 lg:px-8">
           <div className="rounded-[1.25rem] border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
-            <a onClick={() => setOpen(false)} href="#about" className="block px-2 py-2 text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-700">Sobre</a>
-            <a onClick={() => setOpen(false)} href="#ceph" className="mt-1 block px-2 py-2 text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-700">ceph</a>
-            <a onClick={() => setOpen(false)} href="#impph" className="mt-1 block px-2 py-2 text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-700">impph</a>
-            <a onClick={() => setOpen(false)} href="#contactos" className="mt-1 block px-2 py-2 text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-700">contactos</a>
-            <a onClick={() => setOpen(false)} href="#curriculo" className="mt-1 block px-2 py-2 text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-700">currículo</a>
-            <a onClick={() => setOpen(false)} href="#portais" className="mt-1 block px-2 py-2 text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-700">portais</a>
+            <a onClick={() => setOpen(false)} href="/sobre" className="block px-2 py-2 text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-700">Sobre</a>
+            <a onClick={() => setOpen(false)} href="/ceph" className="mt-1 block px-2 py-2 text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-700">ceph</a>
+            <a onClick={() => setOpen(false)} href="/impph" className="mt-1 block px-2 py-2 text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-700">impph</a>
+            <a onClick={() => setOpen(false)} href="/contactos" className="mt-1 block px-2 py-2 text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-700">contactos</a>
+            <a onClick={() => setOpen(false)} href="/curriculo" className="mt-1 block px-2 py-2 text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-700">currículo</a>
+            <a onClick={() => setOpen(false)} href="/portais" className="mt-1 block px-2 py-2 text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-700">portais</a>
           </div>
         </div>
       </div>
