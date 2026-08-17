@@ -189,23 +189,41 @@ export default function Home() {
               {
                 title: 'Contabilidade',
                 text: 'Formação prática e teórica para a gestão financeira, organização e acompanhamento de processos empresariais.',
+                image: '/contabilidade.png',
               },
               {
                 title: 'Obras de construção civil',
                 text: 'Preparação para a execução, gestão e controlo de projectos de engenharia e obra civil.',
+                image: '/obras_de_construcao_civil.png',
               },
               {
                 title: 'Informática',
                 text: 'Desenvolvimento de competências digitais, sistemas, redes e soluções tecnológicas aplicadas.',
+                image: '/informatica.png',
               },
               {
                 title: 'Electrónica',
                 text: 'Conhecimentos essenciais em circuitos, automação, manutenção e tecnologias eletrónicas modernas.',
+                image: '/electronica.png',
               },
             ].map((program) => (
-              <div key={program.title} className="rounded-[1.5rem] border border-slate-200 bg-white p-6">
-                <h3 className="text-xl font-semibold text-slate-900">{program.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-slate-600">{program.text}</p>
+              <div
+                key={program.title}
+                className="relative isolate min-h-[220px] overflow-hidden rounded-[1.5rem] border border-slate-200 bg-[#f8f4ea] p-6"
+                style={program.image ? {
+                  backgroundImage: `url('${program.image}')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat',
+                } : undefined}
+              >
+                {program.image ? (
+                  <div className="absolute inset-0 z-0 bg-[linear-gradient(135deg,rgba(8,38,58,0.72),rgba(8,38,58,0.35))]" />
+                ) : null}
+                <div className="relative z-10">
+                  <h3 className={`text-xl font-semibold ${program.image ? 'text-white' : 'text-slate-900'}`}>{program.title}</h3>
+                  <p className={`mt-3 text-sm leading-7 ${program.image ? 'text-slate-100' : 'text-slate-600'}`}>{program.text}</p>
+                </div>
               </div>
             ))}
           </div>
