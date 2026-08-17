@@ -3,17 +3,17 @@ import { FaInstagram, FaFacebookF, FaLinkedinIn } from 'react-icons/fa'
 const socialLinks = [
   {
     label: 'Instagram',
-    href: 'https://instagram.com',
+    href: process.env.INSTAGRAM_URL || 'https://instagram.com',
     icon: <FaInstagram className="h-5 w-5" />,
   },
   {
     label: 'Facebook',
-    href: 'https://facebook.com',
+    href: process.env.FACEBOOK_URL || 'https://facebook.com',
     icon: <FaFacebookF className="h-5 w-5" />,
   },
   {
     label: 'LinkedIn',
-    href: 'https://linkedin.com',
+    href: process.env.LINKEDIN_URL || 'https://linkedin.com',
     icon: <FaLinkedinIn className="h-5 w-5" />,
   },
 ]
