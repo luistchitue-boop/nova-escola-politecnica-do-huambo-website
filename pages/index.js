@@ -180,10 +180,6 @@ export default function Home() {
         <section id="impph" className="mt-20 rounded-[2rem] border border-slate-200 bg-[#f8f4ea] p-8 shadow-sm sm:p-10">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">Instituto Médio Privado Politécnico do Huambo</p>
           <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">Programa orientado para a formação profissional, científica e cidadã.</h2>
-          <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600">
-            O IMPPH reforça a ligação entre aprendizagem rigorosa, investigação aplicada e desenvolvimento de competências práticas, preparando os estudantes para os desafios do presente e do futuro em uma escola no Huambo com visão de excelência.
-          </p>
-
           <div id="curriculo-impph" className="mt-8 grid gap-6 md:grid-cols-2">
             {[
               {
