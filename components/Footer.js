@@ -1,4 +1,4 @@
-import { FaInstagram, FaFacebookF, FaYoutube } from 'react-icons/fa'
+import { FaInstagram, FaFacebookF, FaLinkedinIn } from 'react-icons/fa'
 
 const socialLinks = [
   {
@@ -12,9 +12,9 @@ const socialLinks = [
     icon: <FaFacebookF className="h-5 w-5" />,
   },
   {
-    label: 'YouTube',
-    href: 'https://youtube.com',
-    icon: <FaYoutube className="h-5 w-5" />,
+    label: 'LinkedIn',
+    href: 'https://linkedin.com',
+    icon: <FaLinkedinIn className="h-5 w-5" />,
   },
 ]
 
@@ -23,14 +23,16 @@ export default function Footer() {
   return (
     <footer id="contactos" className="border-t border-slate-200 bg-white/80 transition-colors duration-200 dark:border-slate-800 dark:bg-slate-900/80">
       <div className="mx-auto max-w-6xl px-6 py-10 text-sm text-slate-600 dark:text-slate-400 lg:px-8">
-        <div className="grid gap-8 md:grid-cols-3">
-          <div>
-            <div className="text-base font-semibold text-slate-900 dark:text-white">Nova Escola Politécnica do Huambo</div>
-            <div className="mt-2 text-sm leading-7">Rua Exemplo 123, Huambo — Angola</div>
-          </div>
+        <div className="grid gap-8 md:grid-cols-2">
           <div>
             <div className="font-semibold text-slate-900 dark:text-white">Contactos</div>
-            <div className="mt-2 text-sm leading-7">Telefone: +244 912 345 678<br />Email: geral@escolahuambo.ao</div>
+            <div className="mt-2 text-sm leading-7">
+              Rua Vicente Ferreira 60-64, Cidade Baixa, Huambo
+              <br />
+              Telefone: +244 931 841 595
+              <br />
+              Email: apoio@neph.ao
+            </div>
             <div className="mt-4 flex flex-wrap gap-3">
               {socialLinks.map((social) => (
                 <a
