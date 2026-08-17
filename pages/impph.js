@@ -2,6 +2,29 @@ import Head from 'next/head'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
+const programs = [
+  {
+    title: 'Informática',
+    text: 'Desenvolvimento de competências digitais, sistemas, redes e soluções tecnológicas aplicadas.',
+    image: '/informatica.png',
+  },
+  {
+    title: 'Construção civil',
+    text: 'Preparação para a execução, gestão e controlo de projectos de engenharia e obra civil.',
+    image: '/obras_de_construcao_civil.png',
+  },
+  {
+    title: 'Electrónica',
+    text: 'Conhecimentos essenciais em circuitos, automação, manutenção e tecnologias eletrónicas modernas.',
+    image: '/electronica.png',
+  },
+  {
+    title: 'Contabilidade',
+    text: 'Formação prática e teórica para a gestão financeira, organização e acompanhamento de processos empresariais.',
+    image: '/contabilidade.png',
+  },
+]
+
 export default function Impph() {
   return (
     <>
@@ -13,24 +36,34 @@ export default function Impph() {
       <div className="min-h-screen bg-[#f6f3eb] text-slate-800">
         <Header />
 
-        <main className="mx-auto max-w-5xl px-6 py-20 lg:px-8">
+        <main className="mx-auto max-w-6xl px-6 py-20 lg:px-8">
           <section className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm sm:p-12">
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">IMPPH</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">Instituto Médio Privado Politécnico do Huambo</p>
             <h1 className="mt-4 text-4xl font-semibold text-slate-900 sm:text-5xl">Formação profissional, científica e cidadã.</h1>
             <p className="mt-6 text-lg leading-8 text-slate-600">
               O IMPPH reforça a ligação entre escola, inovação, investigação aplicada e desenvolvimento de competências práticas, preparando os estudantes para enfrentar os desafios sociais e profissionais do futuro.
             </p>
           </section>
 
-          <section className="mt-10 grid gap-6 md:grid-cols-3">
-            {[
-              { title: 'Inovação', text: 'Aprendizagem focada na criação, resolução e pensamento crítico.' },
-              { title: 'Profissionalização', text: 'Compromisso com a preparação para a vida ativa e para a carreira.' },
-              { title: 'Cidadania', text: 'Formação orientada para valores, responsabilidade e participação social.' },
-            ].map((item) => (
-              <div key={item.title} className="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm">
-                <h2 className="text-xl font-semibold text-slate-900">{item.title}</h2>
-                <p className="mt-3 text-sm leading-7 text-slate-600">{item.text}</p>
+          <section className="mt-10 grid gap-6 md:grid-cols-2">
+            {programs.map((program) => (
+              <div
+                key={program.title}
+                className="relative isolate min-h-[260px] overflow-hidden rounded-[1.5rem] border border-slate-200 bg-[#f8f4ea] p-6 shadow-sm"
+                style={program.image ? {
+                  backgroundImage: `url('${program.image}')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat',
+                } : undefined}
+              >
+                {program.image ? (
+                  <div className="absolute inset-0 z-0 bg-[linear-gradient(135deg,rgba(4,17,28,0.82),rgba(8,38,58,0.55))]" />
+                ) : null}
+                <div className="relative z-10 flex h-full flex-col justify-end">
+                  <h2 className="text-3xl font-semibold text-white sm:text-4xl">{program.title}</h2>
+                  <p className="mt-3 max-w-md text-base leading-7 text-slate-100 sm:text-lg">{program.text}</p>
+                </div>
               </div>
             ))}
           </section>
