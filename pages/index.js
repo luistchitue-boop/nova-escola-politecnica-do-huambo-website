@@ -92,32 +92,40 @@ export default function Home() {
       </section>
 
       <main id="main-content" className="mx-auto max-w-6xl px-6 py-20 lg:px-8" role="main">
-        <section id="about" className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">A nossa história</p>
-            <h2 className="mt-3 text-3xl font-semibold leading-tight sm:text-4xl">
-              A Nova Escola Politécnica do Huambo (NEPH)
-            </h2>
-            <p className="mt-5 text-lg leading-8 text-slate-600">
-              A Nova Escola Politécnica do Huambo (NEPH) é uma instituição privada de ensino, fundada a 25 de Fevereiro de 2008, com o propósito de contribuir para a melhoria da qualidade do ensino na cidade do Huambo.
-            </p>
-            <p className="mt-4 text-lg leading-8 text-slate-600">
-              Surgida de uma iniciativa do Grupo Gustave Eiffel de Portugal, da Escola Gustave Eiffel do Lobito e de parceiros angolanos, a instituição iniciou as suas actividades com cerca de 60 alunos e 25 colaboradores, oferecendo cursos do II Ciclo Politécnico em diversas áreas técnicas.
-            </p>
-          </div>
+        <section id="about" className="relative isolate overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm">
+          <div
+            className="absolute inset-0 z-0 bg-cover bg-center opacity-30"
+            style={{ backgroundImage: "url('/history.jpg')" }}
+          />
+          <div className="absolute inset-0 z-10 bg-[linear-gradient(135deg,rgba(255,255,255,0.72),rgba(248,244,234,0.52))]" />
 
-          <div className="grid gap-4 sm:grid-cols-1">
-            <div className="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm">
-              <h3 className="text-xl font-semibold text-slate-900">Crescimento e expansão</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-600">
-                Ao longo dos anos, a NEPH expandiu a sua oferta educativa, passando também a ministrar o Ensino Primário e o Ensino Geral. Em 2026, conta com mais de 1.150 alunos e 175 colaboradores, constituindo uma referência no sector privado de educação na província do Huambo.
+          <div className="relative z-20 grid gap-10 p-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start lg:p-10">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">A nossa história</p>
+              <h2 className="mt-3 text-3xl font-semibold leading-tight sm:text-4xl">
+                A Nova Escola Politécnica do Huambo (NEPH)
+              </h2>
+              <p className="mt-5 text-lg leading-8 text-slate-600">
+                A Nova Escola Politécnica do Huambo (NEPH) é uma instituição privada de ensino, fundada a 25 de Fevereiro de 2008, com o propósito de contribuir para a melhoria da qualidade do ensino na cidade do Huambo.
+              </p>
+              <p className="mt-4 text-lg leading-8 text-slate-600">
+                Surgida de uma iniciativa do Grupo Gustave Eiffel de Portugal, da Escola Gustave Eiffel do Lobito e de parceiros angolanos, a instituição iniciou as suas actividades com cerca de 60 alunos e 25 colaboradores, oferecendo cursos do II Ciclo Politécnico em diversas áreas técnicas.
               </p>
             </div>
-            <div className="rounded-[1.5rem] border border-slate-200 bg-[#f8f4ea] p-6 shadow-sm">
-              <h3 className="text-xl font-semibold text-slate-900">Presença actual</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-600">
-                Actualmente, a Nova Escola Politécnica do Huambo é a entidade detentora do Complexo Escolar Privado do Huambo e do Instituto Médio Privado Politécnico do Huambo, disponibilizando uma formação que acompanha os alunos desde o Ensino Primário até ao II Ciclo.
-              </p>
+
+            <div className="grid gap-4 sm:grid-cols-1">
+              <div className="rounded-[1.5rem] border border-slate-200 bg-white/80 p-6 shadow-sm backdrop-blur-[2px]">
+                <h3 className="text-xl font-semibold text-slate-900">Crescimento e expansão</h3>
+                <p className="mt-3 text-sm leading-7 text-slate-600">
+                  Ao longo dos anos, a NEPH expandiu a sua oferta educativa, passando também a ministrar o Ensino Primário e o Ensino Geral. Em 2026, conta com mais de 1.150 alunos e 175 colaboradores, constituindo uma referência no sector privado de educação na província do Huambo.
+                </p>
+              </div>
+              <div className="rounded-[1.5rem] border border-slate-200 bg-[#f8f4ea]/80 p-6 shadow-sm backdrop-blur-[2px]">
+                <h3 className="text-xl font-semibold text-slate-900">Presença actual</h3>
+                <p className="mt-3 text-sm leading-7 text-slate-600">
+                  Actualmente, a Nova Escola Politécnica do Huambo é a entidade detentora do Complexo Escolar Privado do Huambo e do Instituto Médio Privado Politécnico do Huambo, disponibilizando uma formação que acompanha os alunos desde o Ensino Primário até ao II Ciclo.
+                </p>
+              </div>
             </div>
           </div>
         </section>
