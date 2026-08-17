@@ -4,8 +4,8 @@ import Footer from '../components/Footer'
 
 const heroContent = {
   eyebrow: 'Nossa identidade',
-  title: 'Somos 18 anos de educação',
-  description: 'A Nova Escola Politécnica do Huambo é uma escola no Huambo dedicada a formar alunos confiantes, críticos e preparados para o futuro.',
+  title: 'Onde o Conhecimento Ganha Futuro',
+  description: 'Há mais de 18 anos a formar gerações com excelência, inovação e compromisso.',
   stats: [],
   highlights: [
     'Currículo sólido com foco em pensamento crítico e resolução de problemas.',
@@ -36,21 +36,23 @@ export default function Home() {
 
       <Header />
 
-      <section className="relative isolate overflow-hidden bg-[#08263a] text-white">
+      <section className="relative isolate min-h-screen overflow-hidden bg-[#08263a] text-white">
         <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/hero.webp')" }} />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,38,58,0.96)_0%,rgba(8,38,58,0.86)_48%,rgba(8,38,58,0.42)_100%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(185,139,45,0.20),transparent_32%)]" />
 
-        <div className="relative mx-auto max-w-6xl px-6 py-24 lg:px-8 lg:py-32">
-          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
-            <div>
+        <div className="relative mx-auto flex min-h-screen max-w-6xl items-center justify-center px-6 py-24 lg:px-8 lg:py-32">
+          <div className="grid w-full max-w-4xl gap-8 text-center lg:items-center">
+            <div className="mx-auto max-w-4xl">
               <p className="text-sm font-semibold uppercase tracking-[0.3em] text-white">{hero.eyebrow}</p>
-              <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
+              <h1 className="mt-6 text-4xl font-semibold leading-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
                 {hero.title}
               </h1>
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-100">{hero.description}</p>
+              <p className="mt-6 mx-auto max-w-3xl text-xl leading-9 text-slate-100 sm:text-2xl">
+                {hero.description}
+              </p>
 
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <a href="#admissions" className="rounded-full bg-[#c49b40] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#0f172a]/20 transition hover:-translate-y-0.5 hover:bg-[#b98b2d]">
                   Solicitar informação
                 </a>
@@ -71,22 +73,6 @@ export default function Home() {
               ) : null}
             </div>
 
-            <div className="rounded-[2rem] border border-white/15 bg-white/10 p-8 shadow-2xl shadow-black/20 backdrop-blur-xl">
-              <div className="text-sm font-semibold uppercase tracking-[0.3em] text-[#f2d79d]">Por que escolher a Nova Escola</div>
-              <ul className="mt-6 space-y-4 text-sm leading-7 text-slate-200">
-                {hero.highlights.map((highlight) => (
-                  <li key={highlight} className="flex gap-3">
-                    <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-[#f2d79d]" />
-                    <span>{highlight}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-8 rounded-[1.5rem] bg-[#f8f4ea] p-6 text-slate-800">
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">Próximo passo</p>
-                <p className="mt-2 text-lg font-semibold">{hero.cta}</p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
