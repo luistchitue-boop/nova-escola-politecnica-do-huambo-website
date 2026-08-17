@@ -6,11 +6,7 @@ const heroContent = {
   eyebrow: 'Nossa identidade',
   title: 'Somos 18 anos de educação',
   description: 'A Nova Escola Politécnica do Huambo é uma escola no Huambo dedicada a formar alunos confiantes, críticos e preparados para o futuro.',
-  stats: [
-    { value: '98%', label: 'sucesso académico' },
-    { value: '+50', label: 'atividades extracurriculares' },
-    { value: '20+', label: 'anos de experiência' },
-  ],
+  stats: [],
   highlights: [
     'Currículo sólido com foco em pensamento crítico e resolução de problemas.',
     'Ambiente estimulante, seguro e acolhedor para cada etapa do percurso.',
@@ -63,14 +59,16 @@ export default function Home() {
                 </a>
               </div>
 
-              <div className="mt-10 grid gap-4 sm:grid-cols-3">
-                {hero.stats.map((stat) => (
-                  <div key={stat.label} className="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur">
-                    <div className="text-2xl font-semibold text-white">{stat.value}</div>
-                    <div className="mt-1 text-sm uppercase tracking-[0.2em] text-slate-300">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
+              {hero.stats.length > 0 ? (
+                <div className="mt-10 grid gap-4 sm:grid-cols-3">
+                  {hero.stats.map((stat) => (
+                    <div key={stat.label} className="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur">
+                      <div className="text-2xl font-semibold text-white">{stat.value}</div>
+                      <div className="mt-1 text-sm uppercase tracking-[0.2em] text-slate-300">{stat.label}</div>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
             </div>
 
             <div className="rounded-[2rem] border border-white/15 bg-white/10 p-8 shadow-2xl shadow-black/20 backdrop-blur-xl">
@@ -96,27 +94,31 @@ export default function Home() {
       <main id="main-content" className="mx-auto max-w-6xl px-6 py-20 lg:px-8" role="main">
         <section id="about" className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">A nossa essência</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">A nossa história</p>
             <h2 className="mt-3 text-3xl font-semibold leading-tight sm:text-4xl">
-              Uma escola que une excelência académica, cuidado humano e visão internacional.
+              A Nova Escola Politécnica do Huambo (NEPH)
             </h2>
             <p className="mt-5 text-lg leading-8 text-slate-600">
-              Como uma das escolas no Huambo, a Nova Escola Politécnica do Huambo oferece um ambiente de aprendizagem exigente, acolhedor e atual, preparado para formar alunos com espírito crítico, autonomia e responsabilidade social.
+              A Nova Escola Politécnica do Huambo (NEPH) é uma instituição privada de ensino, fundada a 25 de Fevereiro de 2008, com o propósito de contribuir para a melhoria da qualidade do ensino na cidade do Huambo.
+            </p>
+            <p className="mt-4 text-lg leading-8 text-slate-600">
+              Surgida de uma iniciativa do Grupo Gustave Eiffel de Portugal, da Escola Gustave Eiffel do Lobito e de parceiros angolanos, a instituição iniciou as suas actividades com cerca de 60 alunos e 25 colaboradores, oferecendo cursos do II Ciclo Politécnico em diversas áreas técnicas.
             </p>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            {[
-              { title: 'Excellence', text: 'Currículo forte, rigor académico e acompanhamento contínuo.' },
-              { title: 'Inovação', text: 'Metodologias ativas, tecnologia e projetos com impacto real.' },
-              { title: 'Cuidado', text: 'Bem-estar, orientação e atenção individual em cada etapa.' },
-              { title: 'Comunidade', text: 'Uma cultura escolar inclusiva e orientada para a pertença.' },
-            ].map((value) => (
-              <div key={value.title} className="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm">
-                <h3 className="text-xl font-semibold text-slate-900">{value.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-slate-600">{value.text}</p>
-              </div>
-            ))}
+          <div className="grid gap-4 sm:grid-cols-1">
+            <div className="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="text-xl font-semibold text-slate-900">Crescimento e expansão</h3>
+              <p className="mt-3 text-sm leading-7 text-slate-600">
+                Ao longo dos anos, a NEPH expandiu a sua oferta educativa, passando também a ministrar o Ensino Primário e o Ensino Geral. Em 2026, conta com mais de 1.150 alunos e 175 colaboradores, constituindo uma referência no sector privado de educação na província do Huambo.
+              </p>
+            </div>
+            <div className="rounded-[1.5rem] border border-slate-200 bg-[#f8f4ea] p-6 shadow-sm">
+              <h3 className="text-xl font-semibold text-slate-900">Presença actual</h3>
+              <p className="mt-3 text-sm leading-7 text-slate-600">
+                Actualmente, a Nova Escola Politécnica do Huambo é a entidade detentora do Complexo Escolar Privado do Huambo e do Instituto Médio Privado Politécnico do Huambo, disponibilizando uma formação que acompanha os alunos desde o Ensino Primário até ao II Ciclo.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -183,29 +185,36 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="mission" className="mt-20 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-          <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">A nossa missão</p>
-            <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">Formar jovens preparados para o futuro sem perder a essência humana.</h2>
-            <p className="mt-5 text-lg leading-8 text-slate-600">
-              Promovemos o desenvolvimento integral dos alunos através de ensino exigente, inclusivo e orientado para a excelência, com foco em valores, responsabilidade e bem-estar.
-            </p>
-          </div>
+        <section id="mission" className="mt-20 rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">Missão, visão e valores</p>
+          <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">Uma escola orientada para a excelência, o crescimento e o impacto positivo na comunidade.</h2>
 
-          <div className="grid gap-6">
-            <blockquote className="rounded-[2rem] border border-slate-200 bg-[#f8f4ea] p-8">
-              <p className="text-lg leading-8 text-slate-700">“A Nova Escola Politécnica do Huambo ajudou o meu filho a crescer academicamente e pessoalmente, com confiança e sentido de pertença.”</p>
-              <footer className="mt-5 text-sm font-semibold text-slate-500">— Maria Silva, Encarregada de Educação</footer>
-            </blockquote>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm">
-                <div className="text-3xl font-semibold text-[#08263a]">+1,000</div>
-                <div className="mt-2 text-sm text-slate-600">alunos formados ao longo das nossas gerações</div>
-              </div>
-              <div className="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm">
-                <div className="text-3xl font-semibold text-[#08263a]">100%</div>
-                <div className="mt-2 text-sm text-slate-600">dedicação a um ambiente seguro e acolhedor</div>
-              </div>
+          <div className="mt-8 grid gap-6 lg:grid-cols-3">
+            <div className="rounded-[1.5rem] border border-slate-200 bg-[#f8f4ea] p-6">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#b98b2d]">Missão</p>
+              <p className="mt-4 text-base leading-8 text-slate-700">
+                “Garantir um ensino de qualidade no Huambo, incentivando o gosto pela aprendizagem, autonomia e empenho para alcançar o sucesso.”
+              </p>
+            </div>
+
+            <div className="rounded-[1.5rem] border border-slate-200 bg-[#f8f4ea] p-6">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#b98b2d]">Visão</p>
+              <p className="mt-4 text-base leading-8 text-slate-700">
+                “Ser uma instituição educativa de excelência, que desenvolve o potencial de cada estudante e o prepara para ser um cidadão activo e responsável.”
+              </p>
+            </div>
+
+            <div className="rounded-[1.5rem] border border-slate-200 bg-[#f8f4ea] p-6">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#b98b2d]">Valores</p>
+              <ul className="mt-4 space-y-2 text-base leading-7 text-slate-700">
+                <li>• Honestidade</li>
+                <li>• Respeito</li>
+                <li>• Dedicação</li>
+                <li>• Solidariedade</li>
+                <li>• Criatividade</li>
+                <li>• Rigor</li>
+                <li>• Inclusão</li>
+              </ul>
             </div>
           </div>
         </section>
