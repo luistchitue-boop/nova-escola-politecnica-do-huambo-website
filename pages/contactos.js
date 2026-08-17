@@ -20,11 +20,11 @@ export default function Contactos() {
             <div className="mt-8 grid gap-6 md:grid-cols-2">
               <div className="rounded-[1.5rem] border border-slate-200 bg-[#f8f4ea] p-6">
                 <h2 className="text-xl font-semibold text-slate-900">Telefone</h2>
-                <p className="mt-3 text-slate-700">+244 912 345 678</p>
+                <p className="mt-3 text-slate-700">+244 931 841 595</p>
               </div>
               <div className="rounded-[1.5rem] border border-slate-200 bg-[#f8f4ea] p-6">
                 <h2 className="text-xl font-semibold text-slate-900">Email</h2>
-                <p className="mt-3 text-slate-700">geral@escolahuambo.ao</p>
+                <p className="mt-3 text-slate-700">apoio@neph.ao</p>
               </div>
             </div>
             <p className="mt-8 text-lg leading-8 text-slate-600">
