@@ -162,6 +162,16 @@ const reservationSchema = z.object({
   }
 })
 
+const admissionYearOptions = [
+  '2027/2028',
+  '2028/2029',
+  '2029/2030',
+  '2030/2031',
+  '2031/2032',
+  '2032/2033',
+  '2033/2034',
+]
+
 const gradeOptions = [
   '1ª classe',
   '2ª classe',
@@ -717,19 +727,22 @@ export default function ReservasPage() {
             <div className="grid gap-6 md:grid-cols-2">
               <div>
                 <label htmlFor="admissionYear" className="block text-sm font-semibold text-slate-700">Ano de ingresso pretendido</label>
-                <input
+                <select
                   id="admissionYear"
                   name="admissionYear"
-                  type="text"
-                  placeholder="Ex: 2027/2028"
                   value={form.admissionYear}
                   onChange={handleChange}
                   aria-invalid={Boolean(fieldErrors.admissionYear)}
                   aria-describedby={fieldErrors.admissionYear ? 'admissionYear-error' : undefined}
-                  className={`mt-3 w-full rounded-2xl border px-4 py-3 outline-none focus:border-[#b98b2d] ${
+                  className={`mt-3 w-full rounded-2xl border bg-white px-4 py-3 text-slate-800 outline-none focus:border-[#b98b2d] ${
                     fieldErrors.admissionYear ? 'border-red-400 bg-red-50' : 'border-slate-300'
                   }`}
-                />
+                >
+                  <option value="">Selecione o ano</option>
+                  {admissionYearOptions.map((year) => (
+                    <option key={year} value={year}>{year}</option>
+                  ))}
+                </select>
                 {fieldErrors.admissionYear ? (
                   <p id="admissionYear-error" className="mt-2 text-sm font-medium text-red-600">
                     {fieldErrors.admissionYear}
