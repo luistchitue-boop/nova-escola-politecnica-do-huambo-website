@@ -67,6 +67,58 @@ const isValidBirthDate = (value = '') => {
   return parsedDate <= today
 }
 
+const gradeAgeMap = {
+  1: 6,
+  2: 7,
+  3: 8,
+  4: 9,
+  5: 10,
+  6: 11,
+  7: 12,
+  8: 13,
+  9: 14,
+  10: 15,
+  11: 16,
+  12: 17,
+  13: 18,
+}
+
+const getFirstAdmissionYear = (admissionYear = '') => {
+  const match = String(admissionYear).trim().match(/\d{4}/)
+
+  if (!match) {
+    return null
+  }
+
+  return Number(match[0])
+}
+
+const getGradeAge = (grade = '') => {
+  const match = String(grade).trim().match(/(\d+)\s*ª/)
+
+  if (!match) {
+    return null
+  }
+
+  const classNumber = Number(match[1])
+  return gradeAgeMap[classNumber] ?? null
+}
+
+const getAgeForAdmissionYear = (dateOfBirth = '', admissionYear = '') => {
+  if (!isValidBirthDate(dateOfBirth)) {
+    return null
+  }
+
+  const firstAdmissionYear = getFirstAdmissionYear(admissionYear)
+
+  if (!Number.isInteger(firstAdmissionYear)) {
+    return null
+  }
+
+  const yearOfBirth = Number(dateOfBirth.split('/')[2])
+  return firstAdmissionYear - yearOfBirth
+}
+
 const reservationSchema = z.object({
   parentName: z.string().trim().min(2, { message: 'O nome do responsável é obrigatório.' }),
   phone: z
@@ -91,6 +143,23 @@ const reservationSchema = z.object({
     message: 'Selecione uma opção válida: sim ou não.',
   }),
   observations: z.string().trim().optional().default(''),
+}).superRefine((data, ctx) => {
+  const expectedAge = getGradeAge(data.intendedGrade)
+  const actualAge = getAgeForAdmissionYear(data.dateOfBirth, data.admissionYear)
+
+  if (expectedAge && actualAge !== null && actualAge !== expectedAge) {
+    ctx.addIssue({
+      path: ['dateOfBirth'],
+      code: 'custom',
+      message: `A idade do estudante (${actualAge} anos) não corresponde à classe pretendida (${data.intendedGrade}).`,
+    })
+
+    ctx.addIssue({
+      path: ['intendedGrade'],
+      code: 'custom',
+      message: 'A classe pretendida não corresponde à idade do estudante.',
+    })
+  }
 })
 
 const gradeOptions = [

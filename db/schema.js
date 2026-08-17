@@ -1,4 +1,4 @@
-const { pgTable, serial, varchar, text, integer, timestamp, uniqueIndex } = require('drizzle-orm/pg-core')
+const { pgTable, serial, varchar, text, integer, timestamp, boolean, uniqueIndex } = require('drizzle-orm/pg-core')
 
 exports.classes = pgTable('classes', {
   id: serial('id').primaryKey(),
@@ -60,6 +60,7 @@ exports.employmentApplications = pgTable('employment_applications', {
   phone: varchar('phone', { length: 50 }).notNull(),
   dateOfBirth: varchar('date_of_birth', { length: 20 }).notNull(),
   areaOfInterest: varchar('area_of_interest', { length: 255 }).notNull(),
+  talentPool: boolean('talent_pool').notNull().default(false),
   educationArea: varchar('education_area', { length: 255 }).notNull(),
   academicDegree: varchar('academic_degree', { length: 255 }).notNull(),
   higherEducationInstitution: varchar('higher_education_institution', { length: 255 }),

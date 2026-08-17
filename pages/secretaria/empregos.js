@@ -84,7 +84,8 @@ const employmentSchema = z.object({
   dateOfBirth: z.string().trim().refine(isValidBirthDate, {
     message: 'A data de nascimento deve ser uma data válida no formato dd/mm/yyyy.',
   }),
-  areaOfInterest: z.string().trim().min(2, 'A área ou função pretendida é obrigatória.'),
+  areaOfInterest: z.string().trim(),
+  talentPool: z.boolean().default(false),
   educationArea: z.string().trim().min(2, 'A área de educação é obrigatória.'),
   academicDegree: z.string().trim().min(2, 'O grau académico é obrigatório.'),
   higherEducationInstitution: z.string().trim().optional(),
@@ -94,6 +95,14 @@ const employmentSchema = z.object({
   experience: z.string().trim().min(10, 'Descreva pelo menos 10 caracteres sobre a sua experiência.'),
   usefulInfo: z.string().trim().min(10, 'Adicione informação útil para o departamento de RH.'),
 }).superRefine((data, ctx) => {
+  if (!data.talentPool && !data.areaOfInterest.trim()) {
+    ctx.addIssue({
+      path: ['areaOfInterest'],
+      code: 'custom',
+      message: 'A área ou função pretendida é obrigatória, a menos que opte pela bolsa de talentos.',
+    })
+  }
+
   if (higherEducationDegrees.includes(data.academicDegree)) {
     const institution = data.higherEducationInstitution?.trim() || ''
 
@@ -127,6 +136,7 @@ export default function EmpregosPage({ openRoles = [] }) {
     phone: '',
     dateOfBirth: '',
     areaOfInterest: '',
+    talentPool: false,
     educationArea: '',
     academicDegree: '',
     higherEducationInstitution: '',
@@ -142,7 +152,8 @@ export default function EmpregosPage({ openRoles = [] }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleChange = (event) => {
-    const { name, value } = event.target
+    const { name, type, checked } = event.target
+    const value = type === 'checkbox' ? checked : event.target.value
     const nextForm = { ...form, [name]: value }
     setForm(nextForm)
 
@@ -215,6 +226,7 @@ export default function EmpregosPage({ openRoles = [] }) {
         phone: '',
         dateOfBirth: '',
         areaOfInterest: '',
+        talentPool: false,
         educationArea: '',
         academicDegree: '',
         higherEducationInstitution: '',
@@ -287,6 +299,10 @@ export default function EmpregosPage({ openRoles = [] }) {
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                   <p className="font-semibold text-slate-900">Área / função</p>
                   <p className="mt-1">{form.areaOfInterest}</p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="font-semibold text-slate-900">Bolsa de talentos</p>
+                  <p className="mt-1">{form.talentPool ? 'Sim' : 'Não'}</p>
                 </div>
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                   <p className="font-semibold text-slate-900">Área de educação</p>
@@ -429,6 +445,21 @@ export default function EmpregosPage({ openRoles = [] }) {
                 </select>
                 {errors.areaOfInterest ? <p className="mt-2 text-sm font-medium text-red-600">{errors.areaOfInterest}</p> : null}
               </div>
+            </div>
+
+            <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-4">
+              <label className="flex items-start gap-3 text-sm font-medium text-slate-700">
+                <input
+                  type="checkbox"
+                  name="talentPool"
+                  checked={form.talentPool}
+                  onChange={handleChange}
+                  className="mt-1 h-4 w-4 accent-[#08263a]"
+                />
+                <span>
+                  Se não existir uma oportunidade adequada, quero fazer parte da nossa bolsa de talentos para ser contactado quando surgir uma vaga compatível.
+                </span>
+              </label>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">

@@ -48,7 +48,8 @@ const employmentSchema = z.object({
   dateOfBirth: z.string().trim().refine(isValidBirthDate, {
     message: 'A data de nascimento deve ser uma data válida no formato dd/mm/yyyy.',
   }),
-  areaOfInterest: z.string().trim().min(2, 'A área ou função pretendida é obrigatória.'),
+  areaOfInterest: z.string().trim(),
+  talentPool: z.boolean().default(false),
   educationArea: z.string().trim().min(2, 'A área de educação é obrigatória.'),
   academicDegree: z.string().trim().min(2, 'O grau académico é obrigatório.'),
   higherEducationInstitution: z.string().trim().optional().default(''),
@@ -58,6 +59,14 @@ const employmentSchema = z.object({
   experience: z.string().trim().min(10, 'Descreva pelo menos 10 caracteres sobre a sua experiência.'),
   usefulInfo: z.string().trim().min(10, 'Adicione informação útil para o departamento de RH.'),
 }).superRefine((data, ctx) => {
+  if (!data.talentPool && !data.areaOfInterest.trim()) {
+    ctx.addIssue({
+      path: ['areaOfInterest'],
+      code: 'custom',
+      message: 'A área ou função pretendida é obrigatória, a menos que opte pela bolsa de talentos.',
+    })
+  }
+
   if (higherEducationDegrees.includes(data.academicDegree)) {
     const institution = data.higherEducationInstitution?.trim() || ''
 
@@ -140,6 +149,7 @@ export default async function handler(req, res) {
       phone: payload.phone,
       dateOfBirth: payload.dateOfBirth,
       areaOfInterest: payload.areaOfInterest,
+      talentPool: payload.talentPool ?? false,
       educationArea: payload.educationArea,
       academicDegree: payload.academicDegree,
       higherEducationInstitution: payload.higherEducationInstitution?.trim() || null,
