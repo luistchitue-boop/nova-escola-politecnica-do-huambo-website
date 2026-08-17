@@ -133,43 +133,82 @@ export default function Home() {
         <section id="ceph" className="mt-20 rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">Ceph</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">Complexo Escolar Privado do Huambo</p>
               <h2 className="mt-2 text-3xl font-semibold sm:text-4xl">Aprendizagem com visão de futuro.</h2>
             </div>
-            <a href="#admissions" className="text-sm font-semibold text-[#08263a] underline decoration-[#f2d79d] decoration-2 underline-offset-4">
-              Explore as opções disponíveis
-            </a>
           </div>
 
-          <div id="curriculo" className="mt-8 grid gap-6 lg:grid-cols-3">
+          <div id="curriculo-ceph" className="mt-8 grid gap-6 md:grid-cols-3">
             {[
               {
-                title: 'Ensino Básico',
+                title: 'Ensino primário',
                 text: 'Bases sólidas para a curiosidade, a autonomia e o desenvolvimento emocional.',
+                image: '/ensino-primario.png',
               },
               {
-                title: 'Ensino Secundário',
+                title: 'I ciclo',
                 text: 'Preparação para estudos superiores, vida profissional e responsabilidade cívica.',
+                image: '/primeiro-ciclo.png',
               },
               {
-                title: 'Atividades extracurriculares',
+                title: 'II Ciclo',
                 text: 'Desporto, artes, clubes STEM e projetos que enriquecem a experiência escolar.',
+                image: '/segundo-ciclo.png',
               },
             ].map((program) => (
-              <div key={program.title} className="rounded-[1.5rem] border border-slate-200 bg-[#f8f4ea] p-6">
-                <h3 className="text-xl font-semibold text-slate-900">{program.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-slate-600">{program.text}</p>
+              <div
+                key={program.title}
+                className="relative isolate overflow-hidden rounded-[1.5rem] border border-slate-200 bg-[#f8f4ea] p-6"
+                style={program.image ? {
+                  backgroundImage: `url('${program.image}')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                } : undefined}
+              >
+                {program.image ? (
+                  <div className="absolute inset-0 z-0 bg-[linear-gradient(135deg,rgba(8,38,58,0.7),rgba(8,38,58,0.35))]" />
+                ) : null}
+                <div className="relative z-10">
+                  <h3 className={`text-xl font-semibold ${program.image ? 'text-white' : 'text-slate-900'}`}>{program.title}</h3>
+                  <p className={`mt-3 text-sm leading-7 ${program.image ? 'text-slate-100' : 'text-slate-600'}`}>{program.text}</p>
+                </div>
               </div>
             ))}
           </div>
         </section>
 
         <section id="impph" className="mt-20 rounded-[2rem] border border-slate-200 bg-[#f8f4ea] p-8 shadow-sm sm:p-10">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">Impph</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">Instituto Médio Privado Politécnico do Huambo</p>
           <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">Programa orientado para a formação profissional, científica e cidadã.</h2>
           <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600">
             O IMPPH reforça a ligação entre aprendizagem rigorosa, investigação aplicada e desenvolvimento de competências práticas, preparando os estudantes para os desafios do presente e do futuro em uma escola no Huambo com visão de excelência.
           </p>
+
+          <div id="curriculo-impph" className="mt-8 grid gap-6 md:grid-cols-2">
+            {[
+              {
+                title: 'Contabilidade',
+                text: 'Formação prática e teórica para a gestão financeira, organização e acompanhamento de processos empresariais.',
+              },
+              {
+                title: 'Obras de construção civil',
+                text: 'Preparação para a execução, gestão e controlo de projectos de engenharia e obra civil.',
+              },
+              {
+                title: 'Informática',
+                text: 'Desenvolvimento de competências digitais, sistemas, redes e soluções tecnológicas aplicadas.',
+              },
+              {
+                title: 'Electrónica',
+                text: 'Conhecimentos essenciais em circuitos, automação, manutenção e tecnologias eletrónicas modernas.',
+              },
+            ].map((program) => (
+              <div key={program.title} className="rounded-[1.5rem] border border-slate-200 bg-white p-6">
+                <h3 className="text-xl font-semibold text-slate-900">{program.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-slate-600">{program.text}</p>
+              </div>
+            ))}
+          </div>
         </section>
 
         <section id="admissions" className="mt-20 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
