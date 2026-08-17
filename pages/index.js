@@ -41,8 +41,8 @@ export default function Home() {
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,38,58,0.96)_0%,rgba(8,38,58,0.86)_48%,rgba(8,38,58,0.42)_100%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(185,139,45,0.20),transparent_32%)]" />
 
-        <div className="relative mx-auto flex min-h-screen max-w-6xl items-center justify-center px-6 py-24 lg:px-8 lg:py-32">
-          <div className="grid w-full max-w-4xl gap-8 text-center lg:items-center">
+        <div className="relative mx-auto flex min-h-screen w-full max-w-6xl items-center justify-center px-6 py-24 lg:px-8 lg:py-32">
+          <div className="flex w-full max-w-4xl flex-col items-center justify-center gap-8 text-center">
             <div className="mx-auto max-w-4xl">
               <p className="text-sm font-semibold uppercase tracking-[0.3em] text-white">{hero.eyebrow}</p>
               <h1 className="mt-6 text-4xl font-semibold leading-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
