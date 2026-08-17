@@ -33,10 +33,10 @@ export default function Impph() {
         <meta name="description" content="Descubra o IMPPH e como ele fortalece a aprendizagem, a inovação e a formação profissional na Nova Escola Politécnica do Huambo." />
       </Head>
 
-      <div className="min-h-screen bg-[#f6f3eb] text-slate-800">
+      <div className="flex min-h-screen flex-col bg-[#f6f3eb] text-slate-800">
         <Header />
 
-        <main className="mx-auto max-w-6xl px-6 py-20 lg:px-8">
+        <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-20 lg:px-8">
           <section className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm sm:p-12">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#b98b2d]">Instituto Médio Privado Politécnico do Huambo</p>
             <h1 className="mt-4 text-4xl font-semibold text-slate-900 sm:text-5xl">Formação profissional, científica e cidadã.</h1>

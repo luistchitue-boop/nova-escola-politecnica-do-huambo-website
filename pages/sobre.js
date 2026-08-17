@@ -72,10 +72,10 @@ export default function Sobre() {
         />
       </Head>
 
-      <div className="min-h-screen bg-[#f6f3eb] text-slate-800">
+      <div className="flex min-h-screen flex-col bg-[#f6f3eb] text-slate-800">
         <Header />
 
-        <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
           <section className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm">
             <div className="relative p-3">
               <div className="overflow-hidden rounded-[1.5rem]">
