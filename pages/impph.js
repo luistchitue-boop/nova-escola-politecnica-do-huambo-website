@@ -49,7 +49,7 @@ export default function Impph() {
             {programs.map((program) => (
               <div
                 key={program.title}
-                className="relative isolate min-h-[260px] overflow-hidden rounded-[1.5rem] border border-slate-200 bg-[#f8f4ea] p-6 shadow-sm"
+                className="relative isolate min-h-[220px] overflow-hidden rounded-[1.5rem] border border-slate-200 bg-[#f8f4ea] p-6 shadow-sm"
                 style={program.image ? {
                   backgroundImage: `url('${program.image}')`,
                   backgroundSize: 'cover',
@@ -58,11 +58,11 @@ export default function Impph() {
                 } : undefined}
               >
                 {program.image ? (
-                  <div className="absolute inset-0 z-0 bg-[linear-gradient(135deg,rgba(4,17,28,0.82),rgba(8,38,58,0.55))]" />
+                  <div className="absolute inset-0 z-0 bg-[linear-gradient(135deg,rgba(8,38,58,0.82),rgba(8,38,58,0.5))]" />
                 ) : null}
                 <div className="relative z-10 flex h-full flex-col justify-end">
-                  <h2 className="text-3xl font-semibold text-white sm:text-4xl">{program.title}</h2>
-                  <p className="mt-3 max-w-md text-base leading-7 text-slate-100 sm:text-lg">{program.text}</p>
+                  <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">{program.title}</h2>
+                  <p className="mt-4 text-base leading-7 text-slate-100 sm:text-[1.05rem]">{program.text}</p>
                 </div>
               </div>
             ))}

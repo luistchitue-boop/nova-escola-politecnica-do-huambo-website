@@ -56,11 +56,11 @@ export default function Ceph() {
                   } : undefined}
                 >
                   {program.image ? (
-                    <div className="absolute inset-0 z-0 bg-[linear-gradient(135deg,rgba(8,38,58,0.72),rgba(8,38,58,0.35))]" />
+                    <div className="absolute inset-0 z-0 bg-[linear-gradient(135deg,rgba(8,38,58,0.82),rgba(8,38,58,0.5))]" />
                   ) : null}
                   <div className="relative z-10 flex h-full flex-col justify-end">
-                    <h3 className="text-3xl font-semibold text-white sm:text-4xl">{program.title}</h3>
-                    <p className="mt-3 max-w-md text-base leading-7 text-slate-100 sm:text-lg">{program.text}</p>
+                    <h3 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">{program.title}</h3>
+                    <p className="mt-4 text-base leading-7 text-slate-100 sm:text-[1.05rem]">{program.text}</p>
                   </div>
                 </div>
               ))}

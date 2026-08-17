@@ -144,19 +144,20 @@ export default function Home() {
             ].map((program) => (
               <div
                 key={program.title}
-                className="relative isolate overflow-hidden rounded-[1.5rem] border border-slate-200 bg-[#f8f4ea] p-6"
+                className="relative isolate min-h-[260px] overflow-hidden rounded-[1.5rem] border border-slate-200 bg-[#f8f4ea] p-6 shadow-sm"
                 style={program.image ? {
                   backgroundImage: `url('${program.image}')`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat',
                 } : undefined}
               >
                 {program.image ? (
-                  <div className="absolute inset-0 z-0 bg-[linear-gradient(135deg,rgba(8,38,58,0.7),rgba(8,38,58,0.35))]" />
+                  <div className="absolute inset-0 z-0 bg-[linear-gradient(135deg,rgba(8,38,58,0.82),rgba(8,38,58,0.5))]" />
                 ) : null}
-                <div className="relative z-10">
-                  <h3 className={`text-xl font-semibold ${program.image ? 'text-white' : 'text-slate-900'}`}>{program.title}</h3>
-                  <p className={`mt-3 text-sm leading-7 ${program.image ? 'text-slate-100' : 'text-slate-600'}`}>{program.text}</p>
+                <div className="relative z-10 flex h-full flex-col justify-end">
+                  <h3 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">{program.title}</h3>
+                  <p className="mt-4 text-base leading-7 text-slate-100 sm:text-[1.05rem]">{program.text}</p>
                 </div>
               </div>
             ))}
@@ -191,7 +192,7 @@ export default function Home() {
             ].map((program) => (
               <div
                 key={program.title}
-                className="relative isolate min-h-[220px] overflow-hidden rounded-[1.5rem] border border-slate-200 bg-[#f8f4ea] p-6"
+                className="relative isolate min-h-[220px] overflow-hidden rounded-[1.5rem] border border-slate-200 bg-[#f8f4ea] p-6 shadow-sm"
                 style={program.image ? {
                   backgroundImage: `url('${program.image}')`,
                   backgroundSize: 'cover',
@@ -200,11 +201,11 @@ export default function Home() {
                 } : undefined}
               >
                 {program.image ? (
-                  <div className="absolute inset-0 z-0 bg-[linear-gradient(135deg,rgba(8,38,58,0.72),rgba(8,38,58,0.35))]" />
+                  <div className="absolute inset-0 z-0 bg-[linear-gradient(135deg,rgba(8,38,58,0.82),rgba(8,38,58,0.5))]" />
                 ) : null}
-                <div className="relative z-10">
-                  <h3 className={`text-xl font-semibold ${program.image ? 'text-white' : 'text-slate-900'}`}>{program.title}</h3>
-                  <p className={`mt-3 text-sm leading-7 ${program.image ? 'text-slate-100' : 'text-slate-600'}`}>{program.text}</p>
+                <div className="relative z-10 flex h-full flex-col justify-end">
+                  <h3 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">{program.title}</h3>
+                  <p className="mt-4 text-base leading-7 text-slate-100 sm:text-[1.05rem]">{program.text}</p>
                 </div>
               </div>
             ))}
