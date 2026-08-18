@@ -7,10 +7,7 @@ export async function getServerSideProps(context) {
 
   if (!session || !session.user || session.user.role !== 'admin') {
     return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
+      notFound: true,
     }
   }
 
