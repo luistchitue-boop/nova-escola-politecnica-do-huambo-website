@@ -3,8 +3,8 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 
 const heroContent = {
-  eyebrow: 'Nossa identidade',
-  title: 'Onde o Conhecimento Ganha Futuro',
+  eyebrow: 'Nova Escola Politécnica do Huambo',
+  title: 'Garantir um ensino de qualidade no Huambo',
   description: 'Há mais de 18 anos a formar gerações com excelência, inovação e compromisso.',
   stats: [],
   highlights: [
@@ -51,15 +51,6 @@ export default function Home() {
               <p className="mt-6 mx-auto max-w-3xl text-xl leading-9 text-slate-100 sm:text-2xl">
                 {hero.description}
               </p>
-
-              <div className="mt-8 flex flex-wrap justify-center gap-3">
-                <a href="#admissions" className="rounded-full bg-[#c49b40] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#0f172a]/20 transition hover:-translate-y-0.5 hover:bg-[#b98b2d]">
-                  Solicitar informação
-                </a>
-                <a href="#about" className="rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/20">
-                  Descobrir a nossa visão
-                </a>
-              </div>
 
               {hero.stats.length > 0 ? (
                 <div className="mt-10 grid gap-4 sm:grid-cols-3">
