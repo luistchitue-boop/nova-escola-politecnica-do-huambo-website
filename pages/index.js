@@ -217,7 +217,7 @@ export default function Home() {
 
           <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
             <ul className="space-y-4 text-sm leading-7 text-slate-600">
-              <li className="flex gap-3"><span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#b98b2d]" /><span>Visitas guiadas presenciais e orientadas ao calendário escolar.</span></li>
+              <li className="flex gap-3"><span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#b98b2d]" /><span>Visitas guiadas presenciais, de acordo com o calendário escolar.</span></li>
               <li className="flex gap-3"><span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#b98b2d]" /><span>Acompanhamento personalizado para famílias e candidatos.</span></li>
               <li className="flex gap-3"><span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#b98b2d]" /><span>Informação clara sobre documentos, requisitos e próximos passos.</span></li>
             </ul>
