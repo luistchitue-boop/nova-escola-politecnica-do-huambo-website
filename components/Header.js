@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { gsap } from 'gsap'
 
 const logoSvgMarkup = `
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1263 1246" role="img" aria-labelledby="title desc" style="display:block;width:100%;height:100%">
@@ -38,6 +39,44 @@ const logoSvgMarkup = `
 export default function Header() {
   const [open, setOpen] = useState(false)
   const [theme, setTheme] = useState('light')
+  const logoRef = useRef(null)
+
+  useEffect(() => {
+    if (!logoRef.current) return
+
+    const svg = logoRef.current.querySelector('svg')
+    const bluePaths = Array.from(logoRef.current.querySelectorAll('.logo-blue path'))
+    if (!svg || !bluePaths.length) return
+
+    const outlineStroke = theme === 'dark' ? '#ffffff' : '#0b2cff'
+
+    gsap.set(svg, { opacity: 1, scale: 1, transformOrigin: 'center center' })
+
+    gsap.set(bluePaths, {
+      fill: 'transparent',
+      stroke: outlineStroke,
+      strokeWidth: 5,
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round',
+      strokeDasharray: (index, target) => target.getTotalLength(),
+      strokeDashoffset: (index, target) => target.getTotalLength(),
+      opacity: 1,
+    })
+
+    gsap.to(bluePaths, {
+      strokeDashoffset: 0,
+      duration: 2.6,
+      ease: 'none',
+      stagger: 0.04,
+      repeat: -1,
+      repeatDelay: 0.5,
+      onRepeat: () => {
+        gsap.set(bluePaths, {
+          strokeDashoffset: (index, target) => target.getTotalLength(),
+        })
+      },
+    })
+  }, [theme])
 
   const logoVars = theme === 'dark'
     ? { '--logo-blue': '#ffffff', '--logo-red': '#ffffff', '--logo-yellow': '#ffffff', '--logo-black': '#ffffff', '--logo-opacity': '1' }
@@ -69,6 +108,7 @@ export default function Header() {
         <div className="flex items-center gap-3">
           <a href="/" className="flex items-center gap-3">
             <div
+              ref={logoRef}
               className="h-10 w-10 shrink-0 md:h-11 md:w-11"
               dangerouslySetInnerHTML={{ __html: logoSvgMarkup }}
               style={logoVars}
