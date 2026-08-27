@@ -37,7 +37,12 @@ export default function Home() {
       <Header />
 
       <section className="relative isolate min-h-screen overflow-hidden bg-[#08263a] text-white">
-        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/hero.webp')" }} />
+        <img
+          src="/hero.webp"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover object-center"
+          aria-hidden="true"
+        />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,38,58,0.96)_0%,rgba(8,38,58,0.86)_48%,rgba(8,38,58,0.42)_100%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(185,139,45,0.20),transparent_32%)]" />
 

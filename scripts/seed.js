@@ -1,4 +1,6 @@
 require('dotenv').config()
+const fs = require('fs')
+const path = require('path')
 const bcrypt = require('bcryptjs')
 const { Pool } = require('pg')
 
@@ -6,6 +8,39 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
 })
+
+function parseClassAccessCsv(filePath) {
+  const content = fs.readFileSync(filePath, 'utf8').trim()
+
+  if (!content) {
+    return []
+  }
+
+  const rows = content.split(/\r?\n/).filter(Boolean)
+  const header = rows.shift().split(',').map((value) => value.trim().toLowerCase())
+
+  const classIndex = header.indexOf('class_name')
+  const whatsappIndex = header.indexOf('whatsapp_link')
+  const googleIndex = header.indexOf('google_classroom')
+
+  return rows
+    .map((row) => {
+      const values = row.split(',').map((value) => value.trim().replace(/^"|"$/g, ''))
+      const className = values[classIndex]
+      const whatsappLink = values[whatsappIndex]
+
+      if (!className || !whatsappLink) {
+        return null
+      }
+
+      return {
+        class_name: className,
+        whatsapp_link: whatsappLink,
+        google_classroom: googleIndex >= 0 && values[googleIndex] ? values[googleIndex] : null,
+      }
+    })
+    .filter(Boolean)
+}
 
 async function seed() {
   const client = await pool.connect()
@@ -45,6 +80,23 @@ async function seed() {
       console.log('Default admin seed created:', defaultAdminEmail)
     } else {
       console.log('Existing admin user found in database. Skipping automatic admin seeding.')
+    }
+
+    const csvRows = parseClassAccessCsv(path.join(process.cwd(), 'whatsapp_links.csv'))
+
+    if (csvRows.length > 0) {
+      for (const row of csvRows) {
+        await client.query(
+          `INSERT INTO class_access_logs (class_name, whatsapp_link, google_classroom)
+           VALUES ($1, $2, $3)
+           ON CONFLICT (class_name) DO UPDATE SET
+             whatsapp_link = EXCLUDED.whatsapp_link,
+             google_classroom = EXCLUDED.google_classroom`,
+          [row.class_name, row.whatsapp_link, row.google_classroom]
+        )
+      }
+
+      console.log(`Seeded ${csvRows.length} class access links from whatsapp_links.csv`)
     }
 
     const classes = [
@@ -100,9 +152,11 @@ async function seed() {
       }
     }
 
+    const adminSummaryEmail = configuredAdminEmail || 'direccao@escola.ao'
+
     await client.query('COMMIT')
     console.log('Seed data inserted successfully.')
-    console.log('Admin account ready:', adminEmail)
+    console.log('Admin account ready:', adminSummaryEmail)
     console.log('Sample enrollment numbers: 202601, 202602, 202603, 202604')
   } catch (error) {
     await client.query('ROLLBACK')

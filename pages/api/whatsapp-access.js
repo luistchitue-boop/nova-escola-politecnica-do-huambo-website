@@ -1,10 +1,22 @@
+import fs from 'fs'
+import path from 'path'
 import { z } from 'zod'
 import { db } from '../../lib/db'
-import { eq, sql } from 'drizzle-orm'
-import { students, classes, classAccessLogs } from '../../db/schema'
+import { eq } from 'drizzle-orm'
+import { classAccessLogs } from '../../db/schema'
+
+const availableClasses = JSON.parse(
+  fs.readFileSync(path.join(process.cwd(), 'turmas.json'), 'utf8')
+)
 
 const schema = z.object({
-  enrollmentNumber: z.string().trim().regex(/^\d{6}$/, 'O número de inscrição deve conter exatamente 6 inteiros.'),
+  className: z
+    .string()
+    .trim()
+    .min(1, 'Selecione uma turma.')
+    .refine((value) => availableClasses.includes(value), {
+      message: 'A turma selecionada não está disponível.',
+    }),
 })
 
 export default async function handler(req, res) {
@@ -22,17 +34,16 @@ export default async function handler(req, res) {
       })
     }
 
-    const enrollmentNumber = parsed.data.enrollmentNumber
+    const className = parsed.data.className
 
     const result = await db
       .select({
-        studentName: students.studentName,
-        className: classes.name,
-        whatsappLink: classes.whatsappLink,
+        className: classAccessLogs.className,
+        whatsappLink: classAccessLogs.whatsappLink,
+        googleClassroom: classAccessLogs.googleClassroom,
       })
-      .from(students)
-      .innerJoin(classes, eq(classes.id, students.classId))
-      .where(eq(students.enrollmentNumber, enrollmentNumber))
+      .from(classAccessLogs)
+      .where(eq(classAccessLogs.className, className))
       .limit(1)
 
     const match = result[0]
@@ -40,20 +51,15 @@ export default async function handler(req, res) {
     if (!match) {
       return res.status(404).json({
         success: false,
-        message: 'Número de inscrição não encontrado.',
+        message: 'Ainda não existe um canal configurado para esta turma.',
       })
     }
-
-    await db.insert(classAccessLogs).values({
-      enrollmentNumber,
-      className: match.className,
-      whatsappLink: match.whatsappLink,
-    })
 
     return res.status(200).json({
       success: true,
       className: match.className,
       whatsappLink: match.whatsappLink,
+      googleClassroom: match.googleClassroom,
       message: 'Acesso ao grupo confirmado.',
     })
   } catch (error) {

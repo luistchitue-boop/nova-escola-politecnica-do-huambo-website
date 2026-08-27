@@ -16,11 +16,9 @@ exports.students = pgTable('students', {
 })
 
 exports.classAccessLogs = pgTable('class_access_logs', {
-  id: serial('id').primaryKey(),
-  enrollmentNumber: varchar('enrollment_number', { length: 20 }).notNull(),
-  className: varchar('class_name', { length: 100 }).notNull(),
+  className: varchar('class_name', { length: 100 }).primaryKey(),
   whatsappLink: text('whatsapp_link').notNull(),
-  requestedAt: timestamp('requested_at').defaultNow().notNull(),
+  googleClassroom: text('google_classroom'),
 })
 
 exports.reservationRequests = pgTable(

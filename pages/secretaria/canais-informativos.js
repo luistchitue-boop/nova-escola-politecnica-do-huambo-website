@@ -4,29 +4,24 @@ import { useState } from 'react'
 import { z } from 'zod'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
+import turmas from '../../turmas.json'
 
-const registrationSchema = z.object({
-  inscricao: z
-    .string()
-    .trim()
-    .regex(/^\d{6}$/, { message: 'O número de inscrição deve conter exatamente 6 inteiros.' })
-    .min(6, { message: 'O número de inscrição deve conter exatamente 6 inteiros.' })
-    .max(6, { message: 'O número de inscrição deve conter exatamente 6 inteiros.' }),
+const classSchema = z.object({
+  className: z.string().trim().min(1, 'Selecione uma turma.'),
 })
 
 export default function WhatsAppPage() {
-  const [form, setForm] = useState({ inscricao: '' })
+  const [form, setForm] = useState({ className: '' })
   const [error, setError] = useState('')
   const [fieldErrors, setFieldErrors] = useState({})
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [whatsappLink, setWhatsappLink] = useState('')
+  const [googleClassroomLink, setGoogleClassroomLink] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-
-    const value = form.inscricao.trim()
-    const result = registrationSchema.safeParse({ inscricao: value })
+  const openClassAccessModal = async (selectedClassName) => {
+    const value = selectedClassName.trim()
+    const result = classSchema.safeParse({ className: value })
 
     if (!result.success) {
       const nextFieldErrors = result.error.issues.reduce((accumulator, issue) => {
@@ -51,8 +46,15 @@ export default function WhatsAppPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ enrollmentNumber: value }),
+        body: JSON.stringify({ className: value }),
       })
+
+      const contentType = response.headers.get('content-type') || ''
+
+      if (!contentType.includes('application/json')) {
+        const rawText = await response.text()
+        throw new Error(rawText || 'Resposta do servidor inválida.')
+      }
 
       const data = await response.json()
 
@@ -63,13 +65,20 @@ export default function WhatsAppPage() {
       }
 
       setWhatsappLink(data.whatsappLink)
+      setGoogleClassroomLink(data.googleClassroom || '')
       setIsModalOpen(true)
     } catch (requestError) {
+      console.error('Class access fetch failed:', requestError)
       setError('Não foi possível contactar o servidor. Tente novamente.')
       setIsModalOpen(false)
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    await openClassAccessModal(form.className)
   }
 
   return (
@@ -98,7 +107,7 @@ export default function WhatsAppPage() {
               </div>
 
               <p className="mt-4 text-sm leading-7 text-slate-600">
-                O seu acesso foi validado. Pode entrar no canal de comunicação da turma do aluno, incluindo o grupo de WhatsApp, Google Classroom e outros recursos da comunidade escolar.
+                O seu acesso foi validado. Pode entrar no canal de comunicação da turma selecionada, incluindo o grupo de WhatsApp, o Google Classroom e outros recursos da comunidade escolar.
               </p>
 
               <a
@@ -109,6 +118,17 @@ export default function WhatsAppPage() {
               >
                 Entrar no grupo do WhatsApp
               </a>
+
+              {googleClassroomLink ? (
+                <a
+                  href={googleClassroomLink}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-4 inline-flex w-full items-center justify-center rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                >
+                  Abrir o Google Classroom
+                </a>
+              ) : null}
 
               <button
                 type="button"
@@ -125,53 +145,56 @@ export default function WhatsAppPage() {
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#f2d79d]">Comunicação</p>
           <h1 className="mt-4 text-4xl font-semibold sm:text-5xl">Aceda aos canais de comunicação da escola.</h1>
           <p className="mt-6 text-lg leading-8 text-slate-200">
-            Introduza o número de inscrição do aluno para confirmar o acesso aos canais úteis da turma, incluindo grupos de WhatsApp, Google Classroom e o portal do encarregado de educação.
+            Seleccione a turma do aluno para confirmar o acesso aos canais úteis da turma, incluindo o grupo de WhatsApp, o Google Classroom e o portal do encarregado de educação.
           </p>
         </div>
 
         <div className="mt-10 rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
           <form className="space-y-6" onSubmit={handleSubmit} noValidate>
             <div>
-              <label htmlFor="inscricao" className="block text-sm font-semibold text-slate-700">
-                Número de inscrição do aluno
+              <label htmlFor="className" className="block text-sm font-semibold text-slate-700">
+                Turma do aluno
               </label>
-              <input
-                id="inscricao"
-                name="inscricao"
-                type="text"
-                inputMode="numeric"
-                maxLength={6}
-                value={form.inscricao}
+              <select
+                id="className"
+                name="className"
+                value={form.className}
                 onChange={(event) => {
-                  const nextValue = event.target.value.replace(/\D/g, '').slice(0, 6)
-                  setForm({ inscricao: nextValue })
-                  if (fieldErrors.inscricao) {
+                  const nextValue = event.target.value
+                  setForm({ className: nextValue })
+
+                  if (fieldErrors.className) {
                     setFieldErrors((current) => {
                       const next = { ...current }
-                      delete next.inscricao
+                      delete next.className
                       return next
                     })
                   }
+
                   if (error) {
                     setError('')
                   }
                 }}
-                placeholder="Ex: 202601"
-                aria-invalid={Boolean(fieldErrors.inscricao || error)}
-                aria-describedby={fieldErrors.inscricao || error ? 'inscricao-error' : undefined}
+                aria-invalid={Boolean(fieldErrors.className || error)}
+                aria-describedby={fieldErrors.className || error ? 'className-error' : undefined}
                 className={`mt-3 w-full rounded-2xl border px-4 py-3 text-slate-800 outline-none ring-0 focus:border-[#b98b2d] ${
-                  fieldErrors.inscricao || error ? 'border-red-400 bg-red-50' : 'border-slate-300'
+                  fieldErrors.className || error ? 'border-red-400 bg-red-50' : 'border-slate-300'
                 }`}
-              />
-              {fieldErrors.inscricao || error ? (
-                <p id="inscricao-error" className="mt-2 text-sm font-medium text-red-600">
-                  {fieldErrors.inscricao || error}
+              >
+                <option value="">Selecione a turma</option>
+                {turmas.map((classOption) => (
+                  <option key={classOption} value={classOption}>{classOption}</option>
+                ))}
+              </select>
+              {fieldErrors.className || error ? (
+                <p id="className-error" className="mt-2 text-sm font-medium text-red-600">
+                  {fieldErrors.className || error}
                 </p>
               ) : null}
             </div>
 
             <button type="submit" disabled={isSubmitting} className="rounded-full bg-[#08263a] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d3550] disabled:cursor-not-allowed disabled:opacity-70">
-              {isSubmitting ? 'A verificar...' : 'Continuar para o WhatsApp'}
+              {isSubmitting ? 'A verificar...' : 'Continuar no WhatsApp'}
             </button>
           </form>
 
